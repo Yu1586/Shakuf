@@ -1,14 +1,26 @@
 {
   "name": "@shakuf-widget/widget",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "כלי עזר נגישות לאתרים ישראליים — תוסף צד-לקוח, ללא שרת וללא איסוף מידע. אינו מבטיח עמידה בת״י 5568 ואינו תחליף להנגשת האתר.",
-  "keywords": ["accessibility", "a11y", "hebrew", "israel", "rtl", "widget"],
+  "keywords": [
+    "accessibility",
+    "a11y",
+    "hebrew",
+    "israel",
+    "rtl",
+    "widget"
+  ],
   "license": "Apache-2.0",
   "homepage": "https://shakuf.yuvalrahamim.com",
-  "repository": { "type": "git", "url": "git+https://github.com/Yu1586/Shakuf.git" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yu1586/Shakuf.git"
+  },
   "type": "module",
   "//publishConfig": "Scoped packages default to restricted, which needs a paid plan. Public is required for jsDelivr/unpkg to serve it at all.",
-  "publishConfig": { "access": "public" },
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
