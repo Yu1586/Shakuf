@@ -1,7 +1,9 @@
-# תוסף נגישות לאתרים ישראליים
+# שקוף — תוסף נגישות לאתרים ישראליים
 
 כלי עזר בעברית שמאפשר למבקרים באתר להתאים לעצמם את התצוגה: גודל טקסט, ניגודיות,
 מרווחים, עצירת אנימציות, סרגל קריאה ועוד.
+
+השם נבחר במכוון: הכלי שקוף לגבי מה שהוא עושה ומה שהוא לא עושה.
 
 > ### מה הכלי הזה לא עושה
 >
@@ -19,7 +21,7 @@
 תג script אחד, בכל סוג אתר — WordPress, Wix, Shopify, HTML רגיל, או כל מערכת אחרת:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@a11y-il/widget" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@shakuf/widget" defer></script>
 ```
 
 ### הגדרות
@@ -27,7 +29,7 @@
 כל ההגדרות אופציונליות ונקראות מתג ה-script עצמו. אין מפתח רישוי ואין הרשמה.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@a11y-il/widget"
+<script src="https://cdn.jsdelivr.net/npm/@shakuf/widget"
         data-position="bottom-right"
         data-offset="20"
         data-accent="#0b5fff"
@@ -54,11 +56,11 @@
 ### דרך npm
 
 ```bash
-npm install @a11y-il/widget
+npm install @shakuf/widget
 ```
 
 ```ts
-import { mount } from '@a11y-il/widget';
+import { mount } from '@shakuf/widget';
 
 mount({ position: 'bottom-left', statementUrl: '/accessibility' });
 ```
@@ -117,7 +119,7 @@ npx serve -l 4321 .
 
 | פקודה | פעולה |
 |---|---|
-| `npm run build` | בונה את `dist/a11y.js` (script tag) ואת `dist/index.js` (npm) |
+| `npm run build` | בונה את `dist/shakuf.js` (script tag) ואת `dist/index.js` (npm) |
 | `npm run typecheck` | בדיקת טיפוסים |
 
 גודל נוכחי: **12.6KB gzipped**, ללא תלויות בזמן ריצה.
@@ -129,4 +131,4 @@ npx serve -l 4321 .
 [Apache License 2.0](LICENSE). ראו גם [NOTICE](NOTICE) — כל הפצה של גרסה נגזרת
 חייבת לשכפל את ההודעות שבו, לרבות ההבהרה בדבר אי-עמידה בתקן.
 
-נבנה ומתוחזק על ידי [שם העסק] — ראו [DISCLAIMER.md](DISCLAIMER.md#אחריות).
+נבנה ומתוחזק על ידי **שקוף** — ראו [DISCLAIMER.md](DISCLAIMER.md#אחריות).

@@ -1,5 +1,5 @@
 {
-  "name": "@a11y-il/widget",
+  "name": "@shakuf/widget",
   "version": "0.1.0",
   "private": true,
   "description": "כלי עזר נגישות לאתרים ישראליים — תוסף צד-לקוח, ללא שרת וללא איסוף מידע",
@@ -7,14 +7,14 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "unpkg": "./dist/a11y.js",
-  "jsdelivr": "./dist/a11y.js",
+  "unpkg": "./dist/shakuf.js",
+  "jsdelivr": "./dist/shakuf.js",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./dist/a11y.js": "./dist/a11y.js"
+    "./dist/shakuf.js": "./dist/shakuf.js"
   },
   "files": [
     "dist",
@@ -22,7 +22,7 @@
     "DISCLAIMER.md"
   ],
   "sideEffects": [
-    "./dist/a11y.js"
+    "./dist/shakuf.js"
   ],
   "scripts": {
     "build": "tsup",

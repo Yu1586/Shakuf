@@ -7,10 +7,10 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build --workspace=@a11y-il/widget",
-    "dev": "npm run dev --workspace=@a11y-il/widget",
+    "build": "npm run build --workspace=@shakuf/widget",
+    "dev": "npm run dev --workspace=@shakuf/widget",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "size": "npm run size --workspace=@a11y-il/widget"
+    "size": "npm run size --workspace=@shakuf/widget"
   },
   "engines": {
     "node": ">=20"

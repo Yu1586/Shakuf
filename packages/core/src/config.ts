@@ -24,7 +24,7 @@ function findOwnScript(): HTMLScriptElement | null {
   for (let i = scripts.length - 1; i >= 0; i--) {
     const el = scripts[i];
     if (!el) continue;
-    if (/a11y(\.min)?\.js|@a11y-il\/widget/.test(el.src)) return el;
+    if (/shakuf(\.min)?\.js|@shakuf\/widget/.test(el.src)) return el;
   }
   return null;
 }

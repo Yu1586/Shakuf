@@ -6,7 +6,7 @@
  * readers, and a silent live region is worse than none — the visitor toggles a
  * setting and gets no confirmation that anything happened.
  */
-const LIVE_ID = 'a11y-il-live';
+const LIVE_ID = 'shakuf-live';
 
 function ensureRegion(): HTMLElement {
   const existing = document.getElementById(LIVE_ID);

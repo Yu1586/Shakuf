@@ -4,7 +4,7 @@ export default defineConfig([
   // Script-tag build. This is the ~90% install path (WordPress, Wix, plain HTML).
   // Self-executing, no globals leaked beyond a single namespaced key.
   {
-    entry: { a11y: 'src/auto.ts' },
+    entry: { shakuf: 'src/auto.ts' },
     format: ['iife'],
     globalName: '__A11yIL__',
     target: 'es2019',

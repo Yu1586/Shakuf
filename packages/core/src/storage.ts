@@ -9,7 +9,7 @@ import type { PrefState } from './types.js';
  * special-category data, so it must never reach a server we operate. We operate
  * no server at all (D2), and this file is the reason that stays true.
  */
-const KEY = 'a11y-il:prefs:v1';
+const KEY = 'shakuf:prefs:v1';
 
 /** localStorage throws in some privacy modes and when the site blocks storage. */
 function safeStorage(): Storage | null {

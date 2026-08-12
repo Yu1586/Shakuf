@@ -13,7 +13,7 @@ import { accessibilityIcon, el } from './ui/dom.js';
 import { Panel } from './ui/panel.js';
 import { PANEL_STYLES } from './ui/styles.js';
 
-const ROOT_ID = 'a11y-il-root';
+const ROOT_ID = 'shakuf-root';
 
 export class A11yWidget {
   private readonly config: WidgetConfig;
@@ -188,7 +188,7 @@ export class A11yWidget {
     this.guide.destroy();
     destroyAnnouncer();
     this.host.remove();
-    document.getElementById('a11y-il-host-styles')?.remove();
+    document.getElementById('shakuf-host-styles')?.remove();
   }
 }
 
@@ -199,7 +199,7 @@ export function mount(config?: Partial<WidgetConfig>): A11yWidget {
   if (instance) return instance;
   if (document.getElementById(ROOT_ID)) {
     // Two copies of the script on one page: the second must not fight the first.
-    throw new Error('[a11y-il] Widget already mounted on this page.');
+    throw new Error('[shakuf] Widget already mounted on this page.');
   }
   instance = new A11yWidget(config);
   return instance;

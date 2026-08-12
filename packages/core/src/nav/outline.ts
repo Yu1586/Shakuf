@@ -20,7 +20,7 @@ export interface OutlineItem {
 }
 
 function isVisible(el: HTMLElement): boolean {
-  if (el.closest('#a11y-il-root')) return false;
+  if (el.closest('#shakuf-root')) return false;
   if (el.hidden || el.getAttribute('aria-hidden') === 'true') return false;
   return !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
 }
@@ -132,7 +132,7 @@ export function jumpTo(el: HTMLElement): void {
     block: 'center',
     // Respect the visitor's own motion preference — and ours, if they set it.
     behavior:
-      document.documentElement.getAttribute('data-a11y-motion') === 'off' ||
+      document.documentElement.getAttribute('data-shakuf-motion') === 'off' ||
       window.matchMedia('(prefers-reduced-motion: reduce)').matches
         ? 'auto'
         : 'smooth',

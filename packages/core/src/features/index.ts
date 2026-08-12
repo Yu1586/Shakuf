@@ -19,7 +19,7 @@ function pauseMedia(paused: boolean): void {
   if (!paused) return;
   const media = document.querySelectorAll<HTMLMediaElement>('video, audio');
   for (const el of media) {
-    if (el.closest('#a11y-il-root')) continue;
+    if (el.closest('#shakuf-root')) continue;
     try {
       if (!el.paused) el.pause();
       // Stop it starting again on its own. We deliberately do not resume

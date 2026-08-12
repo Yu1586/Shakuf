@@ -15,8 +15,15 @@
  * cannot remove the attribution row, and they cannot touch the disclaimer.
  */
 export const BRAND = {
-  /** TODO(before publish): the legal entity name decided in PLAN.md §3.1. */
-  name: '[שם העסק]',
-  /** TODO(before publish): the business site. */
+  /**
+   * Product name. Settled — see the "לבחור שם" card.
+   *
+   * Note this is the *project* name, not a legal entity. `[LEGAL ENTITY NAME]`
+   * in NOTICE stays a placeholder until a company actually exists, because that
+   * one identifies a legal person and naming a company that isn't registered is
+   * worse than leaving the gap visible.
+   */
+  name: 'שקוף',
+  /** TODO(before publish): the site this attribution links to. */
   url: 'https://[DOMAIN]',
 } as const;

@@ -18,7 +18,7 @@ export type GroupId = 'text' | 'color' | 'motion' | 'nav' | 'info';
  * we have decided not to build.
  */
 export interface HostContext {
-  /** Sets or removes `data-a11y-<name>` on `<html>`. All host CSS keys off these. */
+  /** Sets or removes `data-shakuf-<name>` on `<html>`. All host CSS keys off these. */
   setHostAttr(name: string, value: string | null): void;
   /** Reversible font scaling. The only feature that touches host elements directly. */
   scaleText(level: number): void;

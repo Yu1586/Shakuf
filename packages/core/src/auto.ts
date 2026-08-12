@@ -16,7 +16,7 @@ function start(): void {
     // Never take the host page down with us. A widget that throws during a
     // site's boot sequence is a far worse outcome than a widget that is absent.
     if (typeof console !== 'undefined') {
-      console.error('[a11y-il] mount failed:', error);
+      console.error('[shakuf] mount failed:', error);
     }
   }
 }

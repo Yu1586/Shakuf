@@ -38,7 +38,7 @@ export class TextScaler {
     for (const el of all) {
       if (SKIP_TAGS.has(el.tagName)) continue;
       // Never touch ourselves — our panel sizes itself from shadow styles.
-      if (el.id === 'a11y-il-root' || el.closest('#a11y-il-root')) continue;
+      if (el.id === 'shakuf-root' || el.closest('#shakuf-root')) continue;
 
       if (ALWAYS_INCLUDE.has(el.tagName)) {
         out.push(el);
