@@ -24,6 +24,14 @@ export const BRAND = {
    * worse than leaving the gap visible.
    */
   name: 'שקוף',
-  /** TODO(before publish): the site this attribution links to. */
-  url: 'https://[DOMAIN]',
+  /**
+   * Where the attribution points.
+   *
+   * A subdomain of the author's own site, which is what makes this a real
+   * disclosure rather than a decorative one: the link lands somewhere plainly
+   * identifiable as the person whose business the tool feeds. That page has to
+   * carry the connection and the §2.1 claims discipline in its own copy — the
+   * link only works as disclosure if what it points at is honest too.
+   */
+  url: 'https://shakuf.yuvalrahamim.com',
 } as const;
