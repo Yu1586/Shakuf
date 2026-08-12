@@ -1,0 +1,18 @@
+# Cloudflare Pages headers.
+#
+# The site is fully self-contained — no external fonts, scripts, analytics or
+# images — so the CSP can be genuinely strict rather than decorative. If a
+# third-party embed ever gets added, this file is the thing that will break
+# first, and that is the intended behaviour.
+
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; form-action 'none'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=(), interest-cohort=()
+  Cross-Origin-Opener-Policy: same-origin
+
+# The widget build is immutable per deploy.
+/shakuf.js
+  Cache-Control: public, max-age=3600

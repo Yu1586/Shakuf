@@ -10,7 +10,8 @@
     "build": "npm run build --workspace=@shakuf/widget",
     "dev": "npm run dev --workspace=@shakuf/widget",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "size": "npm run size --workspace=@shakuf/widget"
+    "size": "npm run size --workspace=@shakuf/widget",
+    "build:site": "npm run build && node -e \"require('fs').copyFileSync('packages/core/dist/shakuf.js','site/shakuf.js')\""
   },
   "engines": {
     "node": ">=20"

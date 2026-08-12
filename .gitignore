@@ -2,6 +2,10 @@ node_modules/
 dist/
 *.tsbuildinfo
 
+# Build artifact, copied from packages/core/dist by the build step. Cloudflare
+# Pages regenerates it on deploy, so it should not be committed.
+site/shakuf.js
+
 # Secrets — never commit.
 .env
 .env.*
