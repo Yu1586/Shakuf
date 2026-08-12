@@ -357,6 +357,15 @@ details[open] summary { border-bottom: 1px solid var(--line); }
 .disclosure h2 { margin-top: 0; }
 .disclosure p:last-child { margin-bottom: 0; }
 
+/* ---- Long-form legal pages (/terms/, /disclaimer/) --------------------
+ * `padding-inline-start` rather than `padding-left`: the UA default for lists
+ * is physical, so under `dir="rtl"` the markers land outside the text column
+ * on the wrong side. Every other list on this site is inside `.cell`, which
+ * already solves this the same way. */
+.prose ul { margin: 0 0 20px; padding-inline-start: 20px; }
+.prose li { margin: 7px 0; }
+.prose li::marker { color: var(--fg-faint); }
+
 /* ---- Unfilled placeholders — must stay conspicuous -------------------- */
 .todo {
   background: #4a1010; color: #ffc9c9; border: 1px dashed #ff6b6b;

@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<!--
+  This page mirrors DISCLAIMER.md at the repo root, which is the copy that
+  ships inside the npm package under Apache-2.0 §4(d).
+
+  THE TWO MUST BE EDITED TOGETHER. They are the same legal statement, and a
+  drift between the version a visitor reads and the version bundled with the
+  code is worse than having only one. The package copy is canonical; this page
+  exists because raw markdown on a CDN is an unreadable landing for a document
+  PLAN.md §2.4 treats as layer 3 of the disclaimer strategy — and because this
+  copy can be corrected by a deploy rather than a version bump.
+-->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>הבהרה — שקוף</title>
+<meta name="description" content="מה שקוף עושה ומה הוא לא עושה. הכלי אינו הופך אתר לנגיש ואינו מבטיח עמידה בת״י 5568. פירוט מלא של הדרישות שהאחריות עליהן חלה על בעל האתר.">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0b0c'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23f4f4f5' stroke-width='2'/%3E%3Cpath d='M16 16 L16 5 A11 11 0 0 1 25.53 21.5 Z' fill='%23f4f4f5'/%3E%3Cpath d='M16 16 L25.53 21.5 A11 11 0 0 1 6.47 21.5 Z' fill='%23f4f4f5' opacity='.55'/%3E%3Cpath d='M16 16 L6.47 21.5 A11 11 0 0 1 16 5 Z' fill='%23f4f4f5' opacity='.28'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">דילוג לתוכן</a>
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="/">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="13.6" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M16 16 L16 2.4 A13.6 13.6 0 0 1 27.78 22.8 Z" fill="currentColor"/>
+        <path d="M16 16 L27.78 22.8 A13.6 13.6 0 0 1 4.22 22.8 Z" fill="currentColor" opacity=".55"/>
+        <path d="M16 16 L4.22 22.8 A13.6 13.6 0 0 1 16 2.4 Z" fill="currentColor" opacity=".28"/>
+      </svg>
+      <b>שקוף</b>
+    </a>
+    <a class="btn btn-line btn-sm btn-he" href="/setup/">מדריך התקנה</a>
+  </div>
+</header>
+
+<main id="main" class="prose">
+
+  <section>
+    <div class="wrap-text">
+      <h1>הבהרה — מה הכלי הזה עושה ומה הוא לא עושה</h1>
+      <p class="lead">
+        עדכון אחרון: 12 באוגוסט 2026 · מפרסם: יובל רחמים
+      </p>
+      <div class="callout">
+        <strong>קראו את המסמך הזה לפני התקנת הכלי</strong> באתר שלכם או באתר של
+        לקוח.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= בקצרה ================= -->
+  <section class="rule">
+    <div class="wrap-text">
+      <h2>בקצרה</h2>
+      <div class="notice">
+        <p style="margin-top:0">
+          הכלי הזה <strong>אינו הופך אתר לנגיש</strong> ו<strong>אינו מבטיח
+          עמידה בת״י 5568</strong> או בכל דין אחר.
+        </p>
+        <p style="margin-bottom:0">
+          הוא כלי עזר שמאפשר למבקר באתר להתאים לעצמו את התצוגה — גודל טקסט,
+          ניגודיות, מרווחים, עצירת אנימציות וכדומה. זו עזרה אמיתית לחלק
+          מהמשתמשים, אבל היא לא מחליפה הנגשה.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= טבלה ================= -->
+  <section class="rule">
+    <div class="wrap-text">
+      <h2>מה שהחוק בישראל דורש, ומה הכלי הזה מכסה</h2>
+
+      <div class="tablewrap" style="margin:28px 0">
+        <table>
+          <caption class="sr-only">דרישות הדין מול מה ששקוף מספק</caption>
+          <thead><tr><th scope="col">הדרישה</th><th scope="col">האם הכלי מספק?</th></tr></thead>
+          <tbody>
+            <tr><td>שהאתר עצמו יעמוד בת״י 5568 (WCAG 2.1 AA) — קוד, תוכן, טפסים, ניווט מקלדת, טקסט חלופי לתמונות</td><td class="no">לא — מחייב תיקונים באתר עצמו</td></tr>
+            <tr><td>פרסום <strong>הצהרת נגישות</strong></td><td class="no">לא — רק מקשר להצהרה שבעל האתר כתב</td></tr>
+            <tr><td>מינוי <strong>רכז נגישות</strong></td><td class="no">לא — רק מציג את פרטיו</td></tr>
+            <tr><td>ערוץ לפניות בנושא נגישות</td><td class="no">לא — רק מציג את פרטי הקשר</td></tr>
+            <tr><td>בדיקה של <strong>מורשה נגישות</strong></td><td class="no">לא</td></tr>
+            <tr><td>התאמת תצוגה אישית למבקר</td><td class="yes">כן — זה כל מה שהכלי עושה</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p><strong>חמש מתוך שש השורות בטבלה הזו הן באחריות בעל האתר בלבד.</strong></p>
+    </div>
+  </section>
+
+  <!-- ================= מה הכלי עושה ================= -->
+  <section class="rule">
+    <div class="wrap-text">
+      <h2>מה הכלי עושה בפועל</h2>
+      <ul>
+        <li>מוסיף כפתור וחלונית שבהם המבקר יכול לבחור העדפות תצוגה.</li>
+        <li>
+          כל שינוי מופעל <strong>רק ביוזמת המבקר</strong>, ניתן לביטול בלחיצה
+          אחת, ואינו נשמר בשום מקום מלבד <code>localStorage</code> בדפדפן של
+          המבקר עצמו, על הדומיין של האתר.
+        </li>
+        <li>הכלי <strong>אינו</strong> משנה ARIA, תפקידים (roles) או מבנה סמנטי באתר.</li>
+        <li>הכלי <strong>אינו</strong> מתערב בטכנולוגיה מסייעת של המבקר ואינו מחליף קורא מסך.</li>
+        <li>
+          הכלי <strong>אינו</strong> שולח מידע לשום שרת. אין שרת, אין חשבון, אין
+          מפתח רישוי ואין איסוף נתונים כלשהו.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= למה ================= -->
+  <section class="rule">
+    <div class="wrap-text">
+      <h2>למה זה כתוב כל כך במפורש</h2>
+      <p>
+        כלים מסוג זה (״overlay״) נמכרו בשנים האחרונות כפתרון מלא לנגישות, והם
+        אינם כאלה.
+      </p>
+      <p>
+        בינואר 2025 הטיל ה-FTC בארצות הברית קנס של <strong>מיליון דולר</strong>
+        על חברת accessiBe בגין טענות שיווקיות ולפיהן הכלי שלה הופך אתרים לתואמי
+        WCAG 2.1 AA. הצו הסופי, שאושר באפריל 2025, אוסר על החברה לטעון שמוצר
+        אוטומטי יכול להביא אתר לעמידה בתקן או לשמור על עמידה כזו לאורך זמן, ללא
+        ראיות התומכות בכך.
+      </p>
+      <p>
+        ארגוני נגישות ומשתמשי טכנולוגיה מסייעת מתייחסים לכלים כאלה בחשדנות
+        מוצדקת, משום שכלים שמשנים ARIA באופן אוטומטי פוגעים לעיתים קרובות דווקא
+        במשתמשים שהם אמורים לשרת.
+      </p>
+      <p>
+        <strong>לכן הכלי הזה בנוי אחרת:</strong> הוא נוגע בתצוגה בלבד, לא נוגע
+        בסמנטיקה, ולא טוען שהוא מה שהוא לא.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= מה אסור לומר ================= -->
+  <section class="rule">
+    <div class="wrap-text">
+      <h2>מה אסור לומר על הכלי</h2>
+      <p>
+        אם אתם מתקינים את הכלי אצל לקוחות, או משלבים אותו במוצר שלכם,
+        <strong>אין להציג אותו</strong> באמצעות אף אחת מהאמירות הבאות. הן אינן
+        נכונות, והשימוש בהן חושף אתכם לאחריות משפטית משלכם:
+      </p>
+      <ul>
+        <li>״האתר שלך עומד בתקן / כשיר לתקן 5568״</li>
+        <li>״נגישות מלאה / אוטומטית / 100%״</li>
+        <li>״הגנה מפני תביעות נגישות״ · ״חסינות משפטית״</li>
+        <li>״AI שמתקן את הנגישות באתר״</li>
+        <li>״מאושר על ידי הנציבות״ · ״תו תקן״</li>
+      </ul>
+      <div class="callout">
+        ניסוח נכון:
+        <strong>״כלי עזר להתאמת תצוגה, בנוסף להנגשת האתר — לא במקומה.״</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= אחריות ================= -->
+  <section class="rule">
+    <div class="wrap-text">
+      <h2>אחריות</h2>
+      <p>
+        התוכנה מסופקת כמות שהיא (AS IS), ללא כל אחריות, במסגרת רישיון
+        <a href="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget/LICENSE">Apache License 2.0</a>
+        — ראו את כתב הוויתור על אחריות בסעיף 7 ואת הגבלת האחריות בסעיף 8.
+      </p>
+      <p>
+        <strong>האחריות לעמידת האתר בדרישות הדין חלה על בעל האתר בלבד.</strong>
+        התקנת הכלי אינה מעבירה אחריות זו לאיש.
+      </p>
+      <p class="dim">
+        תנאי השימוש באתר ובכלי, לרבות מעמדו של המידע המשפטי המוצג כאן:
+        <a href="/terms/">תנאי שימוש</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= שאלות ================= -->
+  <section class="rule">
+    <div class="wrap-text">
+      <h2>שאלות</h2>
+      <p>
+        לדיווח על תקלה או על בעיית אבטחה:
+        <a href="mailto:shakuf@yuvalrahamim.com" dir="ltr">shakuf@yuvalrahamim.com</a>.
+        אין לפתוח issue ציבורי בנושא אבטחה.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <ul class="foot-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/setup/">Setup</a></li>
+      <li><a href="/terms/">Terms</a></li>
+    </ul>
+    <p>
+      שקוף מתאים את התצוגה בלבד ואינו מבטיח עמידה בת״י 5568. הנגשה מלאה מחייבת
+      תיקונים באתר עצמו, פרסום הצהרת נגישות, מינוי רכז נגישות ובדיקה של מורשה
+      נגישות. האחריות לעמידה בדין חלה על בעל האתר בלבד.
+    </p>
+  </div>
+</footer>
+
+<script src="/shakuf.js" defer></script>
+</body>
+</html>

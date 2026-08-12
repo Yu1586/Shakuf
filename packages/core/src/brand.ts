@@ -1,10 +1,16 @@
 /**
  * Attribution.
  *
- * PLAN.md §3.5(2): because the widget exists to generate work for a business
- * the author owns, the connection must be disclosed prominently — an
- * apparently-neutral free tool that funnels to its author's paid services,
- * undisclosed, is the second count the FTC brought against accessiBe.
+ * This used to carry a commercial-disclosure job: PLAN.md §3.5(2) required it
+ * because the widget funnelled work to the author's paid services, and an
+ * apparently-neutral free tool that hides that connection is the second count
+ * the FTC brought against accessiBe. That model is gone — there are no paid
+ * services — so the row is now plain authorship rather than a disclosure the
+ * law compels.
+ *
+ * It stays non-removable anyway. The row is what makes the widget traceable to
+ * a named human, and that is what keeps the disclaimer attached to someone
+ * rather than floating free.
  *
  * The site owner may override the display name via `data-by-name`, but they
  * cannot remove the attribution row, and they cannot touch the disclaimer.
@@ -13,10 +19,10 @@ export const BRAND = {
   /**
    * Product name. Settled — see the "לבחור שם" card.
    *
-   * Note this is the *project* name, not a legal entity. `[LEGAL ENTITY NAME]`
-   * in NOTICE stays a placeholder until a company actually exists, because that
-   * one identifies a legal person and naming a company that isn't registered is
-   * worse than leaving the gap visible.
+   * Note this is the *project* name, not a legal entity. There is no company,
+   * so NOTICE and DISCLAIMER.md name Yuval Rahamim personally — accurate, and
+   * consistent with what this file already renders into the panel. If a company
+   * is ever formed, those two files and the copyright line are what change.
    */
   name: 'שקוף',
   /** The product's own site — what "תוסף שקוף" links to. */

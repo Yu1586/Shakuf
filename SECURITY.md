@@ -2,7 +2,7 @@
 
 ## Reporting a vulnerability
 
-Email **[SECURITY EMAIL]**. Please do not open a public issue for a security
+Email **shakuf@yuvalrahamim.com**. Please do not open a public issue for a security
 problem.
 
 Include: what you found, how to reproduce it, and the affected version. A
@@ -13,7 +13,7 @@ We will credit you in the release notes unless you ask us not to.
 
 ## דיווח על בעיית אבטחה
 
-יש לשלוח דוא״ל אל **[SECURITY EMAIL]**. אין לפתוח issue ציבורי בנושא אבטחה.
+יש לשלוח דוא״ל אל **shakuf@yuvalrahamim.com**. אין לפתוח issue ציבורי בנושא אבטחה.
 
 יש לכלול: תיאור הממצא, אופן שחזור והגרסה המושפעת. אישור קבלה יישלח בתוך
 **5 ימי עסקים** והערכה ראשונית בתוך **14 יום**.
