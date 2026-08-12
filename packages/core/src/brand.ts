@@ -6,11 +6,6 @@
  * apparently-neutral free tool that funnels to its author's paid services,
  * undisclosed, is the second count the FTC brought against accessiBe.
  *
- * These are deliberately left as visible `[BRACKETED]` placeholders (PLAN.md
- * §3 / Part V drafting rule). Shipping with them unfilled is obvious in the UI,
- * which is the point: a silently-wrong default would be worse than an obvious
- * gap. Fill them in before the first public build.
- *
  * The site owner may override the display name via `data-by-name`, but they
  * cannot remove the attribution row, and they cannot touch the disclaimer.
  */
@@ -24,14 +19,18 @@ export const BRAND = {
    * worse than leaving the gap visible.
    */
   name: 'שקוף',
-  /**
-   * Where the attribution points.
-   *
-   * A subdomain of the author's own site, which is what makes this a real
-   * disclosure rather than a decorative one: the link lands somewhere plainly
-   * identifiable as the person whose business the tool feeds. That page has to
-   * carry the connection and the §2.1 claims discipline in its own copy — the
-   * link only works as disclosure if what it points at is honest too.
-   */
+  /** The product's own site — what "תוסף שקוף" links to. */
   url: 'https://shakuf.yuvalrahamim.com',
+  /** The human who built it. */
+  authorName: 'יובל רחמים',
+  /**
+   * The author's own site.
+   *
+   * This is the half that makes the attribution a real disclosure rather than a
+   * decorative one: it lands somewhere plainly identifiable as a person, not a
+   * faceless project page. That page has to carry the connection and the §2.1
+   * claims discipline in its own copy — a link only works as disclosure if what
+   * it points at is honest too.
+   */
+  authorUrl: 'https://yuvalrahamim.com/',
 } as const;

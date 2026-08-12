@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Setup — שקוף</title>
+<meta name="description" content="מדריך התקנה של תוסף הנגישות שקוף: תג script אחד, הוראות ל-WordPress, Wix, Shopify, React ועוד, ופרומפט מוכן להעתקה עבור Claude Code, Cursor, Lovable ו-Base44.">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0b0c'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23f4f4f5' stroke-width='2'/%3E%3Cpath d='M16 16 L16 5 A11 11 0 0 1 25.53 21.5 Z' fill='%23f4f4f5'/%3E%3Cpath d='M16 16 L25.53 21.5 A11 11 0 0 1 6.47 21.5 Z' fill='%23f4f4f5' opacity='.55'/%3E%3Cpath d='M16 16 L6.47 21.5 A11 11 0 0 1 16 5 Z' fill='%23f4f4f5' opacity='.28'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">דילוג לתוכן</a>
+
+<header class="site-header">
+  <div class="wrap bar narrow">
+    <a class="brand" href="/">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="13.6" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M16 16 L16 2.4 A13.6 13.6 0 0 1 27.78 22.8 Z" fill="currentColor"/>
+        <path d="M16 16 L27.78 22.8 A13.6 13.6 0 0 1 4.22 22.8 Z" fill="currentColor" opacity=".55"/>
+        <path d="M16 16 L4.22 22.8 A13.6 13.6 0 0 1 16 2.4 Z" fill="currentColor" opacity=".28"/>
+      </svg>
+      <b>שקוף</b>
+    </a>
+    <a class="btn btn-line btn-sm btn-he" href="/">חזור לדף הבית</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero" style="padding-block:clamp(48px,7vw,92px) clamp(32px,4vw,56px)">
+    <div class="wrap">
+      <h1 style="max-width:16ch;margin-inline:0">חיבור שקוף לאתר שלכם</h1>
+      <p class="lead">
+        תג <code>script</code> אחד. אין הרשמה, אין מפתח רישוי ואין בקשת רשת
+        מהתוסף. עובד בכל אתר, בכל טכנולוגיה.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= QUICK INSTALL ================= -->
+  <section class="rule" aria-labelledby="quick-h">
+    <div class="wrap-text">
+      <h2 id="quick-h">ההתקנה המהירה</h2>
+      <p class="dim">הדביקו את השורה הזו לפני תג <code>&lt;/body&gt;</code> באתר שלכם.</p>
+
+      <div class="code" data-copy="תג ההתקנה">
+        <div class="code-bar"><span>html · minimal</span></div>
+        <pre dir="ltr" tabindex="0" role="region" aria-label="קוד התקנה בסיסי"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf/widget" defer&gt;&lt;/script&gt;</code></pre>
+      </div>
+
+      <div class="callout">
+        <p>
+          <strong>מומלץ מאוד להוסיף גם את פרטי הנגישות של האתר.</strong>
+          אם לא תוסיפו אותם, החלונית תציג למבקר הודעה שהאתר חסר הצהרת נגישות
+          ורכז נגישות — משום שהדין הישראלי מחייב את שניהם.
+        </p>
+      </div>
+
+      <div class="code" data-copy="תג ההתקנה המלא">
+        <div class="code-bar"><span>html · recommended</span></div>
+        <pre dir="ltr" tabindex="0" role="region" aria-label="קוד התקנה מלא"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf/widget"
+        data-statement-url="/accessibility"
+        data-coordinator-name="שם הרכז"
+        data-coordinator-phone="03-0000000"
+        data-coordinator-email="access@example.co.il"
+        defer&gt;&lt;/script&gt;</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= AI PROMPT ================= -->
+  <section class="rule" aria-labelledby="ai-h">
+    <div class="wrap-text">
+      <h2 id="ai-h">פרומפט מוכן לעורך ה-AI שלכם</h2>
+      <p class="dim">
+        עובדים עם Claude&nbsp;Code, Cursor, Codex, Lovable, Base44, Windsurf או
+        Bolt? העתיקו את הפרומפט והדביקו. הוא מנוסח כך שהעוזר יתקין נכון, לא
+        יעשה יותר מדי, ולא יכתוב לכם טענות שיווקיות שאסור לפרסם.
+      </p>
+
+      <div class="code rtl" data-copy="הפרומפט">
+        <div class="code-bar"><span>prompt · paste into your agent</span></div>
+        <pre tabindex="0" role="region" aria-label="פרומפט להעתקה לעורך AI"><code>הוסף לאתר הזה את תוסף הנגישות "שקוף" (Shakuf).
+
+לפני שאתה מתחיל — שאל אותי את הפרטים הבאים ואל תמשיך עד שתקבל תשובה:
+
+  • מהי הכתובת של עמוד הצהרת הנגישות באתר? (למשל /accessibility)
+    אם עדיין אין עמוד כזה — אמור לי זאת במפורש, כי הדין מחייב לפרסם אותו.
+  • מה שמו המלא של רכז הנגישות?
+  • מה מספר הטלפון שלו?
+  • מה כתובת הדוא״ל שלו?
+
+אל תמציא ערכים, אל תשתמש בערכי דוגמה ואל תשאיר סוגריים מרובעים בקוד.
+אם אני עונה שאין לי רכז נגישות — אמור לי שהדין הישראלי מחייב למנות אחד,
+והתקן את התוסף בלי המאפיינים האלה במקום להמציא אותם.
+
+מה לעשות אחר כך:
+
+1. הוסף את התג הבא ממש לפני &lt;/body&gt; בתבנית הראשית של האתר, כך שייטען בכל עמוד,
+   כשהערכים מולאו מהתשובות שקיבלת:
+<span class="ltr">&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf/widget"
+        data-statement-url="/accessibility"
+        data-coordinator-name="[שם רכז הנגישות]"
+        data-coordinator-phone="[טלפון]"
+        data-coordinator-email="[דוא״ל]"
+        defer&gt;&lt;/script&gt;</span>
+2. אם זה פרויקט React / Next.js / Vue / Svelte — אל תוסיף את התג ל-JSX של
+   קומפוננטה בודדת. הוסף אותו ל-layout או ל-index.html הראשי, פעם אחת לכל
+   האפליקציה. ב-Next.js App Router השתמש ב-next/script עם
+   strategy="afterInteractive" בתוך app/layout.tsx.
+
+3. ודא שלא נותרו סוגריים מרובעים בקוד שהוספת. כל ערך חייב להגיע מתשובה שלי.
+
+4. אל תשנה שום דבר אחר באתר. אל תוסיף ARIA, אל תשנה כותרות, אל תוסיף alt
+   לתמונות ואל תשנה סמנטיקה. התוסף הזה נוגע בתצוגה בלבד, וכל שינוי אוטומטי
+   אחר עלול לפגוע דווקא במשתמשי טכנולוגיה מסייעת.
+
+5. אם יש באתר Content-Security-Policy, ודא ש-script-src מתיר את
+   cdn.jsdelivr.net. אין צורך ב-connect-src — התוסף לא מבצע בקשות רשת.
+
+חשוב מאוד — מה לא לכתוב:
+
+אל תוסיף לאתר, לתיעוד או לקוד שום טקסט שטוען שהאתר "עומד בתקן", "נגיש לפי
+ת״י 5568", "מוגן מתביעות" או "נגיש ב-100%". התוסף אינו הופך אתר לנגיש; הוא
+כלי עזר לתצוגה בלבד. הנגשה אמיתית מחייבת תיקונים בקוד ובתוכן האתר, פרסום
+הצהרת נגישות, מינוי רכז נגישות ובדיקה של מורשה נגישות.
+
+בסיום, דווח לי בדיוק אילו קבצים שינית.</code></pre>
+      </div>
+
+      <div class="callout">
+        <p>
+          סעיף 4 אינו ניסוח מקרי. עוזרי קוד נוטים ״לעזור״ ולהוסיף תיקוני נגישות
+          אוטומטיים — הוספת ARIA, ניחוש טקסט חלופי, שינוי כותרות — וזו בדיוק
+          הפעולה שמקלקלת אתרים למשתמשי קורא מסך.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PLATFORMS ================= -->
+  <section class="rule" aria-labelledby="plat-h">
+    <div class="wrap-text">
+      <h2 id="plat-h">התקנה לפי פלטפורמה</h2>
+
+      <div data-tabs style="margin-top:26px">
+        <div class="tabs" role="tablist" aria-label="פלטפורמות">
+          <button class="tab" role="tab" id="t-wp"      aria-controls="p-wp"      aria-selected="true">WordPress</button>
+          <button class="tab" role="tab" id="t-wix"     aria-controls="p-wix"     aria-selected="false">Wix</button>
+          <button class="tab" role="tab" id="t-shopify" aria-controls="p-shopify" aria-selected="false">Shopify</button>
+          <button class="tab" role="tab" id="t-webflow" aria-controls="p-webflow" aria-selected="false">Webflow</button>
+          <button class="tab" role="tab" id="t-react"   aria-controls="p-react"   aria-selected="false">React</button>
+          <button class="tab" role="tab" id="t-html"    aria-controls="p-html"    aria-selected="false">HTML</button>
+        </div>
+
+        <div class="tabpanel" role="tabpanel" id="p-wp" aria-labelledby="t-wp" tabindex="0">
+          <ol class="steps">
+            <li><div><h3>פתחו את עורך התבנית</h3><p class="dim">לוח הבקרה ← <strong>עיצוב ← עורך קובצי ערכת עיצוב</strong>, ובחרו <code>footer.php</code>.</p></div></li>
+            <li><div><h3>הדביקו לפני <code>&lt;/body&gt;</code></h3><p class="dim">את תג ה-script מלמעלה.</p></div></li>
+            <li><div><h3>שמרו ורעננו</h3><p class="dim">הכפתור יופיע בפינת המסך.</p></div></li>
+          </ol>
+          <div class="callout" style="margin-top:24px;margin-bottom:0">
+            <p>עדיף להשתמש ב<strong>ערכת בת</strong> (child theme) — אחרת עדכון התבנית ימחק את השינוי. לחלופין, כל תוסף מסוג ״Insert Headers and Footers״ יעשה את העבודה בלי לגעת בקוד.</p>
+          </div>
+        </div>
+
+        <div class="tabpanel" role="tabpanel" id="p-wix" aria-labelledby="t-wix" tabindex="0" hidden>
+          <ol class="steps">
+            <li><div><h3>Settings ← Custom Code</h3><p class="dim">בלוח הבקרה של Wix.</p></div></li>
+            <li><div><h3>Add Custom Code</h3><p class="dim">הדביקו את התג, בחרו <strong>All pages</strong> ומיקום <strong>Body — end</strong>.</p></div></li>
+            <li><div><h3>Apply ואז Publish</h3><p class="dim">הקוד פועל רק באתר המפורסם, לא בעורך.</p></div></li>
+          </ol>
+        </div>
+
+        <div class="tabpanel" role="tabpanel" id="p-shopify" aria-labelledby="t-shopify" tabindex="0" hidden>
+          <ol class="steps">
+            <li><div><h3>Online Store ← Themes</h3><p class="dim">בתפריט <strong>Actions</strong> של התבנית הפעילה בחרו <strong>Edit code</strong>.</p></div></li>
+            <li><div><h3>פתחו <code>theme.liquid</code></h3><p class="dim">והדביקו את התג ממש לפני <code>&lt;/body&gt;</code>.</p></div></li>
+            <li><div><h3>Save</h3></div></li>
+          </ol>
+        </div>
+
+        <div class="tabpanel" role="tabpanel" id="p-webflow" aria-labelledby="t-webflow" tabindex="0" hidden>
+          <ol class="steps">
+            <li><div><h3>Project settings ← Custom code</h3></div></li>
+            <li><div><h3>Footer code</h3><p class="dim">הדביקו את התג בשדה <strong>Before &lt;/body&gt; tag</strong>.</p></div></li>
+            <li><div><h3>Save ואז Publish</h3></div></li>
+          </ol>
+        </div>
+
+        <div class="tabpanel" role="tabpanel" id="p-react" aria-labelledby="t-react" tabindex="0" hidden>
+          <p class="dim">דרך npm, או פשוט להשאיר את תג ה-script ב-<code>index.html</code>.</p>
+          <div class="code" data-copy="התקנה דרך npm">
+            <div class="code-bar"><span>shell</span></div>
+            <pre dir="ltr" tabindex="0" role="region" aria-label="התקנה דרך npm"><code>npm install @shakuf/widget</code></pre>
+          </div>
+          <div class="code" data-copy="שימוש ב-React">
+            <div class="code-bar"><span>App.tsx</span></div>
+            <pre dir="ltr" tabindex="0" role="region" aria-label="קוד React"><code>// Mount once for the whole app, not per component.
+import { useEffect } from 'react';
+import { mount, unmount } from '@shakuf/widget';
+
+export default function App() {
+  useEffect(() =&gt; {
+    mount({
+      statementUrl: '/accessibility',
+      coordinatorName: 'שם הרכז',
+      coordinatorEmail: 'access@example.co.il',
+    });
+    return () =&gt; unmount();
+  }, []);
+
+  return /* ... */;
+}</code></pre>
+          </div>
+          <div class="callout" style="margin-bottom:0">
+            <p><strong>Next.js App Router:</strong> הוסיפו <code>&lt;Script src="…" strategy="afterInteractive" /&gt;</code> בתוך <code>app/layout.tsx</code>. אין צורך ב-<code>'use client'</code> עבור תג script.</p>
+          </div>
+        </div>
+
+        <div class="tabpanel" role="tabpanel" id="p-html" aria-labelledby="t-html" tabindex="0" hidden>
+          <p class="dim">הדביקו לפני <code>&lt;/body&gt;</code> בכל עמוד:</p>
+          <div class="code" data-copy="קוד HTML">
+            <div class="code-bar"><span>index.html</span></div>
+            <pre dir="ltr" tabindex="0" role="region" aria-label="קוד HTML"><code>  &lt;script src="https://cdn.jsdelivr.net/npm/@shakuf/widget"
+          data-statement-url="/accessibility"
+          defer&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONFIG ================= -->
+  <section class="rule" aria-labelledby="cfg-h">
+    <div class="wrap-text">
+      <h2 id="cfg-h">הגדרות</h2>
+      <p class="dim">כל ההגדרות אופציונליות ונקראות מתג ה-script עצמו.</p>
+
+      <div class="tablewrap" style="margin-top:24px">
+        <table>
+          <caption class="sr-only">רשימת מאפייני ההגדרה של התוסף</caption>
+          <thead><tr><th scope="col">attribute</th><th scope="col">default</th><th scope="col">תיאור</th></tr></thead>
+          <tbody>
+            <tr><td class="v">data-statement-url</td><td class="v">—</td><td>קישור להצהרת הנגישות של האתר</td></tr>
+            <tr><td class="v">data-coordinator-name</td><td class="v">—</td><td>שם רכז הנגישות</td></tr>
+            <tr><td class="v">data-coordinator-phone</td><td class="v">—</td><td>טלפון רכז הנגישות</td></tr>
+            <tr><td class="v">data-coordinator-email</td><td class="v">—</td><td>דוא״ל רכז הנגישות</td></tr>
+            <tr><td class="v">data-position</td><td class="v">bottom-right</td><td>גם bottom-left · top-right · top-left</td></tr>
+            <tr><td class="v">data-offset</td><td class="v">20</td><td>מרחק בפיקסלים משולי המסך</td></tr>
+            <tr><td class="v">data-accent</td><td class="v">#0b5fff</td><td>צבע ראשי בפורמט hex. צבע הטקסט נבחר אוטומטית לפי ניגודיות</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TECHNICAL ================= -->
+  <section class="rule" aria-labelledby="tech-h">
+    <div class="wrap-text">
+      <h2 id="tech-h">פרטים טכניים</h2>
+
+      <details open>
+        <summary>מה התוסף עושה לעמוד</summary>
+        <div class="details-body">
+          <p>
+            מוסיף אלמנט אחד ל-<code>&lt;body&gt;</code> עם <strong>Shadow DOM</strong>,
+            כך שהעיצוב שלו לא יכול לדלוף לאתר ולא יכול להישבר ממנו. ההתאמות
+            מיושמות דרך מאפייני <code>data-shakuf-*</code> על תגית
+            <code>&lt;html&gt;</code> וגיליון סגנון אחד.
+          </p>
+          <p>
+            התוסף <strong>אינו</strong> משנה ARIA, roles או סמנטיקה, ואינו מתערב
+            בטכנולוגיה מסייעת של המבקר. כל שינוי הפיך לחלוטין בלחיצה על ״איפוס״.
+          </p>
+        </div>
+      </details>
+
+      <details>
+        <summary>בקשות רשת ופרטיות</summary>
+        <div class="details-body">
+          <p>
+            אפס. אין שרת, אין חשבון, אין מפתח רישוי, אין טלמטריה. ההעדפות נשמרות
+            ב-<code>localStorage</code> על הדומיין שלכם בלבד. משמעות מעשית: אין
+            יחסי מעבד-מידע, אין צורך בהסכם עיבוד מידע, ואין תוספת לבאנר הקוקיז.
+          </p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Content-Security-Policy</summary>
+        <div class="details-body">
+          <p>אם באתר יש CSP, צריך להתיר את מקור הסקריפט:</p>
+          <div class="code" data-copy="הנחיית CSP">
+            <div class="code-bar"><span>csp</span></div>
+            <pre dir="ltr" tabindex="0" role="region" aria-label="דוגמת CSP"><code>script-src 'self' https://cdn.jsdelivr.net;</code></pre>
+          </div>
+          <p>אין צורך ב-<code>connect-src</code> — התוסף לא מבצע בקשות.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>גודל, ביצועים ונעיצת גרסה</summary>
+        <div class="details-body">
+          <p>
+            כ-13KB דחוס (gzip), ללא תלויות בזמן ריצה. נטען עם <code>defer</code>
+            ולכן אינו חוסם את הצגת העמוד. חלונית ההגדרות נבנית רק כשהמבקר פותח
+            אותה בפועל.
+          </p>
+          <p>ברירת המחדל מושכת את הגרסה האחרונה. לנעילת גרסה מדויקת:</p>
+          <div class="code" data-copy="נעיצת גרסה">
+            <div class="code-bar"><span>html · pinned</span></div>
+            <pre dir="ltr" tabindex="0" role="region" aria-label="נעיצת גרסה"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf/widget@0.1.0" defer&gt;&lt;/script&gt;</code></pre>
+          </div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ================= AFTER ================= -->
+  <section class="rule" aria-labelledby="after-h">
+    <div class="wrap-text">
+      <h2 id="after-h">מה עוד צריך כדי באמת להיות נגישים</h2>
+      <p class="dim">
+        התוסף הוא הצעד הקטן. אלה הדברים שהוא <strong>לא</strong> עושה, ושבלעדיהם
+        האתר אינו עומד בדרישות הדין:
+      </p>
+
+      <ol class="steps" style="margin-top:30px">
+        <li><div><h3>תיקון האתר עצמו</h3><p class="dim">ניווט מקלדת מלא, טקסט חלופי לתמונות, תוויות לשדות טופס, ניגודיות מספקת, מבנה כותרות תקין — לפי ת״י 5568 (WCAG 2.1 AA).</p></div></li>
+        <li><div><h3>פרסום הצהרת נגישות</h3><p class="dim">עמוד ייעודי ומתוארך שמפרט את מצב הנגישות באתר, את ההתאמות שבוצעו ואת המגבלות הידועות.</p></div></li>
+        <li><div><h3>מינוי רכז נגישות</h3><p class="dim">אדם בשם ובפרטי קשר, לא כתובת כללית.</p></div></li>
+        <li><div><h3>ערוץ פניות שעובד</h3><p class="dim">ושמישהו באמת עונה בו.</p></div></li>
+        <li><div><h3>בדיקה של מורשה נגישות</h3><p class="dim">בדיקה חיצונית מקצועית. שקוף אינו תחליף לה, ואיננו מורשי נגישות.</p></div></li>
+      </ol>
+
+      <div class="btn-row" style="margin-top:34px">
+        <a class="btn btn-line btn-he" href="/#limits">פירוט הדרישות והחשיפה</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <ul class="foot-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="https://github.com/Yu1586/Shakuf/blob/main/DISCLAIMER.md">Disclaimer</a></li>
+      <li><a href="https://github.com/Yu1586/Shakuf/blob/main/NOTICE">Notice</a></li>
+      <li><a href="https://github.com/Yu1586/Shakuf/blob/main/LICENSE">Apache 2.0</a></li>
+    </ul>
+    <p>
+      שקוף מתאים את התצוגה בלבד ואינו מבטיח עמידה בת״י 5568. הנגשה מלאה מחייבת
+      תיקונים באתר עצמו, פרסום הצהרת נגישות, מינוי רכז נגישות ובדיקה של מורשה
+      נגישות. האחריות לעמידה בדין חלה על בעל האתר בלבד.
+    </p>
+  </div>
+</footer>
+
+<script src="/app.js" defer></script>
+<script src="/shakuf.js" defer></script>
+</body>
+</html>

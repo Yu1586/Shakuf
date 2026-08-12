@@ -40,6 +40,16 @@ export const PANEL_STYLES = /* css */ `
 
 *, *::before, *::after { box-sizing: border-box; }
 
+/*
+ * The hidden attribute only works through the UA rule [hidden]{display:none},
+ * which ANY author display declaration outranks — including .panel{display:flex}
+ * below. Without this, setting panel.hidden = true sets the attribute, flips
+ * aria-expanded and tears down the focus trap while the panel stays on screen,
+ * so both the close button and the launcher look dead. Author-level rule with
+ * !important so it beats every display declaration in this sheet.
+ */
+[hidden] { display: none !important; }
+
 button {
   font: inherit;
   color: inherit;
@@ -266,8 +276,19 @@ button {
  */
 .disclaimer { font-size: 12px; line-height: 1.6; color: var(--fg-muted); margin: 0; }
 .disclaimer strong { color: var(--fg); }
-.by { font-size: 11.5px; color: var(--fg-muted); margin: 8px 0 0; }
-.by a { color: #0a48c2; }
+
+/* Attribution: centred, and given its own rule and a step up in size so it
+   reads as a statement rather than fine print. It is the disclosure required
+   by PLAN.md §3.5, so it should not look like something to skim past. */
+.by {
+  font-size: 12.5px;
+  color: var(--fg-muted);
+  margin: 12px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-soft);
+  text-align: center;
+}
+.by a { color: #0a48c2; font-weight: 700; }
 
 /* ---- Reading guide ----------------------------------------------------- */
 .a11y-reading-guide {

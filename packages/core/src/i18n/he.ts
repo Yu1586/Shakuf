@@ -96,10 +96,23 @@ export const HE = {
     'בעל האתר לא הגדיר פרטי הצהרת נגישות ורכז נגישות. לפי הדין הישראלי חלה חובה לפרסם הצהרת נגישות ולמנות רכז נגישות.',
 
   // ---- Disclaimer — mandatory, not configurable ------------------------
-  disclaimerShort:
-    'כלי זה מתאים את התצוגה בלבד ואינו מבטיח עמידה בת״י 5568.',
+  // Tightened deliberately. The two load-bearing claims are kept verbatim —
+  // no conformance guarantee, and not a substitute for accessing the site
+  // itself. The former enumeration (statement, coordinator, surveyor) moved to
+  // the website, where there is room for it: a disclaimer nobody finishes
+  // reading protects nobody, and length was costing more than it bought.
+  // One sentence, rendered as `<strong>{short}</strong> {long}` — the split is
+  // only about where the emphasis falls, not two separate statements.
+  disclaimerShort: 'כלי זה מתאים תצוגה בלבד',
   disclaimerLong:
-    'הכלי אינו תחליף להנגשת האתר עצמו. הנגשה מלאה מחייבת תיקונים בקוד ובתוכן האתר, פרסום הצהרת נגישות, מינוי רכז נגישות ובדיקה של מורשה נגישות.',
+    'ואינו מבטיח עמידה בת״י 5568 ואינו תחליף להנגשת האתר.',
+
+  // ---- Attribution -----------------------------------------------------
+  /** Sits before the product name, outside the link. */
+  byPrefix: 'תוסף',
+  /** The connective tissue between the two links. */
+  byMiddle: 'נבנה בהתנדבות על ידי',
+  newTab: 'נפתח בכרטיסייה חדשה',
 
   // ---- Announcements ---------------------------------------------------
   announceOn: (label: string) => `${label} — פועל`,

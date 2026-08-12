@@ -374,10 +374,32 @@ export class Panel {
 
     const byName = this.config.byName ?? BRAND.name;
     const byUrl = this.config.byUrl ?? BRAND.url;
+
+    // Both links open in a new tab so the visitor never loses the page they
+    // were on. `aria-label` carries that fact, because a new tab opening
+    // unannounced is disorienting for screen-reader users (WCAG G201).
+    // Only the name itself is the link — "תוסף" stays plain text beside it.
+    const productLink = el('a', {
+      href: byUrl,
+      rel: 'noopener',
+      target: '_blank',
+      'aria-label': `${byName} — ${HE.newTab}`,
+      text: byName,
+    });
+    const authorLink = el('a', {
+      href: BRAND.authorUrl,
+      rel: 'noopener',
+      target: '_blank',
+      'aria-label': `${BRAND.authorName} — ${HE.newTab}`,
+      text: BRAND.authorName,
+    });
+
     footer.appendChild(
       el('p', { class: 'by' }, [
-        document.createTextNode('נבנה ומתוחזק על ידי '),
-        el('a', { href: byUrl, rel: 'noopener', target: '_blank', text: byName }),
+        document.createTextNode(`${HE.byPrefix} `),
+        productLink,
+        document.createTextNode(` ${HE.byMiddle} `),
+        authorLink,
       ]),
     );
 

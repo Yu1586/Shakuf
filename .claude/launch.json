@@ -2,6 +2,13 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "site",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "serve", "-l", "4322", "./site"],
+      "port": 4322,
+      "url": "http://localhost:4322"
+    },
+    {
       "name": "demo",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["--yes", "serve", "-l", "4321", "."],
