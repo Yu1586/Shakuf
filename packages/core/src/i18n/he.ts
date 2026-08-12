@@ -119,7 +119,11 @@ export const HE = {
   announceOff: (label: string) => `${label} — כבוי`,
   announceLevel: (label: string, level: string) => `${label} — ${level}`,
   levelOff: 'רגיל',
-  levelNames: ['רגיל', 'קטן', 'בינוני', 'גדול', 'גדול מאוד'] as const,
+  // Every level above 0 ENLARGES — 1.15×, 1.3×, 1.5×, 1.75×. Level 1 was
+  // labelled "קטן", so pressing "+" from the default announced "גודל טקסט —
+  // קטן" while the text visibly grew. For the one control a screen-reader user
+  // cannot see, the announcement contradicting the effect is the whole failure.
+  levelNames: ['רגיל', 'מוגדל', 'גדול', 'גדול מאוד', 'הגדול ביותר'] as const,
   spacingNames: ['רגיל', 'מוגדל', 'רחב'] as const,
 } as const;
 

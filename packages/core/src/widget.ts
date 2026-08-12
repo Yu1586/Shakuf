@@ -6,6 +6,7 @@ import { clearHostAttrs, ensureHostStyles, setHostAttr } from './host/host-style
 import { ReadingGuide } from './host/reading-guide.js';
 import { TextScaler } from './host/text-scaler.js';
 import { HE } from './i18n/he.js';
+import { clearJumpTargets } from './nav/outline.js';
 import { clearPrefs, loadPrefs, savePrefs } from './storage.js';
 import type { HostContext, PrefState, WidgetConfig } from './types.js';
 import { foregroundFor } from './ui/color.js';
@@ -117,7 +118,13 @@ export class A11yWidget {
   /** Replays the whole stored state onto the page. */
   private applyAll(): void {
     for (const feature of FEATURES) {
-      const level = this.getLevel(feature.id);
+      // Clamp here as well as in `setLevel`. Stored preferences come from
+      // localStorage, which a stale or hand-edited value can populate with a
+      // level this build has no label or CSS rule for — the page would then be
+      // scaled while the panel reported "רגיל" and lit no dots.
+      const max = feature.kind === 'stepper' ? feature.max : 1;
+      const level = Math.max(0, Math.min(max, this.getLevel(feature.id)));
+      if (level !== this.getLevel(feature.id)) this.state[feature.id] = level;
       if (level > 0) feature.apply(level, this.ctx);
     }
   }
@@ -125,6 +132,13 @@ export class A11yWidget {
   private resetAll = (): void => {
     this.state = {};
     clearPrefs();
+
+    // Replay every feature at level 0 so each one runs its OWN undo. The three
+    // sweeps below cover the attribute, scaling and overlay channels, but a
+    // feature that touches anything else — `stopMotion` clearing `autoplay` on
+    // host media, for instance — is only undone by its own `apply(0)`.
+    for (const feature of FEATURES) feature.apply(0, this.ctx);
+
     clearHostAttrs();
     this.scaler.reset();
     this.guide.set(false);
@@ -186,9 +200,15 @@ export class A11yWidget {
     this.close();
     this.resetAll();
     this.guide.destroy();
+    clearJumpTargets();
     destroyAnnouncer();
     this.host.remove();
     document.getElementById('shakuf-host-styles')?.remove();
+
+    // `destroy()` is public alongside `mount()`, so clear the singleton here
+    // too. Otherwise `mount()` after `destroy()` returned the dead instance —
+    // detached host, no widget on the page, and no error to explain it.
+    if (instance === this) instance = null;
   }
 }
 
@@ -200,6 +220,15 @@ export function mount(config?: Partial<WidgetConfig>): A11yWidget {
   if (document.getElementById(ROOT_ID)) {
     // Two copies of the script on one page: the second must not fight the first.
     throw new Error('[shakuf] Widget already mounted on this page.');
+  }
+  if (!document.body) {
+    // The npm path documents calling `mount()` yourself, and a bundler user may
+    // well do that from <head>. Constructing here would throw on
+    // `body.appendChild` *after* having already injected the host stylesheet,
+    // leaving a half-initialised page. Wait for the body instead.
+    throw new Error(
+      '[shakuf] mount() called before <body> exists. Call it after DOMContentLoaded, or load the script with defer.',
+    );
   }
   instance = new A11yWidget(config);
   return instance;

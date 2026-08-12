@@ -16,16 +16,35 @@
 /** Multiplier per level. Index 0 is "site default" and is never applied. */
 const FACTORS = [1, 1.15, 1.3, 1.5, 1.75] as const;
 
-const SKIP_TAGS = new Set([
-  'SCRIPT', 'STYLE', 'NOSCRIPT', 'SVG', 'PATH', 'CANVAS', 'IFRAME', 'BR', 'HR',
-]);
+/**
+ * Elements that can hold a text child but must never be scaled.
+ *
+ * `tagName` is only uppercased for HTML-namespace elements — an `<svg>` reports
+ * `"svg"` and a `<path>` reports `"path"`. Listing them in uppercase here never
+ * matched, which is why SVG `<text>` was being given an inline font-size. The
+ * namespace check in `collect()` handles all of SVG and MathML properly, so
+ * this set only needs the HTML elements that legitimately contain text nodes.
+ * (`BR`/`HR` are void — the has-own-text test already excludes them.)
+ */
+const SKIP_TAGS = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'CANVAS', 'IFRAME']);
+
+const HTML_NS = 'http://www.w3.org/1999/xhtml';
 
 /** Form controls carry text that is not in a child text node. */
 const ALWAYS_INCLUDE = new Set(['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON', 'OPTION']);
 
+/** What an element looked like before we touched it. */
+interface Original {
+  /** The inline font-size, or null if the element had none. */
+  inline: string | null;
+  /** Its priority — dropping this silently downgraded `!important` declarations. */
+  priority: string;
+  /** Unscaled computed size in px, measured once at first sight. */
+  basePx: number;
+}
+
 export class TextScaler {
-  /** element -> the inline font-size it had before we touched it (null = none). */
-  private original = new Map<HTMLElement, string | null>();
+  private original = new Map<HTMLElement, Original>();
   private level = 0;
   private observer: MutationObserver | null = null;
   private rescanQueued = false;
@@ -36,9 +55,13 @@ export class TextScaler {
     const all = root.querySelectorAll<HTMLElement>('*');
 
     for (const el of all) {
+      // Namespace first: this is what actually excludes SVG and MathML.
+      if (el.namespaceURI !== HTML_NS) continue;
       if (SKIP_TAGS.has(el.tagName)) continue;
-      // Never touch ourselves — our panel sizes itself from shadow styles.
-      if (el.id === 'shakuf-root' || el.closest('#shakuf-root')) continue;
+      // Never touch ourselves. An id check is sufficient — `querySelectorAll`
+      // does not descend into shadow roots, and everything we render lives in
+      // ours, so no descendant of the host can appear in this list.
+      if (el.id === 'shakuf-root') continue;
 
       if (ALWAYS_INCLUDE.has(el.tagName)) {
         out.push(el);
@@ -58,52 +81,62 @@ export class TextScaler {
     return out;
   }
 
-  private applyTo(elements: HTMLElement[], factor: number): void {
-    for (const el of elements) {
-      if (!this.original.has(el)) {
-        // `style.fontSize` is the inline value only — exactly what we must restore.
-        const inline = el.style.fontSize;
-        this.original.set(el, inline === '' ? null : inline);
-      }
-      // Base the new size on the *computed* size with our own effect removed,
-      // so repeated level changes don't compound.
-      const base = this.baseSize(el);
-      if (base == null) continue;
-      el.style.setProperty('font-size', `${(base * factor).toFixed(2)}px`, 'important');
-    }
-  }
-
-  /** The element's font-size as it would be without our scaling. */
-  private baseSize(el: HTMLElement): number | null {
-    const stored = this.original.get(el);
-    if (stored) {
-      // It had an inline size of its own: measure that, not our override.
-      const current = el.style.fontSize;
-      el.style.fontSize = stored;
-      const px = parseFloat(getComputedStyle(el).fontSize);
-      el.style.fontSize = current;
-      return Number.isFinite(px) ? px : null;
-    }
-    if (stored === null) {
-      // No inline size originally. Clear ours, measure, restore.
-      const current = el.style.fontSize;
-      el.style.removeProperty('font-size');
-      const px = parseFloat(getComputedStyle(el).fontSize);
-      if (current) el.style.setProperty('font-size', current, 'important');
-      return Number.isFinite(px) ? px : null;
-    }
-    const px = parseFloat(getComputedStyle(el).fontSize);
-    return Number.isFinite(px) ? px : null;
-  }
-
-  private restoreAll(): void {
-    for (const [el, inline] of this.original) {
-      if (inline === null) el.style.removeProperty('font-size');
-      else el.style.setProperty('font-size', inline);
+  /**
+   * The scaling cycle: undo → measure → write, always in that order.
+   *
+   * This ordering is the whole correctness story, and it fixes two problems the
+   * previous interleaved version had.
+   *
+   * 1. **Compounding by nesting depth.** `collect()` returns elements in
+   *    document order, so an ancestor was written before its descendant was
+   *    measured — and measuring reads the *computed* size, which inherits the
+   *    ancestor's brand-new scaled value. `<em>` inside `<strong>` inside `<p>`
+   *    came out at factor³: at level 1 that is 16px → 18.4 → 21.2 → 24.3, so a
+   *    bold run rendered 15% larger than its own paragraph.
+   * 2. **Layout thrash.** Write-read-write-read invalidates the style cache on
+   *    every iteration, forcing a recalc per element. Phase-separated, each pass
+   *    is a clean batch.
+   *
+   * Measurement therefore only ever happens with the page in its unscaled state,
+   * and each element's base size is cached the first time it is seen.
+   */
+  private undoWrites(): void {
+    for (const [el, o] of this.original) {
+      if (o.inline === null) el.style.removeProperty('font-size');
+      // Restore the priority too. Reading `style.fontSize` drops it, so an
+      // author's `font-size: 14px !important` used to come back as plain
+      // `14px` — silently losing to any `!important` stylesheet rule that had
+      // previously lost to it.
+      else el.style.setProperty('font-size', o.inline, o.priority);
       // Drop the attribute entirely if we left it empty, so we don't litter
       // the host's DOM with `style=""`.
       if (el.getAttribute('style') === '') el.removeAttribute('style');
     }
+  }
+
+  /** Records untouched elements. MUST run with no scaling active. */
+  private measure(elements: HTMLElement[]): void {
+    for (const el of elements) {
+      if (this.original.has(el)) continue;
+      const inline = el.style.fontSize;
+      const px = parseFloat(getComputedStyle(el).fontSize);
+      this.original.set(el, {
+        inline: inline === '' ? null : inline,
+        priority: el.style.getPropertyPriority('font-size'),
+        basePx: Number.isFinite(px) ? px : 0,
+      });
+    }
+  }
+
+  /** Applies the factor from cached base sizes. Pure writes, no reads. */
+  private write(factor: number): void {
+    for (const [el, o] of this.original) {
+      if (!o.basePx || !el.isConnected) continue;
+      el.style.setProperty('font-size', `${(o.basePx * factor).toFixed(2)}px`, 'important');
+    }
+  }
+
+  private forgetAll(): void {
     this.original.clear();
   }
 
@@ -124,9 +157,11 @@ export class TextScaler {
       requestAnimationFrame(() => {
         this.rescanQueued = false;
         if (this.level === 0) return;
-        const factor = FACTORS[this.level] ?? 1;
-        const fresh = this.collect(document.body).filter((el) => !this.original.has(el));
-        if (fresh.length) this.applyTo(fresh, factor);
+        // Same undo → measure → write cycle. New nodes cannot be measured while
+        // their ancestors are scaled, so the undo pass is not optional here
+        // either. Already-known elements keep their cached base, so the
+        // measure pass only touches what actually arrived.
+        this.apply(this.level);
       });
     });
     this.observer.observe(document.body, { childList: true, subtree: true });
@@ -137,6 +172,14 @@ export class TextScaler {
     this.observer = null;
   }
 
+  /** Runs the full undo → measure → write cycle for a level. */
+  private apply(level: number): void {
+    this.undoWrites();
+    const factor = FACTORS[level] ?? 1;
+    this.measure(this.collect(document.body));
+    this.write(factor);
+  }
+
   /** 0 = site default. Anything else scales by FACTORS[level]. */
   set(level: number): void {
     const clamped = Math.max(0, Math.min(FACTORS.length - 1, Math.round(level)));
@@ -144,13 +187,11 @@ export class TextScaler {
     this.level = clamped;
 
     if (clamped === 0) {
-      this.stopObserving();
-      this.restoreAll();
+      this.reset();
       return;
     }
 
-    const factor = FACTORS[clamped] ?? 1;
-    this.applyTo(this.collect(document.body), factor);
+    this.apply(clamped);
     this.startObserving();
   }
 
@@ -158,10 +199,7 @@ export class TextScaler {
   reset(): void {
     this.level = 0;
     this.stopObserving();
-    this.restoreAll();
-  }
-
-  get maxLevel(): number {
-    return FACTORS.length - 1;
+    this.undoWrites();
+    this.forgetAll();
   }
 }

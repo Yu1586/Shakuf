@@ -1,9 +1,14 @@
 {
-  "name": "@shakuf/widget",
+  "name": "@shakuf-widget/widget",
   "version": "0.1.0",
-  "private": true,
-  "description": "כלי עזר נגישות לאתרים ישראליים — תוסף צד-לקוח, ללא שרת וללא איסוף מידע",
+  "description": "כלי עזר נגישות לאתרים ישראליים — תוסף צד-לקוח, ללא שרת וללא איסוף מידע. אינו מבטיח עמידה בת״י 5568 ואינו תחליף להנגשת האתר.",
+  "keywords": ["accessibility", "a11y", "hebrew", "israel", "rtl", "widget"],
+  "license": "Apache-2.0",
+  "homepage": "https://shakuf.yuvalrahamim.com",
+  "repository": { "type": "git", "url": "git+https://github.com/Yu1586/Shakuf.git" },
   "type": "module",
+  "//publishConfig": "Scoped packages default to restricted, which needs a paid plan. Public is required for jsDelivr/unpkg to serve it at all.",
+  "publishConfig": { "access": "public" },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -16,15 +21,20 @@
     },
     "./dist/shakuf.js": "./dist/shakuf.js"
   },
+  "//files": "Sourcemaps are excluded deliberately: tsup embeds sourcesContent, so shipping them would publish the entire TypeScript source on npm while the repo is still private. Drop the negation when the repo goes public.",
   "files": [
     "dist",
+    "!dist/**/*.map",
     "NOTICE",
-    "DISCLAIMER.md"
+    "DISCLAIMER.md",
+    "LICENSE"
   ],
   "sideEffects": [
     "./dist/shakuf.js"
   ],
   "scripts": {
+    "//prepack": "npm requires these beside package.json to include them in the tarball. Copied at pack time rather than committed, so the published copies can never drift from the originals at the repo root.",
+    "prepack": "node -e \"['LICENSE','NOTICE','DISCLAIMER.md'].forEach(f=>require('fs').copyFileSync('../../'+f,f))\"",
     "build": "tsup",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",

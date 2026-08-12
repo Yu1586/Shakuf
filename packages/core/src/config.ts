@@ -10,24 +10,28 @@ const POSITIONS = new Set([
 ]);
 
 /**
- * Locates the tag that loaded us, so we can read its data attributes.
+ * The tag that loaded us, captured at module evaluation.
  *
- * `document.currentScript` is correct during synchronous parse. With `defer`
- * (which we document as the recommended install) it is null by the time we run,
- * so we fall back to finding our own script by src.
+ * This runs during our own synchronous execution, which is the only moment
+ * `document.currentScript` is guaranteed to point at us — and it does so for
+ * `defer` and `async` installs too, not just inline parsing. A previous version
+ * of this file claimed otherwise and fell back to finding the script by
+ * matching its `src` against a regex; that was both unnecessary and unsafe.
+ *
+ * Why unsafe: the regex was unanchored and took the *last* match in the
+ * document, so any `<script src>` whose URL merely contained "shakuf.js"
+ * became the config source. An attacker with HTML injection (no script
+ * execution needed) could plant such an element — CSP blocking the load leaves
+ * the element sitting in the DOM with its `data-*` attributes readable — and
+ * thereby control the accessibility coordinator's name, phone and email shown
+ * in our panel, which visitors reasonably read as first-party site chrome.
+ *
+ * Reading `currentScript` at module top level removes the heuristic entirely.
+ * It is null on the npm/bundler path, where callers pass config to `mount()`
+ * directly, so nothing is lost there.
  */
-function findOwnScript(): HTMLScriptElement | null {
-  const current = document.currentScript;
-  if (current instanceof HTMLScriptElement) return current;
-
-  const scripts = document.querySelectorAll<HTMLScriptElement>('script[src]');
-  for (let i = scripts.length - 1; i >= 0; i--) {
-    const el = scripts[i];
-    if (!el) continue;
-    if (/shakuf(\.min)?\.js|@shakuf\/widget/.test(el.src)) return el;
-  }
-  return null;
-}
+const OWN_SCRIPT: HTMLScriptElement | null =
+  document.currentScript instanceof HTMLScriptElement ? document.currentScript : null;
 
 function str(el: Element | null, name: string): string | null {
   const v = el?.getAttribute(`data-${name}`);
@@ -61,20 +65,34 @@ function safeColor(raw: string | null): string | null {
   return raw && /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(raw) ? raw : null;
 }
 
+const DEFAULT_OFFSET = 20;
+
+/**
+ * Parses a numeric attribute, falling back when absent or out of range.
+ *
+ * The explicit null check is the point. `Number(null)` is `0`, and `0` passes
+ * an `isFinite && >= 0` guard cleanly — so reading the attribute straight into
+ * `Number()` silently produced an offset of 0 on every install that did not set
+ * one, pinning the launcher flush into the viewport corner instead of the
+ * documented 20px. The absent case has to be handled before coercion, not after.
+ */
+function num(el: Element | null, name: string, fallback: number, max: number): number {
+  const raw = str(el, name);
+  if (raw === null) return fallback;
+  const n = Number(raw);
+  return Number.isFinite(n) && n >= 0 && n <= max ? n : fallback;
+}
+
 export function readConfig(): WidgetConfig {
-  const el = findOwnScript();
+  const el = OWN_SCRIPT;
   const position = str(el, 'position');
-  const offsetRaw = Number(str(el, 'offset'));
 
   return {
     position:
       position && POSITIONS.has(position)
         ? (position as WidgetConfig['position'])
         : 'bottom-right',
-    offset:
-      Number.isFinite(offsetRaw) && offsetRaw >= 0 && offsetRaw <= 200
-        ? offsetRaw
-        : 20,
+    offset: num(el, 'offset', DEFAULT_OFFSET, 200),
     statementUrl: safeUrl(str(el, 'statement-url')),
     coordinatorName: str(el, 'coordinator-name'),
     coordinatorPhone: str(el, 'coordinator-phone'),

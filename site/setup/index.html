@@ -49,7 +49,7 @@
 
       <div class="code" data-copy="תג ההתקנה">
         <div class="code-bar"><span>html · minimal</span></div>
-        <pre dir="ltr" tabindex="0" role="region" aria-label="קוד התקנה בסיסי"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf/widget" defer&gt;&lt;/script&gt;</code></pre>
+        <pre dir="ltr" tabindex="0" role="region" aria-label="קוד התקנה בסיסי"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget" defer&gt;&lt;/script&gt;</code></pre>
       </div>
 
       <div class="callout">
@@ -62,7 +62,7 @@
 
       <div class="code" data-copy="תג ההתקנה המלא">
         <div class="code-bar"><span>html · recommended</span></div>
-        <pre dir="ltr" tabindex="0" role="region" aria-label="קוד התקנה מלא"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf/widget"
+        <pre dir="ltr" tabindex="0" role="region" aria-label="קוד התקנה מלא"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget"
         data-statement-url="/accessibility"
         data-coordinator-name="שם הרכז"
         data-coordinator-phone="03-0000000"
@@ -102,7 +102,7 @@
 
 1. הוסף את התג הבא ממש לפני &lt;/body&gt; בתבנית הראשית של האתר, כך שייטען בכל עמוד,
    כשהערכים מולאו מהתשובות שקיבלת:
-<span class="ltr">&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf/widget"
+<span class="ltr">&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget"
         data-statement-url="/accessibility"
         data-coordinator-name="[שם רכז הנגישות]"
         data-coordinator-phone="[טלפון]"
@@ -196,13 +196,13 @@
           <p class="dim">דרך npm, או פשוט להשאיר את תג ה-script ב-<code>index.html</code>.</p>
           <div class="code" data-copy="התקנה דרך npm">
             <div class="code-bar"><span>shell</span></div>
-            <pre dir="ltr" tabindex="0" role="region" aria-label="התקנה דרך npm"><code>npm install @shakuf/widget</code></pre>
+            <pre dir="ltr" tabindex="0" role="region" aria-label="התקנה דרך npm"><code>npm install @shakuf-widget/widget</code></pre>
           </div>
           <div class="code" data-copy="שימוש ב-React">
             <div class="code-bar"><span>App.tsx</span></div>
             <pre dir="ltr" tabindex="0" role="region" aria-label="קוד React"><code>// Mount once for the whole app, not per component.
 import { useEffect } from 'react';
-import { mount, unmount } from '@shakuf/widget';
+import { mount, unmount } from '@shakuf-widget/widget';
 
 export default function App() {
   useEffect(() =&gt; {
@@ -226,7 +226,7 @@ export default function App() {
           <p class="dim">הדביקו לפני <code>&lt;/body&gt;</code> בכל עמוד:</p>
           <div class="code" data-copy="קוד HTML">
             <div class="code-bar"><span>index.html</span></div>
-            <pre dir="ltr" tabindex="0" role="region" aria-label="קוד HTML"><code>  &lt;script src="https://cdn.jsdelivr.net/npm/@shakuf/widget"
+            <pre dir="ltr" tabindex="0" role="region" aria-label="קוד HTML"><code>  &lt;script src="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget"
           data-statement-url="/accessibility"
           defer&gt;&lt;/script&gt;
 &lt;/body&gt;
@@ -316,7 +316,7 @@ export default function App() {
           <p>ברירת המחדל מושכת את הגרסה האחרונה. לנעילת גרסה מדויקת:</p>
           <div class="code" data-copy="נעיצת גרסה">
             <div class="code-bar"><span>html · pinned</span></div>
-            <pre dir="ltr" tabindex="0" role="region" aria-label="נעיצת גרסה"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf/widget@0.1.0" defer&gt;&lt;/script&gt;</code></pre>
+            <pre dir="ltr" tabindex="0" role="region" aria-label="נעיצת גרסה"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget@0.1.0" defer&gt;&lt;/script&gt;</code></pre>
           </div>
         </div>
       </details>

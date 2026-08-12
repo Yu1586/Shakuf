@@ -30,3 +30,13 @@ Thumbs.db
 
 # Claude Code local state
 .claude/settings.local.json
+
+# Session handoff notes written by /wrap-up and read by /resume. Local working
+# state, not project history — and it references PLAN.md content, which is
+# itself gitignored.
+.claude/handoff.md
+
+# Copied into the package at pack time by the prepack script, not source.
+packages/core/LICENSE
+packages/core/NOTICE
+packages/core/DISCLAIMER.md

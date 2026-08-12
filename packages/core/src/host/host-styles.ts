@@ -57,17 +57,34 @@ html[data-shakuf-align="start"] body *:not(${SELF}) {
    invert(1) alone never leaves [0,1], so double-inversion restores media
    exactly, for every colour. Blues becoming orange is the honest cost, and it
    is what "צבעים הפוכים" says on the control. */
-html[data-shakuf-contrast="invert"] { filter: invert(1) !important; }
+/* Contrast and saturation are composed into ONE declaration through custom
+   properties. They used to be four separate "filter" rules on <html> at
+   identical specificity (0-1-1), so source order decided and the saturation
+   rules — declared last — silently replaced the contrast ones: "צבעים הפוכים"
+   plus "רוויה מופחתת" computed to saturate(0.5) alone, leaving the panel
+   reporting inversion as active while the page was not inverted at all. */
+html[data-shakuf-contrast="invert"]    { --shakuf-invert: invert(1); }
+html[data-shakuf-contrast="mono"]      { --shakuf-invert: grayscale(1); }
+html[data-shakuf-saturation="low"]     { --shakuf-sat: saturate(0.5); }
+html[data-shakuf-saturation="high"]    { --shakuf-sat: saturate(1.6); }
+
+html[data-shakuf-contrast="invert"],
+html[data-shakuf-contrast="mono"],
+html[data-shakuf-saturation="low"],
+html[data-shakuf-saturation="high"] {
+  filter: var(--shakuf-invert, none) var(--shakuf-sat, none) !important;
+}
+
+/* Cancels the ancestor inversion so photos stay recognisable.
+   Scoped to the image itself, never to <picture>. Filters compose down the
+   tree, so matching both the wrapper and its child applied the cancellation
+   twice and left images inside <picture> rendering as negatives — while a bare
+   <img> came out correct. <picture> is the standard responsive-image wrapper,
+   so that hit a large share of real sites. */
 html[data-shakuf-contrast="invert"] img,
-html[data-shakuf-contrast="invert"] video,
-html[data-shakuf-contrast="invert"] picture {
-  /* Cancels the ancestor inversion exactly, so photos stay recognisable. */
+html[data-shakuf-contrast="invert"] video {
   filter: invert(1) !important;
 }
-html[data-shakuf-contrast="mono"] { filter: grayscale(1) !important; }
-
-html[data-shakuf-saturation="low"] { filter: saturate(0.5) !important; }
-html[data-shakuf-saturation="high"] { filter: saturate(1.6) !important; }
 
 /* ---- High contrast ----------------------------------------------------
    Not a filter: an explicit palette. Backgrounds are forced dark and text

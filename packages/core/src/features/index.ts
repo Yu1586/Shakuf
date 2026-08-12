@@ -14,18 +14,39 @@ import type { Feature } from '../types.js';
 const spacingLabel = (level: number): string =>
   HE.spacingNames[level] ?? HE.spacingNames[0];
 
+/**
+ * Elements whose `autoplay` we cleared, so level 0 can put it back.
+ *
+ * Clearing the attribute is a mutation of the host's own markup, and every
+ * feature must fully undo itself at level 0 (PLAN.md §4 — everything
+ * reversible). Without this the attribute stayed gone for the life of the
+ * page: a `<video autoplay muted loop>` became `<video muted loop>` even after
+ * "איפוס כל ההגדרות", so any site script later reading `video.autoplay` or
+ * calling `load()` saw state the site never set.
+ */
+const autoplayCleared = new WeakSet<HTMLMediaElement>();
+
 /** Pauses playing media. Autoplay cannot be stopped with CSS alone. */
 function pauseMedia(paused: boolean): void {
-  if (!paused) return;
   const media = document.querySelectorAll<HTMLMediaElement>('video, audio');
   for (const el of media) {
     if (el.closest('#shakuf-root')) continue;
     try {
-      if (!el.paused) el.pause();
-      // Stop it starting again on its own. We deliberately do not resume
-      // playback when the toggle goes off — restarting a video the visitor did
-      // not ask for would be worse than leaving it paused.
-      el.autoplay = false;
+      if (paused) {
+        if (!el.paused) el.pause();
+        // Stop it starting again on its own. We deliberately do not resume
+        // playback when the toggle goes off — restarting a video the visitor
+        // did not ask for would be worse than leaving it paused. Restoring the
+        // *attribute*, though, is required: that is the host's markup, not our
+        // decision to make permanent.
+        if (el.autoplay) {
+          autoplayCleared.add(el);
+          el.autoplay = false;
+        }
+      } else if (autoplayCleared.has(el)) {
+        el.autoplay = true;
+        autoplayCleared.delete(el);
+      }
     } catch {
       /* cross-origin media can throw */
     }

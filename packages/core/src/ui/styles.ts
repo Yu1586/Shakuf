@@ -204,8 +204,14 @@ button {
   background: var(--surface);
   border: 2px solid var(--border);
 }
-.step-btn:hover:not(:disabled) { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
-.step-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+/* Keyed off aria-disabled, not :disabled. The buttons are deliberately never
+   "disabled" — that would drop them from the tab order exactly when a visitor
+   reaches the limit, taking their focus with it. But the greyed-out styling was
+   still written against :disabled, so it never matched: a screen-reader user
+   was told the button was unavailable while a sighted user saw a normal,
+   hoverable button that silently did nothing. */
+.step-btn:hover:not([aria-disabled="true"]) { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+.step-btn[aria-disabled="true"] { opacity: 0.4; cursor: not-allowed; }
 .step-value { flex: 1; text-align: center; font-size: 14px; font-weight: 700; }
 .step-dots { display: flex; gap: 3px; justify-content: center; margin-top: 4px; }
 .step-dot { width: 22px; height: 4px; border-radius: 2px; background: var(--border-soft); }

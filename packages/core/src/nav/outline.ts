@@ -116,13 +116,33 @@ export function getLinks(): OutlineItem[] {
  * cannot receive focus we add `tabindex="-1"` (which does not put it in the tab
  * order or change its role) and remove it again on blur.
  */
+/**
+ * Elements we gave a temporary `tabindex`, tracked so teardown can sweep them.
+ *
+ * The blur listener below removes it in normal use, but blur is not guaranteed
+ * to arrive: if the widget is unmounted while a jumped-to heading still holds
+ * focus, the attribute would stay on the host's element forever — a visible
+ * violation of "everything reversible".
+ */
+const jumpTargets = new Set<HTMLElement>();
+
+/** Removes any temporary tabindex we are still responsible for. */
+export function clearJumpTargets(): void {
+  for (const el of jumpTargets) el.removeAttribute('tabindex');
+  jumpTargets.clear();
+}
+
 export function jumpTo(el: HTMLElement): void {
   const hadTabindex = el.hasAttribute('tabindex');
   if (!hadTabindex) {
     el.setAttribute('tabindex', '-1');
+    jumpTargets.add(el);
     el.addEventListener(
       'blur',
-      () => el.removeAttribute('tabindex'),
+      () => {
+        el.removeAttribute('tabindex');
+        jumpTargets.delete(el);
+      },
       { once: true },
     );
   }
