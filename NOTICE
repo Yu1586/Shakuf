@@ -1,0 +1,56 @@
+תוסף נגישות לאתרים ישראליים
+Hebrew accessibility widget for Israeli websites
+
+Copyright [YYYY] [LEGAL ENTITY NAME]
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+specific language governing permissions and limitations under the License.
+
+--------------------------------------------------------------------------------
+הודעה חשובה בדבר עמידה בתקן / IMPORTANT NOTICE ON ACCESSIBILITY CONFORMANCE
+--------------------------------------------------------------------------------
+
+עברית:
+
+התוכנה הזו היא כלי עזר לתצוגה בלבד. היא אינה הופכת אתר לנגיש ואינה מבטיחה
+עמידה בת״י 5568, בתקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות
+לשירות), התשע״ג-2013, או בכל דין אחר.
+
+הנגשה מלאה של אתר מחייבת תיקונים בקוד ובתוכן האתר עצמו, פרסום הצהרת נגישות,
+מינוי רכז נגישות ובדיקה של מורשה נגישות. האחריות לעמידה בדין חלה על בעל האתר
+בלבד.
+
+אין להציג את התוכנה הזו, בפרסום או בכל דרך אחרת, ככזו המבטיחה עמידה בתקן,
+עמידה בדין או הגנה מפני תביעות.
+
+English:
+
+This software is a display-preference tool only. It does not make a website
+accessible and does not ensure conformance with Israeli Standard SI 5568, with
+the Equal Rights for Persons with Disabilities (Accessibility Adjustments to
+Service) Regulations 5773-2013, or with any other law.
+
+Making a website accessible requires changes to the site's own code and content,
+a published accessibility statement, a designated accessibility coordinator, and
+review by a certified accessibility surveyor. Responsibility for legal
+compliance rests solely with the website owner.
+
+This software must not be represented, in marketing or otherwise, as ensuring
+conformance with any standard, compliance with any law, or protection from legal
+claims.
+
+--------------------------------------------------------------------------------
+
+This NOTICE file is provided under Section 4(d) of the Apache License 2.0. Any
+Derivative Work that is distributed must reproduce the notices above.
+
+See DISCLAIMER.md for the full statement of what this software does and does not
+do.

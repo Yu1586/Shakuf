@@ -1,0 +1,28 @@
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Secrets — never commit.
+.env
+.env.*
+
+# Contains a real API key in the Authorization header. Normally .mcp.json is
+# committed so a team shares MCP config, but this one holds a live credential,
+# so it stays local.
+.mcp.json
+
+# Business and legal strategy: positioning, entity decisions, cost figures,
+# competitor/regulatory analysis. This repo is intended to become public, and
+# git history survives that switch — a file committed now and deleted later is
+# still there for anyone who clones. Keeping it out of history entirely is the
+# only version of this that actually works.
+PLAN.md
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Claude Code local state
+.claude/settings.local.json

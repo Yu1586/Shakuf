@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>אולפני דפוס בע״מ — דף בדיקה לתוסף הנגישות</title>
+<style>
+  :root { --brand: #1d4ed8; --ink: #1a1a1a; --muted: #555; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    line-height: 1.5;
+    background: #fff;
+  }
+  header { background: var(--brand); color: #fff; padding: 18px 24px; }
+  header h1 { margin: 0; font-size: 22px; }
+  nav { background: #eef2ff; padding: 10px 24px; }
+  nav ul { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; flex-wrap: wrap; }
+  nav a { color: #1e3a8a; }
+  main { max-width: 760px; margin: 0 auto; padding: 28px 24px 60px; }
+  h2 { margin-top: 36px; }
+  /* Deliberately justified — the "יישור טקסט לימין" toggle should fix this. */
+  .justified { text-align: justify; }
+  .card { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 18px 0; }
+  .swatches { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
+  .swatch { width: 84px; height: 56px; border-radius: 6px; display: grid; place-items: center; color: #fff; font-size: 13px; }
+  label { display: block; margin: 12px 0 4px; font-weight: 600; }
+  input, textarea { width: 100%; padding: 9px; border: 1px solid #999; border-radius: 6px; font: inherit; }
+  button.cta { background: var(--brand); color: #fff; border: 0; padding: 11px 20px; border-radius: 6px; font: inherit; cursor: pointer; margin-top: 14px; }
+  footer { background: #f3f4f6; padding: 24px; color: var(--muted); font-size: 14px; }
+  @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .35 } }
+  .blink { animation: pulse 1.1s infinite; display: inline-block; background: #fde047; padding: 3px 9px; border-radius: 4px; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>אולפני דפוס בע״מ</h1>
+</header>
+
+<nav aria-label="ניווט ראשי">
+  <ul>
+    <li><a href="#services">שירותים</a></li>
+    <li><a href="#gallery">גלריה</a></li>
+    <li><a href="#contact">יצירת קשר</a></li>
+    <li><a href="/accessibility">הצהרת נגישות</a></li>
+  </ul>
+</nav>
+
+<main>
+  <h2>ברוכים הבאים</h2>
+  <p class="justified">
+    אנחנו בית דפוס ותיק הפועל מאז 1994 ומספק שירותי דפוס דיגיטלי ואופסט לעסקים,
+    מוסדות ולקוחות פרטיים. הטקסט הזה מיושר לשני הצדדים בכוונה, כדי שאפשר יהיה
+    לבדוק את פעולת הכפתור ״יישור טקסט לימין״ בתפריט הנגישות. יישור דו-צדדי יוצר
+    רווחים לא אחידים בין המילים, מה שמקשה על חלק מהקוראים לעקוב אחר השורה.
+  </p>
+  <p><span class="blink">מבצע!</span> הנחה על הזמנות מעל 500 עותקים — האנימציה כאן נועדה לבדיקת ״עצירת אנימציות״.</p>
+
+  <h2 id="services">השירותים שלנו</h2>
+  <h3>דפוס דיגיטלי</h3>
+  <p>הדפסה איכותית בכמויות קטנות, זמן אספקה קצר ומחיר נוח להזמנות חוזרות.</p>
+  <h3>כריכה וגימור</h3>
+  <p>כריכה קשה, כריכה ספירלה, למינציה, הטבעות והדפסת UV נקודתי.</p>
+  <h3>עיצוב גרפי</h3>
+  <p>צוות עיצוב פנימי המלווה את הלקוח מהסקיצה ועד הקובץ המוכן לדפוס.</p>
+
+  <h2 id="gallery">גלריה</h2>
+  <p>דוגמאות עבודה. התמונות כאן נועדו לבדיקת ״הסתרת תמונות״.</p>
+  <div class="swatches">
+    <div class="swatch" style="background:#b91c1c">אדום</div>
+    <div class="swatch" style="background:#15803d">ירוק</div>
+    <div class="swatch" style="background:#1d4ed8">כחול</div>
+    <div class="swatch" style="background:#a16207">חום</div>
+  </div>
+  <img src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='150'%3E%3Crect width='320' height='150' fill='%23cbd5e1'/%3E%3Ctext x='160' y='82' font-size='18' text-anchor='middle' fill='%23334155'%3E%D7%93%D7%95%D7%92%D7%9E%D7%94%3C/text%3E%3C/svg%3E"
+       alt="דוגמת עבודת דפוס" width="320" height="150">
+
+  <h2 id="contact">יצירת קשר</h2>
+  <div class="card">
+    <form onsubmit="event.preventDefault(); alert('הטופס הוא הדגמה בלבד');">
+      <label for="name">שם מלא</label>
+      <input id="name" name="name" type="text" autocomplete="name">
+
+      <label for="email">דוא״ל</label>
+      <input id="email" name="email" type="email" autocomplete="email">
+
+      <label for="msg">הודעה</label>
+      <textarea id="msg" name="msg" rows="4"></textarea>
+
+      <button class="cta" type="submit">שליחה</button>
+    </form>
+  </div>
+
+  <h2>מאמרים אחרונים</h2>
+  <ul>
+    <li><a href="#a1">כיצד לבחור נייר להדפסת קטלוג</a></li>
+    <li><a href="#a2">ההבדל בין דפוס דיגיטלי לאופסט</a></li>
+    <li><a href="#a3">הכנת קובץ לדפוס — טעויות נפוצות</a></li>
+  </ul>
+</main>
+
+<footer>
+  <p>אולפני דפוס בע״מ · רחוב הדוגמה 12, תל אביב · 03-0000000</p>
+  <p>דף זה הוא סביבת בדיקה מקומית לתוסף הנגישות ואינו אתר אמיתי.</p>
+</footer>
+
+<!--
+  The install snippet, exactly as a site owner would paste it.
+  No site key, no licence check, no network request — see PLAN.md D2.
+-->
+<script src="/packages/core/dist/a11y.js"
+        data-position="bottom-right"
+        data-statement-url="/accessibility"
+        data-coordinator-name="דנה לוי"
+        data-coordinator-phone="03-0000000"
+        data-coordinator-email="access@example.co.il"
+        defer></script>
+
+</body>
+</html>
