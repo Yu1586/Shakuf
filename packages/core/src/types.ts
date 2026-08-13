@@ -79,4 +79,32 @@ export interface WidgetConfig {
   /** Attribution link target. See PLAN.md §3.5 — disclosure is mandatory. */
   byUrl: string | null;
   byName: string | null;
+  /**
+   * CSS selector for the element to mount into. Defaults to `<body>`.
+   *
+   * Exists because hosts that manage `inert` or focus at the body level will
+   * otherwise disable us at exactly the wrong moment. A React app that marks
+   * every `<body>` child inert behind a full-screen blocker, exempting only its
+   * own root, would inert the accessibility widget while the visitor is stuck
+   * looking at the blocker — which is precisely when they may need the contrast
+   * and reduce-motion controls. Pointing us inside their root instead keeps us
+   * reachable.
+   */
+  mount: string | null;
+  /**
+   * `he` or `en`. Falls back to `<html lang>`, then Hebrew.
+   *
+   * Set this only to override the host document. Leaving it unset is usually
+   * right: the widget should speak the language of the page it sits on.
+   */
+  lang: string | null;
+  /**
+   * Start with the launcher hidden.
+   *
+   * For hosts that already know the visitor turned the button off. Without it
+   * they can only call `hide()` after mount, which paints the launcher for a
+   * frame and then removes it — a flash on every page load, on a control the
+   * visitor has explicitly asked not to see.
+   */
+  hidden: boolean;
 }

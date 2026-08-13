@@ -33,10 +33,19 @@ export const PANEL_STYLES = /* css */ `
   word-spacing: normal;
   color: var(--fg);
   direction: rtl;
-  text-align: right;
+  text-align: start;
   position: fixed;
   z-index: 2147483000;
 }
+
+/*
+ * The "all: initial" above deliberately cuts the host off from the page's own
+ * direction, so the shadow tree cannot inherit it — which means the language
+ * layer has to state it. The widget sets dir on the host element; this is the
+ * rule that makes it mean something. text-align:start above then flips on its
+ * own, which is why only direction needs restating here.
+ */
+:host([dir="ltr"]) { direction: ltr; }
 
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -53,7 +62,7 @@ export const PANEL_STYLES = /* css */ `
 button {
   font: inherit;
   color: inherit;
-  direction: rtl;
+  direction: inherit;
   cursor: pointer;
   background: none;
   border: none;
@@ -171,14 +180,18 @@ button {
   content: "";
   position: absolute;
   top: 2px;
-  right: 2px;
+  /* Logical, so the knob rests on the start edge in both directions. Was
+     right:2px, which is the same thing in RTL and the wrong edge in LTR. */
+  inset-inline-start: 2px;
   width: 18px;
   height: 18px;
   border-radius: 50%;
   background: #fff;
   transition: transform 0.15s ease;
 }
-.toggle[aria-pressed="true"] .switch::after { transform: translateX(-18px); }
+/* translateX is physical, so "towards the end edge" differs per direction. */
+.toggle[aria-pressed="true"] .switch::after { transform: translateX(18px); }
+:host(:not([dir="ltr"])) .toggle[aria-pressed="true"] .switch::after { transform: translateX(-18px); }
 
 /* ---- Steppers ---------------------------------------------------------- */
 .stepper { margin-bottom: 12px; }

@@ -1,4 +1,4 @@
-import { HE } from '../i18n/he.js';
+import { t } from '../i18n/index.js';
 
 /**
  * Page structure readers for the navigation aids.
@@ -87,7 +87,7 @@ export function getLandmarks(): OutlineItem[] {
     }
 
     const role = el.getAttribute('role') ?? IMPLICIT_ROLE[tag] ?? 'region';
-    const roleName = HE.landmarkNames[role] ?? HE.landmarkNames['region']!;
+    const roleName = t().landmarkNames[role] ?? t().landmarkNames['region']!;
     const own = el.getAttribute('aria-label')?.trim();
 
     seen.add(el);

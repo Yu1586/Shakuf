@@ -25,10 +25,21 @@ export const BRAND = {
    * is ever formed, those two files and the copyright line are what change.
    */
   name: 'שקוף',
+  /**
+   * Latin-script forms, used when the panel renders in English.
+   *
+   * The same product and the same person, transliterated — not a translation.
+   * Dropping Hebrew names into an English sentence reads as a rendering fault
+   * to someone who cannot read the script, and a screen reader announcing
+   * `lang="en"` text containing Hebrew characters produces noise.
+   */
+  nameLatin: 'Shakuf',
   /** The product's own site — what "תוסף שקוף" links to. */
   url: 'https://shakuf.yuvalrahamim.com',
   /** The human who built it. */
   authorName: 'יובל רחמים',
+  /** See `nameLatin`. */
+  authorNameLatin: 'Yuval Rahamim',
   /**
    * The author's own site.
    *

@@ -68,6 +68,40 @@ function safeColor(raw: string | null): string | null {
 const DEFAULT_OFFSET = 20;
 
 /**
+ * Resolves `data-mount` to an element, or null to mean `<body>`.
+ *
+ * Two ways this legitimately fails, and both fall back rather than throw: an
+ * invalid selector (`querySelector` raises SyntaxError, it does not return
+ * null), and a valid selector matching nothing yet — the host's root may mount
+ * after us. Falling back keeps the widget present, which is the right call for
+ * an accessibility tool.
+ *
+ * It warns on the way, because a silent fall back to `<body>` reproduces the
+ * exact bug `data-mount` exists to fix, invisibly. The installer needs to know
+ * their selector missed.
+ */
+export function resolveMount(selector: string | null): HTMLElement {
+  if (!selector) return document.body;
+
+  let found: Element | null = null;
+  try {
+    found = document.querySelector(selector);
+  } catch {
+    warn(`data-mount is not a valid CSS selector: ${selector}`);
+    return document.body;
+  }
+
+  if (found instanceof HTMLElement) return found;
+
+  warn(`data-mount matched no element: ${selector}. Falling back to <body>.`);
+  return document.body;
+}
+
+function warn(message: string): void {
+  if (typeof console !== 'undefined') console.warn(`[shakuf] ${message}`);
+}
+
+/**
  * Parses a numeric attribute, falling back when absent or out of range.
  *
  * The explicit null check is the point. `Number(null)` is `0`, and `0` passes
@@ -100,5 +134,12 @@ export function readConfig(): WidgetConfig {
     accent: safeColor(str(el, 'accent')) ?? DEFAULT_ACCENT,
     byUrl: safeUrl(str(el, 'by-url')),
     byName: str(el, 'by-name'),
+    mount: str(el, 'mount'),
+    lang: str(el, 'lang'),
+    // Presence-or-value, the way HTML booleans normally work: `data-hidden`,
+    // `data-hidden=""` and `data-hidden="true"` all mean hidden. Only an
+    // explicit "false" opts back out, so a host templating the attribute in
+    // can write the value straight from a boolean without a special case.
+    hidden: el?.hasAttribute('data-hidden') === true && str(el, 'hidden') !== 'false',
   };
 }

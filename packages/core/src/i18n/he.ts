@@ -1,6 +1,10 @@
 /**
- * Hebrew strings. This is the only language (PLAN.md D4) — there is no locale
- * switch, no fallback chain, and no English in the UI.
+ * Hebrew strings — the default language, and the reference pack.
+ *
+ * `Strings` in `./index.ts` is derived from this object, so every key added
+ * here becomes a compile error in `en.ts` until it is translated. Hebrew stays
+ * the fallback: an install that sets no language must keep behaving exactly as
+ * it did before English existed.
  *
  * The `disclaimer*` keys are load-bearing and are rendered unconditionally by
  * the panel. They are not configurable and must not be made configurable:
@@ -115,6 +119,12 @@ export const HE = {
   newTab: 'נפתח בכרטיסייה חדשה',
 
   // ---- Announcements ---------------------------------------------------
+  /**
+   * Spoken when a feature throws. Deliberately blames nothing and asks for
+   * nothing — the visitor cannot fix it, and only needs to know the control did
+   * not take effect so they are not left waiting for a change that never comes.
+   */
+  featureFailed: (label: string) => `${label} — לא ניתן להחיל את ההגדרה`,
   announceOn: (label: string) => `${label} — פועל`,
   announceOff: (label: string) => `${label} — כבוי`,
   announceLevel: (label: string, level: string) => `${label} — ${level}`,
@@ -126,5 +136,3 @@ export const HE = {
   levelNames: ['רגיל', 'מוגדל', 'גדול', 'גדול מאוד', 'הגדול ביותר'] as const,
   spacingNames: ['רגיל', 'מוגדל', 'רחב'] as const,
 } as const;
-
-export type Strings = typeof HE;

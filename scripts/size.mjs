@@ -14,7 +14,12 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const BUDGET_KB = 15;
+// Raised from 15 when the bundle became bilingual. One artifact carries both
+// Hebrew and English, so a Hebrew-only install pays ~0.7 KB for strings it will
+// never render — the accepted cost of "one script tag, no language in the URL".
+// If a third language is ever added, split the packs rather than raising this
+// again: the trade only holds while the unused payload stays small.
+const BUDGET_KB = 17;
 
 const target = resolve(ROOT, 'packages/core/dist/shakuf.js');
 

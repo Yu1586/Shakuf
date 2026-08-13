@@ -6,7 +6,25 @@
  * readers, and a silent live region is worse than none — the visitor toggles a
  * setting and gets no confirmation that anything happened.
  */
+import { currentLang, dirFor } from '../i18n/index.js';
+
 const LIVE_ID = 'shakuf-live';
+
+/**
+ * Where the live region gets appended. Set by the widget from `data-mount`.
+ *
+ * This has to follow the same target as the widget host, and the reason is not
+ * symmetry. The live region is a *separate* child of whatever it is appended
+ * to, so a host that inerts body children would leave it inert even after the
+ * widget itself moved somewhere safe — and an inert live region is silent. The
+ * visitor would keep operating a panel that had stopped confirming anything,
+ * with nothing on screen to indicate it.
+ */
+let container: HTMLElement | null = null;
+
+export function setAnnouncerContainer(el: HTMLElement | null): void {
+  container = el;
+}
 
 function ensureRegion(): HTMLElement {
   const existing = document.getElementById(LIVE_ID);
@@ -17,8 +35,13 @@ function ensureRegion(): HTMLElement {
   el.setAttribute('aria-live', 'polite');
   el.setAttribute('aria-atomic', 'true');
   el.setAttribute('role', 'status');
-  el.lang = 'he';
-  el.dir = 'rtl';
+  // Tagged with the panel's language, not the page's. A screen reader reading
+  // English text announced inside a `lang="he"` region switches to a Hebrew
+  // voice and renders it unintelligible — the sharpest edge of getting this
+  // wrong, because it fails only for the users the widget exists to serve.
+  const lang = currentLang();
+  el.lang = lang;
+  el.dir = dirFor(lang);
 
   // Visually hidden, but not `display:none` or `visibility:hidden`, either of
   // which would remove it from the accessibility tree and silence it.
@@ -35,7 +58,7 @@ function ensureRegion(): HTMLElement {
     'border:0',
   ].join(';');
 
-  document.body.appendChild(el);
+  (container ?? document.body).appendChild(el);
   return el;
 }
 
@@ -58,7 +81,22 @@ export function announce(message: string): void {
   });
 }
 
+/**
+ * Re-tags an already-created region after a language switch.
+ *
+ * `ensureRegion` caches, so without this the region keeps whatever language it
+ * was born with — and every later announcement is spoken in the wrong voice.
+ */
+export function retagAnnouncer(): void {
+  const region = document.getElementById(LIVE_ID);
+  if (!region) return;
+  const lang = currentLang();
+  region.lang = lang;
+  region.dir = dirFor(lang);
+}
+
 export function destroyAnnouncer(): void {
   window.clearTimeout(clearTimer);
   document.getElementById(LIVE_ID)?.remove();
+  container = null;
 }

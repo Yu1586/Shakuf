@@ -1,6 +1,6 @@
 import { BRAND } from '../brand.js';
-import { FEATURES } from '../features/index.js';
-import { HE } from '../i18n/he.js';
+import { getFeatures } from '../features/index.js';
+import { currentLang, dirFor, t } from '../i18n/index.js';
 import { getHeadings, getLandmarks, getLinks, jumpTo } from '../nav/outline.js';
 import type { OutlineItem } from '../nav/outline.js';
 import type { Feature, GroupId, StepperFeature, ToggleFeature, WidgetConfig } from '../types.js';
@@ -8,18 +8,27 @@ import { chevronIcon, closeIcon, el } from './dom.js';
 
 export interface PanelHandlers {
   getLevel(id: string): number;
-  setLevel(id: string, level: number): void;
+  /**
+   * Returns false if the feature threw and the change was rolled back.
+   *
+   * The panel used to announce the new state unconditionally right after
+   * calling this, which meant a failed toggle still said "on" — the panel
+   * confidently describing something that had not happened, to the one user who
+   * has no way to check. The caller announces the failure itself; callers here
+   * only announce success.
+   */
+  setLevel(id: string, level: number): boolean;
   reset(): void;
   close(): void;
   announce(message: string): void;
 }
 
 const GROUP_TITLES: Record<GroupId, string> = {
-  text: HE.groupText,
-  color: HE.groupColor,
-  motion: HE.groupMotion,
-  nav: HE.groupNav,
-  info: HE.groupInfo,
+  text: t().groupText,
+  color: t().groupColor,
+  motion: t().groupMotion,
+  nav: t().groupNav,
+  info: t().groupInfo,
 };
 
 let uid = 0;
@@ -52,21 +61,21 @@ export class Panel {
       'aria-modal': 'true',
       'aria-labelledby': titleId,
       tabindex: '-1',
-      lang: 'he',
-      dir: 'rtl',
+      lang: currentLang(),
+      dir: dirFor(currentLang()),
     });
 
     // Header
     const closeBtn = el('button', {
       type: 'button',
       class: 'close',
-      'aria-label': HE.close,
+      'aria-label': t().close,
     }, [closeIcon()]);
     closeBtn.addEventListener('click', () => this.handlers.close());
 
     panel.appendChild(
       el('div', { class: 'header' }, [
-        el('h2', { class: 'title', id: titleId, text: HE.panelTitle }),
+        el('h2', { class: 'title', id: titleId, text: t().panelTitle }),
         closeBtn,
       ]),
     );
@@ -90,7 +99,7 @@ export class Panel {
       el('h3', { class: 'group-title', id: headingId, text: GROUP_TITLES[group] }),
     ]);
 
-    for (const feature of FEATURES.filter((f) => f.group === group)) {
+    for (const feature of getFeatures().filter((f) => f.group === group)) {
       section.appendChild(
         feature.kind === 'toggle'
           ? this.buildToggle(feature)
@@ -126,9 +135,9 @@ export class Panel {
 
     btn.addEventListener('click', () => {
       const next = this.handlers.getLevel(feature.id) ? 0 : 1;
-      this.handlers.setLevel(feature.id, next);
+      if (!this.handlers.setLevel(feature.id, next)) return;
       this.handlers.announce(
-        next ? HE.announceOn(feature.label) : HE.announceOff(feature.label),
+        next ? t().announceOn(feature.label) : t().announceOff(feature.label),
       );
     });
 
@@ -165,12 +174,12 @@ export class Panel {
     const down = el('button', {
       type: 'button',
       class: 'step-btn',
-      'aria-label': `${HE.decrease} — ${feature.label}`,
+      'aria-label': `${t().decrease} — ${feature.label}`,
     }, ['−']);
     const up = el('button', {
       type: 'button',
       class: 'step-btn',
-      'aria-label': `${HE.increase} — ${feature.label}`,
+      'aria-label': `${t().increase} — ${feature.label}`,
     }, ['+']);
 
     // `aria-disabled` rather than `disabled`: a disabled button drops out of the
@@ -180,9 +189,9 @@ export class Panel {
       const current = this.handlers.getLevel(feature.id);
       const next = Math.max(0, Math.min(feature.max, current + delta));
       if (next === current) return;
-      this.handlers.setLevel(feature.id, next);
+      if (!this.handlers.setLevel(feature.id, next)) return;
       this.handlers.announce(
-        HE.announceLevel(feature.label, feature.stepLabel(next)),
+        t().announceLevel(feature.label, feature.stepLabel(next)),
       );
     };
     down.addEventListener('click', () => step(-1));
@@ -220,12 +229,12 @@ export class Panel {
     const headingId = nextId('grp');
     const section = el('section', { class: 'group', 'aria-labelledby': headingId }, [
       el('h3', { class: 'group-title', id: headingId, text: GROUP_TITLES.nav }),
-      el('p', { class: 'nav-hint', text: HE.navHint }),
+      el('p', { class: 'nav-hint', text: t().navHint }),
     ]);
 
-    section.appendChild(this.buildNavAid(HE.navHeadings, getHeadings, HE.navCountHeadings));
-    section.appendChild(this.buildNavAid(HE.navLandmarks, getLandmarks, HE.navCountLandmarks));
-    section.appendChild(this.buildNavAid(HE.navLinks, getLinks, HE.navCountLinks));
+    section.appendChild(this.buildNavAid(t().navHeadings, getHeadings, t().navCountHeadings));
+    section.appendChild(this.buildNavAid(t().navLandmarks, getLandmarks, t().navCountLandmarks));
+    section.appendChild(this.buildNavAid(t().navLinks, getLinks, t().navCountLinks));
     return section;
   }
 
@@ -256,7 +265,7 @@ export class Panel {
 
       if (items.length === 0) {
         list.appendChild(el('li', {}, [
-          el('span', { class: 'nav-empty', text: HE.navEmpty }),
+          el('span', { class: 'nav-empty', text: t().navEmpty }),
         ]));
         return;
       }
@@ -271,7 +280,7 @@ export class Panel {
         jump.addEventListener('click', () => {
           this.handlers.close();
           jumpTo(item.element);
-          this.handlers.announce(HE.navJumped(item.label));
+          this.handlers.announce(t().navJumped(item.label));
         });
         list.appendChild(el('li', {}, [jump]));
       }
@@ -309,14 +318,14 @@ export class Panel {
     if (statementUrl) {
       section.appendChild(
         el('p', { class: 'info-row' }, [
-          el('a', { href: statementUrl, text: HE.statementLink }),
+          el('a', { href: statementUrl, text: t().statementLink }),
         ]),
       );
     }
     if (coordinatorName) {
       section.appendChild(
         el('p', { class: 'info-row' }, [
-          el('span', { class: 'info-label', text: `${HE.coordinator}: ` }),
+          el('span', { class: 'info-label', text: `${t().coordinator}: ` }),
           el('span', { text: coordinatorName }),
         ]),
       );
@@ -324,7 +333,7 @@ export class Panel {
     if (coordinatorPhone) {
       section.appendChild(
         el('p', { class: 'info-row' }, [
-          el('span', { class: 'info-label', text: `${HE.coordinatorPhone}: ` }),
+          el('span', { class: 'info-label', text: `${t().coordinatorPhone}: ` }),
           el('a', { href: `tel:${coordinatorPhone}`, text: coordinatorPhone }),
         ]),
       );
@@ -332,7 +341,7 @@ export class Panel {
     if (coordinatorEmail) {
       section.appendChild(
         el('p', { class: 'info-row' }, [
-          el('span', { class: 'info-label', text: `${HE.coordinatorEmail}: ` }),
+          el('span', { class: 'info-label', text: `${t().coordinatorEmail}: ` }),
           el('a', { href: `mailto:${coordinatorEmail}`, text: coordinatorEmail }),
         ]),
       );
@@ -342,7 +351,7 @@ export class Panel {
     // not discharge. If the owner configured neither, the visitor is told that
     // the site is missing something the law requires (PLAN.md §1.4).
     if (!statementUrl && !coordinatorName && !coordinatorPhone && !coordinatorEmail) {
-      section.appendChild(el('p', { class: 'info-missing', text: HE.infoMissing }));
+      section.appendChild(el('p', { class: 'info-missing', text: t().infoMissing }));
     }
 
     return section;
@@ -354,11 +363,11 @@ export class Panel {
     const resetBtn = el('button', {
       type: 'button',
       class: 'reset',
-      text: HE.reset,
+      text: t().reset,
     });
     resetBtn.addEventListener('click', () => {
       this.handlers.reset();
-      this.handlers.announce(HE.resetDone);
+      this.handlers.announce(t().resetDone);
     });
 
     const footer = el('div', { class: 'footer' }, [
@@ -366,13 +375,19 @@ export class Panel {
       // Mandatory. See PLAN.md §2.4 layer 1 — this is the only control that
       // reaches ordinary installers, so it is neither optional nor themeable.
       el('p', { class: 'disclaimer' }, [
-        el('strong', { text: HE.disclaimerShort }),
+        el('strong', { text: t().disclaimerShort }),
         document.createTextNode(' '),
-        document.createTextNode(HE.disclaimerLong),
+        document.createTextNode(t().disclaimerLong),
       ]),
     ]);
 
-    const byName = this.config.byName ?? BRAND.name;
+    // Hebrew names in an English sentence read as broken rendering, so the
+    // panel swaps to the transliterated forms with the language. A host-supplied
+    // `data-by-name` still wins over both — it is their own name, and we are in
+    // no position to transliterate it for them.
+    const latin = currentLang() !== 'he';
+    const authorName = latin ? BRAND.authorNameLatin : BRAND.authorName;
+    const byName = this.config.byName ?? (latin ? BRAND.nameLatin : BRAND.name);
     const byUrl = this.config.byUrl ?? BRAND.url;
 
     // Both links open in a new tab so the visitor never loses the page they
@@ -383,25 +398,25 @@ export class Panel {
       href: byUrl,
       rel: 'noopener',
       target: '_blank',
-      'aria-label': `${byName} — ${HE.newTab}`,
+      'aria-label': `${byName} — ${t().newTab}`,
       text: byName,
     });
     const authorLink = el('a', {
       href: BRAND.authorUrl,
       rel: 'noopener',
       target: '_blank',
-      'aria-label': `${BRAND.authorName} — ${HE.newTab}`,
-      text: BRAND.authorName,
+      'aria-label': `${authorName} — ${t().newTab}`,
+      text: authorName,
     });
 
-    footer.appendChild(
-      el('p', { class: 'by' }, [
-        document.createTextNode(`${HE.byPrefix} `),
-        productLink,
-        document.createTextNode(` ${HE.byMiddle} `),
-        authorLink,
-      ]),
-    );
+    // The Hebrew line opens with a word ("תוסף שקוף"); the English one starts
+    // with the name itself. Appending an empty prefix would leave a stray
+    // leading space before the link.
+    const line: Node[] = [];
+    if (t().byPrefix) line.push(document.createTextNode(`${t().byPrefix} `));
+    line.push(productLink, document.createTextNode(` ${t().byMiddle} `), authorLink);
+
+    footer.appendChild(el('p', { class: 'by' }, line));
 
     return footer;
   }

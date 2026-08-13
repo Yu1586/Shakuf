@@ -255,9 +255,71 @@ export default function App() {
             <tr><td class="v">data-position</td><td class="v">bottom-right</td><td>גם bottom-left · top-right · top-left</td></tr>
             <tr><td class="v">data-offset</td><td class="v">20</td><td>מרחק בפיקסלים משולי המסך</td></tr>
             <tr><td class="v">data-accent</td><td class="v">#0b5fff</td><td>צבע ראשי בפורמט hex. צבע הטקסט נבחר אוטומטית לפי ניגודיות</td></tr>
+            <tr><td class="v">data-mount</td><td class="v">body</td><td>סלקטור CSS של האלמנט שאליו התוסף נטען. נדרש באפליקציות שמסמנות <code>inert</code> על צאצאי <code>body</code> — ראו למטה</td></tr>
+            <tr><td class="v">data-lang</td><td class="v">מ-<code>&lt;html lang&gt;</code></td><td><code>he</code> או <code>en</code>. בלי הערך הזה התוסף עוקב אחר שפת העמוד, כולל שינוי שפה בלי טעינה מחדש. ברירת המחדל היא עברית</td></tr>
+            <tr><td class="v">data-hidden</td><td class="v">—</td><td>הכפתור מתחיל מוסתר. לאתרים ששומרים בעצמם העדפה של ״להסתיר את כפתור הנגישות״, כדי שהכפתור לא יהבהב בכל טעינה</td></tr>
           </tbody>
         </table>
       </div>
+
+      <h3 style="margin-top:36px">מתי צריך <code>data-mount</code></h3>
+      <p class="dim">
+        כברירת מחדל התוסף נטען כילד ישיר של <code>body</code>. אפליקציות רבות
+        ב-React או ב-Vue מסמנות <code>inert</code> על כל ילדי <code>body</code>
+        כשמוצג מסך חוסם — עדכון גרסה כפוי, ניתוק מהרשת, מודאל מסך מלא — ומחריגות
+        רק את אלמנט השורש שלהן. במצב כזה התוסף מושבת בדיוק ברגע שבו המבקר תקוע
+        מול מסך חוסם ואולי דווקא זקוק לניגודיות גבוהה או לעצירת אנימציות.
+      </p>
+      <p class="dim">
+        הפתרון הוא להפנות את התוסף אל תוך אותו שורש:
+      </p>
+      <div class="code">
+        <pre><code>&lt;script src="/shakuf.js" data-mount="#root" defer&gt;&lt;/script&gt;</code></pre>
+      </div>
+      <p class="dim">
+        אם הסלקטור שגוי או לא מתאים לאף אלמנט, התוסף נטען ל-<code>body</code>
+        כרגיל ורושם אזהרה ב-console. הוא לא ייעלם בגלל טעות הגדרה.
+      </p>
+
+      <h3 style="margin-top:36px">שליטה מתוך קוד</h3>
+      <p class="dim">
+        התקנה דרך תג <code>script</code> מגדירה את <code>window.shakuf</code>.
+        כל הפעולות סינכרוניות ואינן מבצעות בקשות רשת:
+      </p>
+      <div class="tablewrap" style="margin:20px 0">
+        <table>
+          <caption class="sr-only">שיטות ה-API של התוסף</caption>
+          <thead><tr><th scope="col">method</th><th scope="col">תיאור</th></tr></thead>
+          <tbody>
+            <tr><td class="v">open() · close() · toggle()</td><td>פתיחה וסגירה של החלונית</td></tr>
+            <tr><td class="v">hide() · show()</td><td>הסתרה והצגה של כפתור הפתיחה. ההעדפות שהמבקר כבר הפעיל נשארות פעילות</td></tr>
+            <tr><td class="v">hidden</td><td>האם הכפתור מוסתר כרגע</td></tr>
+            <tr><td class="v">reset()</td><td>איפוס כל ההגדרות, כמו הכפתור בחלונית</td></tr>
+            <tr><td class="v">setLanguage(lang)</td><td><code>he</code> או <code>en</code>. מקבע את השפה ומפסיק לעקוב אחר <code>&lt;html lang&gt;</code></td></tr>
+            <tr><td class="v">lang</td><td>השפה הפעילה</td></tr>
+            <tr><td class="v">destroy()</td><td>הסרה מלאה של התוסף וביטול כל מה שהחיל</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="dim">
+        בהתקנה דרך npm אין <code>window.shakuf</code> — <code>mount()</code>
+        מחזיר את המופע עצמו, עם אותן שיטות.
+      </p>
+      <p class="dim">
+        כדי להחיל העדפה שמורה כבר בטעינה, האזינו לאירוע
+        <code>shakuf:ready</code> על <code>document</code>. האירוע נורה בתוך
+        הטעינה, לפני ש-<code>window.shakuf</code> קיים, ולכן המופע מגיע בתוך
+        <code>event.detail</code>:
+      </p>
+      <div class="code">
+        <pre><code>document.addEventListener('shakuf:ready', function (e) {
+  if (userPrefersHidden) e.detail.hide();
+});</code></pre>
+      </div>
+      <p class="dim">
+        אם אתם כבר יודעים מראש שהכפתור צריך להיות מוסתר, עדיף
+        <code>data-hidden</code> — הוא חוסך את ההבהוב.
+      </p>
     </div>
   </section>
 
@@ -354,6 +416,7 @@ export default function App() {
       <li><a href="/">Home</a></li>
       <li><a href="/terms/">Terms</a></li>
       <li><a href="/disclaimer/">Disclaimer</a></li>
+      <li><a href="/changelog/">Changelog</a></li>
       <li><a href="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget/LICENSE">Apache 2.0</a></li>
     </ul>
     <p>

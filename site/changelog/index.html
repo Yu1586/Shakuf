@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<!--
+  The one English page on a Hebrew site, and deliberately so: a changelog is
+  read by the people installing the package, who reach it from npm, and that
+  audience reads release notes in English.
+
+  A side effect worth knowing rather than fixing: because the widget resolves
+  its language from <html lang>, the panel on this page renders in English. That
+  is correct behaviour and doubles as the only live demonstration of it.
+-->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Changelog — Shakuf</title>
+<meta name="description" content="Release notes for the Shakuf accessibility widget. What was added, fixed and broken in each version.">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0b0c'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23f4f4f5' stroke-width='2'/%3E%3Cpath d='M16 16 L16 5 A11 11 0 0 1 25.53 21.5 Z' fill='%23f4f4f5'/%3E%3Cpath d='M16 16 L25.53 21.5 A11 11 0 0 1 6.47 21.5 Z' fill='%23f4f4f5' opacity='.55'/%3E%3Cpath d='M16 16 L6.47 21.5 A11 11 0 0 1 16 5 Z' fill='%23f4f4f5' opacity='.28'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="/">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="13.6" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M16 16 L16 2.4 A13.6 13.6 0 0 1 27.78 22.8 Z" fill="currentColor"/>
+        <path d="M16 16 L27.78 22.8 A13.6 13.6 0 0 1 4.22 22.8 Z" fill="currentColor" opacity=".55"/>
+        <path d="M16 16 L4.22 22.8 A13.6 13.6 0 0 1 16 2.4 Z" fill="currentColor" opacity=".28"/>
+      </svg>
+      <b>Shakuf</b>
+    </a>
+    <a class="btn btn-line btn-sm" href="/setup/">Setup guide</a>
+  </div>
+</header>
+
+<main id="main" class="prose">
+
+  <section>
+    <div class="wrap-text">
+      <h1>Changelog</h1>
+      <p class="lead">
+        Every released version and what actually changed in it. Breaking changes
+        are called out explicitly.
+      </p>
+      <p class="dim" style="font-size:14px">
+        Published to npm as
+        <a href="https://www.npmjs.com/package/@shakuf-widget/widget">@shakuf-widget/widget</a>.
+        Installing with an explicit version pins it; without one you get the
+        latest.
+      </p>
+      <div class="callout">
+        The rest of this site is in Hebrew. This page is in English because it is
+        written for the people installing the package.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 0.2.0 ================= -->
+  <section class="rule">
+    <div class="wrap-text">
+      <h2>0.2.0 <span class="dim" style="font-weight:400;font-size:.6em">· 13 August 2026</span></h2>
+
+      <h3>Added</h3>
+      <ul>
+        <li>
+          <strong>English.</strong> The widget reads the page language from
+          <code>&lt;html lang&gt;</code> and renders accordingly, including
+          direction. <code>data-lang</code> overrides it. Hebrew remains the
+          default, so existing installs are unchanged.
+        </li>
+        <li>
+          <strong>Language changes are followed without a reload.</strong> Apps
+          that switch language at runtime switch the widget too, including the
+          screen-reader announcement region — a live region left tagged with the
+          wrong language is read aloud in the wrong voice.
+        </li>
+        <li>
+          <strong><code>data-mount</code></strong> — a CSS selector for the
+          element to mount into, instead of <code>&lt;body&gt;</code>. Required
+          for apps that mark <code>body</code> children <code>inert</code> behind
+          a full-screen blocker, which would otherwise disable the widget at
+          exactly the moment a visitor is stuck looking at one.
+        </li>
+        <li>
+          <strong><code>window.shakuf</code></strong> — host-page control:
+          <code>open</code>, <code>close</code>, <code>toggle</code>,
+          <code>hide</code>, <code>show</code>, <code>hidden</code>,
+          <code>reset</code>, <code>setLanguage</code>, <code>lang</code>,
+          <code>destroy</code>.
+        </li>
+        <li>
+          <strong><code>data-hidden</code></strong> — start with the launcher
+          hidden, for hosts that already know the visitor turned it off. Avoids
+          painting the button and then removing it on every load.
+        </li>
+        <li>
+          <strong><code>shakuf:ready</code></strong> event on
+          <code>document</code>. It fires during mount, before
+          <code>window.shakuf</code> exists, so the widget arrives in
+          <code>event.detail</code>.
+        </li>
+      </ul>
+
+      <h3>Fixed</h3>
+      <ul>
+        <li>
+          <strong>One failing feature disabled the rest.</strong> The apply calls
+          were unguarded, so a single throw ended the loop. On load that meant
+          the visitor's other saved preferences silently never applied; on a
+          click it meant the save and the panel refresh never ran, leaving the
+          control looking dead. Each feature is now isolated.
+        </li>
+        <li>
+          <strong>A failed change was announced as a success.</strong> The panel
+          announced the new state immediately after requesting it, whether or not
+          it had taken effect — telling the one person who cannot see the screen
+          that something happened when it had not. Announcements now describe
+          what actually occurred, and a failure says so.
+        </li>
+        <li>
+          <strong>Direction was hardcoded.</strong> The widget's own stylesheet
+          fixed writing direction to RTL, and the toggle knob slid the wrong way
+          in English.
+        </li>
+      </ul>
+
+      <h3>Breaking</h3>
+      <ul>
+        <li>
+          On the <code>A11yWidget</code> class, <code>show()</code> used to open
+          the panel. <code>open()</code> now opens the panel and
+          <code>show()</code> shows the launcher, matching the global API. Only
+          affects consumers using the class directly via npm.
+        </li>
+        <li>
+          The size budget rose from 15&nbsp;KB to 17&nbsp;KB gzipped. The bundle
+          ships both languages, so a Hebrew-only install carries the English
+          strings — the cost of keeping one script tag with no language in the
+          URL.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= 0.1.1 ================= -->
+  <section class="rule">
+    <div class="wrap-text">
+      <h2>0.1.1 <span class="dim" style="font-weight:400;font-size:.6em">· 12 August 2026</span></h2>
+      <p class="dim">Documentation only. The bundle is identical to 0.1.0.</p>
+      <ul>
+        <li>
+          <code>NOTICE</code> shipped with an unfilled copyright line, so a
+          redistributor could not have complied with section 4(d) of the licence
+          even if they wanted to.
+        </li>
+        <li>
+          The disclaimer cited licence section 9 for the limitation of liability.
+          Section 9 is <em>Accepting Warranty or Additional Liability</em>; the
+          limitation is section 8.
+        </li>
+        <li>
+          A broken link to <code>SECURITY.md</code>, which is not part of the
+          package and so returned 404 for anyone reading the published copy.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= 0.1.0 ================= -->
+  <section class="rule">
+    <div class="wrap-text">
+      <h2>0.1.0 <span class="dim" style="font-weight:400;font-size:.6em">· 12 August 2026</span></h2>
+      <p class="dim">First release. Hebrew only.</p>
+      <ul>
+        <li>
+          Display-preference panel: text size, line/letter/word spacing, readable
+          font, unjustify, contrast, saturation, link highlighting, hide images,
+          stop animations, focus highlighting, large cursor and a reading ruler.
+        </li>
+        <li>
+          Navigation lists for headings, landmarks and links — rendered in the
+          widget's own panel, never by modifying the host page.
+        </li>
+        <li>
+          Every change is visitor-initiated, reversible in one click, and stored
+          only in the browser's <code>localStorage</code>. No server, no account,
+          no data collection.
+        </li>
+        <li>
+          Shadow DOM with full containment, so the widget cannot leak into the
+          host page or be broken by it.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <ul class="foot-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/setup/">Setup</a></li>
+      <li><a href="/terms/">Terms</a></li>
+      <li><a href="/disclaimer/">Disclaimer</a></li>
+    </ul>
+    <p>
+      Shakuf adjusts display only and does not ensure conformance with SI 5568.
+      Making a website accessible requires changes to the site's own code and
+      content, a published accessibility statement, a designated accessibility
+      coordinator, and review by a certified accessibility surveyor.
+      Responsibility for legal compliance rests solely with the website owner.
+    </p>
+  </div>
+</footer>
+
+<script src="/shakuf.js" defer></script>
+</body>
+</html>

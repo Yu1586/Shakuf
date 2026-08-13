@@ -1,14 +1,27 @@
-import { announce, destroyAnnouncer } from './a11y/announcer.js';
+import {
+  announce,
+  destroyAnnouncer,
+  retagAnnouncer,
+  setAnnouncerContainer,
+} from './a11y/announcer.js';
 import { FocusTrap } from './a11y/focus-trap.js';
-import { readConfig } from './config.js';
-import { FEATURES, FEATURES_BY_ID } from './features/index.js';
+import { readConfig, resolveMount } from './config.js';
+import { getFeature, getFeatures } from './features/index.js';
 import { clearHostAttrs, ensureHostStyles, setHostAttr } from './host/host-styles.js';
 import { ReadingGuide } from './host/reading-guide.js';
 import { TextScaler } from './host/text-scaler.js';
-import { HE } from './i18n/he.js';
+import {
+  currentLang,
+  dirFor,
+  parseLang,
+  resolveLang,
+  setLang,
+  t,
+  type Lang,
+} from './i18n/index.js';
 import { clearJumpTargets } from './nav/outline.js';
 import { clearPrefs, loadPrefs, savePrefs } from './storage.js';
-import type { HostContext, PrefState, WidgetConfig } from './types.js';
+import type { Feature, HostContext, PrefState, WidgetConfig } from './types.js';
 import { foregroundFor } from './ui/color.js';
 import { accessibilityIcon, el } from './ui/dom.js';
 import { Panel } from './ui/panel.js';
@@ -27,13 +40,18 @@ export class A11yWidget {
   private state: PrefState;
   private panel: Panel | null = null;
   private trap: FocusTrap | null = null;
-  private open = false;
+  private panelOpen = false;
+  private langObserver: MutationObserver | null = null;
 
   constructor(config?: Partial<WidgetConfig>) {
     this.config = { ...readConfig(), ...config };
     this.state = loadPrefs();
 
-    this.host = el('div', { id: ROOT_ID });
+    // Before anything reads a string. `buildLauncher()` below is the first
+    // caller of `t()`, and the panel, features and live region all follow.
+    setLang(resolveLang(this.config.lang));
+
+    this.host = el('div', { id: ROOT_ID, dir: dirFor(currentLang()) });
     this.shadow = this.host.attachShadow({ mode: 'open' });
     this.guide = new ReadingGuide(this.shadow);
 
@@ -43,10 +61,17 @@ export class A11yWidget {
 
     this.applyTheme();
     this.launcher = this.buildLauncher();
+    this.launcher.hidden = this.config.hidden;
     this.shadow.appendChild(this.launcher);
 
     ensureHostStyles();
-    document.body.appendChild(this.host);
+
+    // Both of our light-DOM elements go to the same place. The live region is
+    // wired up before the first `announce()` can fire, which is why this sits
+    // ahead of `applyAll()` below.
+    const target = resolveMount(this.config.mount);
+    setAnnouncerContainer(target);
+    target.appendChild(this.host);
 
     // Re-apply what this visitor previously chose.
     //
@@ -55,6 +80,8 @@ export class A11yWidget {
     // for. A stored preference *is* their explicit prior request, and dropping
     // it every navigation would make the tool useless to the people it is for.
     this.applyAll();
+
+    this.watchLanguage();
   }
 
   // ---- Setup ------------------------------------------------------------
@@ -79,7 +106,7 @@ export class A11yWidget {
     const btn = el('button', {
       type: 'button',
       class: 'launcher',
-      'aria-label': HE.launcherLabel,
+      'aria-label': t().launcherLabel,
       'aria-expanded': 'false',
       lang: 'he',
     }, [accessibilityIcon()]) as HTMLButtonElement;
@@ -87,6 +114,59 @@ export class A11yWidget {
     btn.style.cssText = this.placement().launcher;
     btn.addEventListener('click', () => this.toggle());
     return btn;
+  }
+
+  // ---- Language ---------------------------------------------------------
+
+  /**
+   * Follows `<html lang>` for the life of the page.
+   *
+   * A single read at boot is not enough. Single-page apps switch language by
+   * rewriting `<html lang>` and `<html dir>` in place, with no navigation — so
+   * a one-shot read leaves the panel stranded in the previous language for the
+   * rest of the session, which is exactly the case a screen-reader user cannot
+   * work around.
+   *
+   * Skipped when `data-lang` is set: that is the host saying "this language,
+   * regardless", and an observer would keep overriding their choice.
+   */
+  private watchLanguage(): void {
+    if (parseLang(this.config.lang)) return;
+
+    this.langObserver = new MutationObserver(() => this.syncLanguage());
+    this.langObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['lang'],
+    });
+  }
+
+  /** Observer callback: re-resolve from the document, apply only on a change. */
+  private syncLanguage(): void {
+    if (setLang(resolveLang(this.config.lang))) this.relanguage();
+  }
+
+  /** Pushes the already-set language onto everything that renders a string. */
+  private relanguage(): void {
+    this.host.dir = dirFor(currentLang());
+    this.launcher.setAttribute(
+      'aria-label',
+      this.panelOpen ? t().launcherLabelClose : t().launcherLabel,
+    );
+    retagAnnouncer();
+
+    // Nothing rendered yet — the next open builds it in the new language.
+    if (!this.panel) return;
+
+    // The panel is built once and cached, and every string in it was resolved
+    // at build time, so a language switch has to discard it. Re-opening moves
+    // focus back into the panel, which is a visible jolt for anyone who had it
+    // open — accepted deliberately, because the alternative is leaving them
+    // reading a panel in a language the page has already left.
+    const wasOpen = this.panelOpen;
+    if (wasOpen) this.close();
+    this.panel.root.remove();
+    this.panel = null;
+    if (wasOpen) this.open();
   }
 
   // ---- Feature state ----------------------------------------------------
@@ -102,22 +182,60 @@ export class A11yWidget {
 
   private getLevel = (id: string): number => this.state[id] ?? 0;
 
-  private setLevel = (id: string, level: number): void => {
-    const feature = FEATURES_BY_ID.get(id);
-    if (!feature) return;
+  /**
+   * Runs one feature's `apply`, containing anything it throws.
+   *
+   * A feature reaches into the host page — other people's DOM, other people's
+   * media elements, occasionally cross-origin — so it can fail for reasons that
+   * have nothing to do with us. Unguarded, one throw took the rest of the loop
+   * with it: on boot that meant the visitor's other stored preferences silently
+   * never applied, and on a click it meant `savePrefs` and `panel.sync()` never
+   * ran, so the control the visitor just pressed sat there looking dead.
+   *
+   * Returns false so callers can roll the state back rather than persist a
+   * level that is not actually in effect.
+   */
+  private tryApply(feature: Feature, level: number): boolean {
+    try {
+      feature.apply(level, this.ctx);
+      return true;
+    } catch (error) {
+      if (typeof console !== 'undefined') {
+        console.error(`[shakuf] feature "${feature.id}" failed:`, error);
+      }
+      return false;
+    }
+  }
+
+  private setLevel = (id: string, level: number): boolean => {
+    const feature = getFeature(id);
+    if (!feature) return false;
 
     const max = feature.kind === 'stepper' ? feature.max : 1;
     const clamped = Math.max(0, Math.min(max, Math.round(level)));
+    const previous = this.getLevel(id);
 
     this.state[id] = clamped;
-    feature.apply(clamped, this.ctx);
+
+    if (!this.tryApply(feature, clamped)) {
+      // Put the state back so the panel keeps telling the truth about what is
+      // applied, and say so out loud. Silence is the wrong failure mode here:
+      // a visitor who cannot see the page has no other way to learn that the
+      // control they just pressed did nothing.
+      this.state[id] = previous;
+      this.panel?.sync();
+      announce(t().featureFailed(feature.label));
+      return false;
+    }
+
     savePrefs(this.state);
     this.panel?.sync();
+    return true;
   };
 
   /** Replays the whole stored state onto the page. */
   private applyAll(): void {
-    for (const feature of FEATURES) {
+    for (const feature of getFeatures()) {
       // Clamp here as well as in `setLevel`. Stored preferences come from
       // localStorage, which a stale or hand-edited value can populate with a
       // level this build has no label or CSS rule for — the page would then be
@@ -125,7 +243,10 @@ export class A11yWidget {
       const max = feature.kind === 'stepper' ? feature.max : 1;
       const level = Math.max(0, Math.min(max, this.getLevel(feature.id)));
       if (level !== this.getLevel(feature.id)) this.state[feature.id] = level;
-      if (level > 0) feature.apply(level, this.ctx);
+      // Isolated: one feature that cannot restore itself must not stop the
+      // others from restoring. No announcement here — nobody asked for anything
+      // yet, and speaking on page load would be its own accessibility problem.
+      if (level > 0 && !this.tryApply(feature, level)) this.state[feature.id] = 0;
     }
   }
 
@@ -137,7 +258,10 @@ export class A11yWidget {
     // sweeps below cover the attribute, scaling and overlay channels, but a
     // feature that touches anything else — `stopMotion` clearing `autoplay` on
     // host media, for instance — is only undone by its own `apply(0)`.
-    for (const feature of FEATURES) feature.apply(0, this.ctx);
+    // Isolated for the same reason, and it matters most here: reset is the
+    // visitor's escape hatch. If one feature throws while undoing itself, every
+    // feature after it in the list must still get its chance to clean up.
+    for (const feature of getFeatures()) this.tryApply(feature, 0);
 
     clearHostAttrs();
     this.scaler.reset();
@@ -164,31 +288,95 @@ export class A11yWidget {
   }
 
   toggle(): void {
-    if (this.open) this.close();
-    else this.show();
+    if (this.panelOpen) this.close();
+    else this.open();
+  }
+
+  // ---- Launcher visibility ----------------------------------------------
+
+  /**
+   * Hides the launcher without unmounting.
+   *
+   * `unmount()` also removes the button, but it tears down the whole widget:
+   * the visitor's applied preferences are reset, and re-mounting costs a full
+   * rebuild. Hosts that expose a "hide the accessibility button" setting are
+   * toggling *chrome*, not asking to undo someone's contrast choice, so this
+   * leaves everything applied and only takes the button off screen.
+   *
+   * Not persisted. The host owns this preference — it is theirs to store and
+   * re-apply, and writing it to our own localStorage would mean two sources of
+   * truth disagreeing the first time they diverge.
+   */
+  hide(): void {
+    if (this.launcher.hidden) return;
+    // An open panel with no launcher to return focus to is an orphan, and
+    // `deactivate()` would hand focus to a hidden element.
+    this.close();
+    this.launcher.hidden = true;
   }
 
   show(): void {
-    if (this.open) return;
+    this.launcher.hidden = false;
+  }
+
+  get hidden(): boolean {
+    return this.launcher.hidden;
+  }
+
+  /** Clears every preference and undoes everything applied to the page. */
+  reset(): void {
+    this.resetAll();
+  }
+
+  get lang(): Lang {
+    return currentLang();
+  }
+
+  // ---- Language ---------------------------------------------------------
+
+  /**
+   * Sets the language imperatively, and stops following the host document.
+   *
+   * An explicit call is a stronger signal than the attribute, so this pins:
+   * otherwise the next `<html lang>` mutation would silently undo it, and a
+   * host driving language through both channels would fight itself. Hosts that
+   * want the widget to keep tracking the document should change `<html lang>`
+   * instead of calling this.
+   *
+   * Unknown tags are ignored rather than throwing — a bad value should not take
+   * a host page down (see `auto.ts`), and the current language remains valid.
+   */
+  setLanguage(lang: string): void {
+    const parsed = parseLang(lang);
+    if (!parsed) return;
+
+    this.langObserver?.disconnect();
+    this.langObserver = null;
+
+    if (setLang(parsed)) this.relanguage();
+  }
+
+  open(): void {
+    if (this.panelOpen) return;
     const panel = this.ensurePanel();
     panel.sync();
     panel.root.hidden = false;
-    this.open = true;
+    this.panelOpen = true;
 
     this.launcher.setAttribute('aria-expanded', 'true');
-    this.launcher.setAttribute('aria-label', HE.launcherLabelClose);
+    this.launcher.setAttribute('aria-label', t().launcherLabelClose);
 
     this.trap = new FocusTrap(panel.root, this.shadow, () => this.close());
     this.trap.activate();
   }
 
   close(): void {
-    if (!this.open || !this.panel) return;
+    if (!this.panelOpen || !this.panel) return;
     this.panel.root.hidden = true;
-    this.open = false;
+    this.panelOpen = false;
 
     this.launcher.setAttribute('aria-expanded', 'false');
-    this.launcher.setAttribute('aria-label', HE.launcherLabel);
+    this.launcher.setAttribute('aria-label', t().launcherLabel);
 
     // Deactivate returns focus to whatever opened the panel.
     this.trap?.deactivate();
@@ -198,6 +386,8 @@ export class A11yWidget {
   /** Removes every trace of the widget and undoes everything it applied. */
   destroy(): void {
     this.close();
+    this.langObserver?.disconnect();
+    this.langObserver = null;
     this.resetAll();
     this.guide.destroy();
     clearJumpTargets();
@@ -231,6 +421,16 @@ export function mount(config?: Partial<WidgetConfig>): A11yWidget {
     );
   }
   instance = new A11yWidget(config);
+
+  // Fired on `document`, not `window`, so it is reachable from a host that
+  // never touches globals. Dispatched synchronously at the end of mount, which
+  // means a listener must already be attached — with `defer` that is any inline
+  // script earlier in the document. Hosts that cannot guarantee ordering should
+  // check for `window.shakuf` instead: it is set at the same moment and stays.
+  document.dispatchEvent(
+    new CustomEvent<A11yWidget>('shakuf:ready', { detail: instance }),
+  );
+
   return instance;
 }
 

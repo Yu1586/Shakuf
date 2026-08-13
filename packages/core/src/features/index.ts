@@ -1,4 +1,5 @@
-import { HE } from '../i18n/he.js';
+import { t } from '../i18n/index.js';
+import type { Strings } from '../i18n/index.js';
 import type { Feature } from '../types.js';
 
 /**
@@ -11,8 +12,10 @@ import type { Feature } from '../types.js';
  */
 
 /** Level names shared by the simple 0..2 spacing steppers. */
-const spacingLabel = (level: number): string =>
-  HE.spacingNames[level] ?? HE.spacingNames[0];
+const spacingLabel = (level: number): string => {
+  const names = t().spacingNames;
+  return names[level] ?? names[0]!;
+};
 
 /**
  * Elements whose `autoplay` we cleared, so level 0 can put it back.
@@ -53,140 +56,175 @@ function pauseMedia(paused: boolean): void {
   }
 }
 
-export const FEATURES: readonly Feature[] = [
-  // ---- Text ------------------------------------------------------------
-  {
-    id: 'textSize',
-    kind: 'stepper',
-    group: 'text',
-    label: HE.textSize,
-    description: HE.textSizeDesc,
-    max: 4,
-    stepLabel: (level) => HE.levelNames[level] ?? HE.levelNames[0],
-    apply: (level, ctx) => ctx.scaleText(level),
-  },
-  {
-    id: 'lineHeight',
-    kind: 'stepper',
-    group: 'text',
-    label: HE.lineHeight,
-    max: 2,
-    stepLabel: spacingLabel,
-    apply: (level, ctx) => ctx.setHostAttr('line', level ? String(level) : null),
-  },
-  {
-    id: 'letterSpacing',
-    kind: 'stepper',
-    group: 'text',
-    label: HE.letterSpacing,
-    max: 2,
-    stepLabel: spacingLabel,
-    apply: (level, ctx) => ctx.setHostAttr('letter', level ? String(level) : null),
-  },
-  {
-    id: 'wordSpacing',
-    kind: 'stepper',
-    group: 'text',
-    label: HE.wordSpacing,
-    max: 2,
-    stepLabel: spacingLabel,
-    apply: (level, ctx) => ctx.setHostAttr('word', level ? String(level) : null),
-  },
-  {
-    id: 'readableFont',
-    kind: 'toggle',
-    group: 'text',
-    label: HE.readableFont,
-    description: HE.readableFontDesc,
-    apply: (on, ctx) => ctx.setHostAttr('font', on ? 'readable' : null),
-  },
-  {
-    id: 'textAlign',
-    kind: 'toggle',
-    group: 'text',
-    label: HE.textAlign,
-    description: HE.textAlignDesc,
-    apply: (on, ctx) => ctx.setHostAttr('align', on ? 'start' : null),
-  },
-
-  // ---- Colour ----------------------------------------------------------
-  {
-    id: 'contrast',
-    kind: 'stepper',
-    group: 'color',
-    label: HE.contrast,
-    max: 3,
-    stepLabel: (level) =>
-      [HE.levelOff, HE.contrastHigh, HE.contrastInvert, HE.contrastMono][level] ??
-      HE.levelOff,
-    apply: (level, ctx) =>
-      ctx.setHostAttr(
-        'contrast',
-        [null, 'high', 'invert', 'mono'][level] ?? null,
-      ),
-  },
-  {
-    id: 'saturation',
-    kind: 'stepper',
-    group: 'color',
-    label: HE.saturation,
-    max: 2,
-    stepLabel: (level) =>
-      [HE.levelOff, HE.saturationLow, HE.saturationHigh][level] ?? HE.levelOff,
-    apply: (level, ctx) =>
-      ctx.setHostAttr('saturation', [null, 'low', 'high'][level] ?? null),
-  },
-  {
-    id: 'highlightLinks',
-    kind: 'toggle',
-    group: 'color',
-    label: HE.highlightLinks,
-    description: HE.highlightLinksDesc,
-    apply: (on, ctx) => ctx.setHostAttr('links', on ? '1' : null),
-  },
-  {
-    id: 'hideImages',
-    kind: 'toggle',
-    group: 'color',
-    label: HE.hideImages,
-    apply: (on, ctx) => ctx.setHostAttr('images', on ? 'hidden' : null),
-  },
-
-  // ---- Motion & focus --------------------------------------------------
-  {
-    id: 'stopMotion',
-    kind: 'toggle',
-    group: 'motion',
-    label: HE.stopMotion,
-    description: HE.stopMotionDesc,
-    apply: (on, ctx) => {
-      ctx.setHostAttr('motion', on ? 'off' : null);
-      pauseMedia(!!on);
+/**
+ * Builds the registry against a string pack.
+ *
+ * This used to be a module-level `const`, which baked every label at import
+ * time — fine when Hebrew was the only language, wrong the moment the panel has
+ * to re-render in another one. Only `label`, `description` and `stepLabel`
+ * depend on language; `apply` never does, and the state it relies on
+ * (`autoplayCleared`) is module-scoped, so rebuilding the array is free of
+ * side effects.
+ */
+function build(s: Strings): readonly Feature[] {
+  return [
+    // ---- Text ------------------------------------------------------------
+    {
+      id: 'textSize',
+      kind: 'stepper',
+      group: 'text',
+      label: s.textSize,
+      description: s.textSizeDesc,
+      max: 4,
+      stepLabel: (level) => s.levelNames[level] ?? s.levelNames[0]!,
+      apply: (level, ctx) => ctx.scaleText(level),
     },
-  },
-  {
-    id: 'focusOutline',
-    kind: 'toggle',
-    group: 'motion',
-    label: HE.focusOutline,
-    description: HE.focusOutlineDesc,
-    apply: (on, ctx) => ctx.setHostAttr('focus', on ? 'strong' : null),
-  },
-  {
-    id: 'bigCursor',
-    kind: 'toggle',
-    group: 'motion',
-    label: HE.bigCursor,
-    apply: (on, ctx) => ctx.setHostAttr('cursor', on ? 'big' : null),
-  },
-  {
-    id: 'readingGuide',
-    kind: 'toggle',
-    group: 'motion',
-    label: HE.readingGuide,
-    description: HE.readingGuideDesc,
-    apply: (on, ctx) => ctx.readingGuide(!!on),
-  },
-];
+    {
+      id: 'lineHeight',
+      kind: 'stepper',
+      group: 'text',
+      label: s.lineHeight,
+      max: 2,
+      stepLabel: spacingLabel,
+      apply: (level, ctx) => ctx.setHostAttr('line', level ? String(level) : null),
+    },
+    {
+      id: 'letterSpacing',
+      kind: 'stepper',
+      group: 'text',
+      label: s.letterSpacing,
+      max: 2,
+      stepLabel: spacingLabel,
+      apply: (level, ctx) => ctx.setHostAttr('letter', level ? String(level) : null),
+    },
+    {
+      id: 'wordSpacing',
+      kind: 'stepper',
+      group: 'text',
+      label: s.wordSpacing,
+      max: 2,
+      stepLabel: spacingLabel,
+      apply: (level, ctx) => ctx.setHostAttr('word', level ? String(level) : null),
+    },
+    {
+      id: 'readableFont',
+      kind: 'toggle',
+      group: 'text',
+      label: s.readableFont,
+      description: s.readableFontDesc,
+      apply: (on, ctx) => ctx.setHostAttr('font', on ? 'readable' : null),
+    },
+    {
+      id: 'textAlign',
+      kind: 'toggle',
+      group: 'text',
+      label: s.textAlign,
+      description: s.textAlignDesc,
+      apply: (on, ctx) => ctx.setHostAttr('align', on ? 'start' : null),
+    },
 
-export const FEATURES_BY_ID = new Map(FEATURES.map((f) => [f.id, f]));
+    // ---- Colour ----------------------------------------------------------
+    {
+      id: 'contrast',
+      kind: 'stepper',
+      group: 'color',
+      label: s.contrast,
+      max: 3,
+      stepLabel: (level) =>
+        [s.levelOff, s.contrastHigh, s.contrastInvert, s.contrastMono][level] ??
+        s.levelOff,
+      apply: (level, ctx) =>
+        ctx.setHostAttr(
+          'contrast',
+          [null, 'high', 'invert', 'mono'][level] ?? null,
+        ),
+    },
+    {
+      id: 'saturation',
+      kind: 'stepper',
+      group: 'color',
+      label: s.saturation,
+      max: 2,
+      stepLabel: (level) =>
+        [s.levelOff, s.saturationLow, s.saturationHigh][level] ?? s.levelOff,
+      apply: (level, ctx) =>
+        ctx.setHostAttr('saturation', [null, 'low', 'high'][level] ?? null),
+    },
+    {
+      id: 'highlightLinks',
+      kind: 'toggle',
+      group: 'color',
+      label: s.highlightLinks,
+      description: s.highlightLinksDesc,
+      apply: (on, ctx) => ctx.setHostAttr('links', on ? '1' : null),
+    },
+    {
+      id: 'hideImages',
+      kind: 'toggle',
+      group: 'color',
+      label: s.hideImages,
+      apply: (on, ctx) => ctx.setHostAttr('images', on ? 'hidden' : null),
+    },
+
+    // ---- Motion & focus --------------------------------------------------
+    {
+      id: 'stopMotion',
+      kind: 'toggle',
+      group: 'motion',
+      label: s.stopMotion,
+      description: s.stopMotionDesc,
+      apply: (on, ctx) => {
+        ctx.setHostAttr('motion', on ? 'off' : null);
+        pauseMedia(!!on);
+      },
+    },
+    {
+      id: 'focusOutline',
+      kind: 'toggle',
+      group: 'motion',
+      label: s.focusOutline,
+      description: s.focusOutlineDesc,
+      apply: (on, ctx) => ctx.setHostAttr('focus', on ? 'strong' : null),
+    },
+    {
+      id: 'bigCursor',
+      kind: 'toggle',
+      group: 'motion',
+      label: s.bigCursor,
+      apply: (on, ctx) => ctx.setHostAttr('cursor', on ? 'big' : null),
+    },
+    {
+      id: 'readingGuide',
+      kind: 'toggle',
+      group: 'motion',
+      label: s.readingGuide,
+      description: s.readingGuideDesc,
+      apply: (on, ctx) => ctx.readingGuide(!!on),
+    },
+  ];
+}
+
+/**
+ * Cached per string pack, keyed on the pack's identity rather than a manual
+ * invalidate call. `t()` returns the same object for as long as the language is
+ * unchanged, so this rebuilds exactly once per switch and never needs the
+ * language layer to know that this module has a cache.
+ */
+let cache: { pack: Strings; list: readonly Feature[]; byId: Map<string, Feature> } | null = null;
+
+function registry(): { list: readonly Feature[]; byId: Map<string, Feature> } {
+  const pack = t();
+  if (cache?.pack !== pack) {
+    const list = build(pack);
+    cache = { pack, list, byId: new Map(list.map((f) => [f.id, f])) };
+  }
+  return cache;
+}
+
+export function getFeatures(): readonly Feature[] {
+  return registry().list;
+}
+
+export function getFeature(id: string): Feature | undefined {
+  return registry().byId.get(id);
+}

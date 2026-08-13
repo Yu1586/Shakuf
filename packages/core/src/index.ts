@@ -6,3 +6,4 @@
  */
 export { A11yWidget, mount, unmount } from './widget.js';
 export type { WidgetConfig } from './types.js';
+export type { Lang } from './i18n/index.js';
