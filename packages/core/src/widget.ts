@@ -108,7 +108,11 @@ export class A11yWidget {
       class: 'launcher',
       'aria-label': t().launcherLabel,
       'aria-expanded': 'false',
-      lang: 'he',
+      // Resolved, never hardcoded. The label is translated, so a fixed `he` tag
+      // meant a screen reader read "Open accessibility menu" in a Hebrew voice —
+      // unintelligible, on the one control every visitor meets first. The panel
+      // and the live region already resolve theirs; the launcher was missed.
+      lang: currentLang(),
     }, [accessibilityIcon()]) as HTMLButtonElement;
 
     btn.style.cssText = this.placement().launcher;
@@ -148,6 +152,7 @@ export class A11yWidget {
   /** Pushes the already-set language onto everything that renders a string. */
   private relanguage(): void {
     this.host.dir = dirFor(currentLang());
+    this.launcher.lang = currentLang();
     this.launcher.setAttribute(
       'aria-label',
       this.panelOpen ? t().launcherLabelClose : t().launcherLabel,

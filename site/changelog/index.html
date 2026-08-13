@@ -59,6 +59,52 @@
     </div>
   </section>
 
+  <!-- ================= 0.2.1 ================= -->
+  <section class="rule">
+    <div class="wrap-text">
+      <h2>0.2.1 <span class="dim" style="font-weight:400;font-size:.6em">· 13 August 2026</span></h2>
+
+      <p>
+        Three display bugs, each of which broke a feature for exactly the people
+        it exists for. If you are on 0.1.0–0.2.0, upgrade.
+      </p>
+
+      <h3>Fixed</h3>
+      <ul>
+        <li>
+          <strong>Inverted colours, greyscale and both saturation levels did
+          nothing on their own.</strong> The four settings are composed into one
+          <code>filter</code> declaration through custom properties, and the
+          fallback for an unset half was <code>none</code>. That is a legal value
+          for the property but not a legal item in a filter list, so any single
+          setting produced <code>filter: invert(1) none</code> — invalid, and
+          dropped altogether. Turning on two at once worked, which is why it went
+          unnoticed. The panel reported the setting as active throughout, so a
+          visitor who could not see the page had no way to tell it had done
+          nothing. The fallbacks are now identity functions.
+        </li>
+        <li>
+          <strong>Links were invisible in high-contrast mode.</strong> The rule
+          that forces text white outranked the rule that colours links yellow —
+          <code>:not(svg):not(svg *)</code> each add their argument's weight, so
+          the sweeping rule computed higher than the link rule that followed it.
+          Links rendered <code>#fff</code>, indistinguishable from body text, in
+          the one mode built for low-vision users. The type exclusions moved
+          inside <code>:where()</code>; the ID exclusion stayed out of it, so the
+          palette still overrides host stylesheets that use their own
+          <code>!important</code>.
+        </li>
+        <li>
+          <strong>The launcher button was always tagged Hebrew.</strong> Its
+          label is translated but its <code>lang</code> attribute was hardcoded,
+          so on an English page a screen reader read an English label in a Hebrew
+          voice. It now resolves the language like the panel and the announcement
+          region already did, and follows a runtime language change.
+        </li>
+      </ul>
+    </div>
+  </section>
+
   <!-- ================= 0.2.0 ================= -->
   <section class="rule">
     <div class="wrap-text">

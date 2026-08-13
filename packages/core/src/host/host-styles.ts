@@ -20,6 +20,16 @@ const SELF = '#shakuf-root';
 /** Elements whose spacing must not be touched — icon fonts and vector art break. */
 const NO_SPACING = `svg, svg *, i, [class*="icon"], [class*="Icon"], [class*="fa-"], .material-icons`;
 
+/**
+ * NOTE ON COMMENT LENGTH IN THIS FILE
+ *
+ * The comments below sit inside a template literal, so they are string content:
+ * `minify: true` strips every JS comment in the bundle but cannot touch these,
+ * and they ship to every visitor of every site running the widget. Keep the
+ * rationale here short and put the long version in the commit message. Roughly
+ * 5 KB of this file is comment text, which is why a build-time strip is worth
+ * doing before the bundle needs the headroom.
+ */
 export const HOST_STYLES = /* css */ `
 /* ---- Text spacing (WCAG 1.4.12 values) ------------------------------- */
 html[data-shakuf-line="1"] body *:not(${NO_SPACING}):not(${SELF}) { line-height: 1.6 !important; }
@@ -68,11 +78,16 @@ html[data-shakuf-contrast="mono"]      { --shakuf-invert: grayscale(1); }
 html[data-shakuf-saturation="low"]     { --shakuf-sat: saturate(0.5); }
 html[data-shakuf-saturation="high"]    { --shakuf-sat: saturate(1.6); }
 
+/* The fallbacks must be identity FUNCTIONS, never none: none is legal as the
+   whole filter value but not as an item in a filter list, so a one-sided
+   combination built "filter: invert(1) none", which is invalid at
+   computed-value time and drops to none. That killed every one of these
+   features when used alone while the panel still reported it active. */
 html[data-shakuf-contrast="invert"],
 html[data-shakuf-contrast="mono"],
 html[data-shakuf-saturation="low"],
 html[data-shakuf-saturation="high"] {
-  filter: var(--shakuf-invert, none) var(--shakuf-sat, none) !important;
+  filter: var(--shakuf-invert, invert(0)) var(--shakuf-sat, saturate(1)) !important;
 }
 
 /* Cancels the ancestor inversion so photos stay recognisable.
@@ -88,9 +103,17 @@ html[data-shakuf-contrast="invert"] video {
 
 /* ---- High contrast ----------------------------------------------------
    Not a filter: an explicit palette. Backgrounds are forced dark and text
-   forced light, which is the combination most requested by low-vision users. */
+   forced light, which is the combination most requested by low-vision users.
+
+   The type exclusions sit inside :where() so they carry no specificity. As
+   plain :not(svg):not(svg *) this rule computed to (1,1,4) against the link
+   rule's (1,1,3), so it won and links rendered #fff — indistinguishable from
+   body text, in the one mode built for low-vision users.
+   :not(${SELF}) stays OUTSIDE the :where() on purpose: its ID weight is what
+   keeps these rules ahead of hosts with their own ID-scoped !important rules.
+   Only the type weight needed to go. */
 html[data-shakuf-contrast="high"] body,
-html[data-shakuf-contrast="high"] body *:not(${SELF}):not(svg):not(svg *) {
+html[data-shakuf-contrast="high"] body *:not(${SELF}):not(:where(svg, svg *)) {
   background-color: #000 !important;
   background-image: none !important;
   color: #fff !important;
