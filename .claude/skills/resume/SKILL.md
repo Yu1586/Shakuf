@@ -65,9 +65,13 @@ briefly so they are active in the session rather than rediscovered mid-task:
 
 - **Never commit or push without explicit permission.** **Never** add Claude as
   co-author or contributor, in commits or anywhere else.
-- **The repo is private and stays private** until an Israeli legal entity
-  exists. `gh repo edit --visibility public` and `npm publish` are both gated
-  on that. Local commits and a private repo are fine; publishing is the line.
+- **The repo is public and the package is published.** Both happened on
+  2026-08-13 by Yuval's decision, with no legal entity — deliberately. Do not
+  re-raise the entity question as a gate on publishing; it is now a question
+  about exposure already running, not a step before it. `npm publish` is routine
+  when he asks, but confirm the payload with `--dry-run` first, and note that
+  npm's web-login session expires — an expired one fails with a misleading
+  `E404`, fixed by `npm login --auth-type=web`, which he must run himself.
 - **`PLAN.md` and `.mcp.json` stay out of git** — the first is business
   strategy, the second holds a live API token. History survives a
   private→public switch, so nothing sensitive may ever enter it.

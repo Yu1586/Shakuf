@@ -119,9 +119,14 @@ separate confirmation again if the user only approved committing.
 
 - **Never commit or push without explicit permission.** Never add Claude as
   co-author or contributor.
-- **The repo stays private** until a legal entity exists. Never run
-  `gh repo edit --visibility public` or `npm publish`.
-- **`PLAN.md` stays gitignored.**
+- **The repo is public and the package is published.** Both happened on
+  2026-08-13 by Yuval's decision, without a legal entity. Do not re-raise the
+  entity question as a blocker on either — it has been asked and answered.
+  `npm publish` is routine when he asks for it, but still confirm the payload
+  with `--dry-run` first.
+- **`PLAN.md` and `.mcp.json` stay gitignored, permanently.** The repo is public
+  now, so a single careless `git add -f` is an immediate disclosure rather than
+  a private mistake.
 - **Never write a compliance claim anywhere** — not in code, commits, docs or
   site copy. Banned: "makes your site compliant", "עומד בתקן", "100%
   compliance", "protects you from lawsuits", "מוגן מתביעות". The product's
