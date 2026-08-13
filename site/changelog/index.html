@@ -59,6 +59,73 @@
     </div>
   </section>
 
+  <!-- ================= 0.3.0 ================= -->
+  <section class="rule">
+    <div class="wrap-text">
+      <h2>0.3.0 <span class="dim" style="font-weight:400;font-size:.6em">· 13 August 2026</span></h2>
+
+      <p>
+        Two additions for sites adopting the widget, both requested by an
+        integration. Nothing breaks: every existing option keeps its meaning.
+      </p>
+
+      <h3>Added</h3>
+      <ul>
+        <li>
+          <strong>Logical placement.</strong> <code>data-position</code> now also
+          accepts <code>bottom-start</code>, <code>bottom-end</code>,
+          <code>top-start</code> and <code>top-end</code>. These follow reading
+          direction, so the launcher moves to the other side when the page
+          switches between Hebrew and English — the same way a site built on CSS
+          logical properties moves everything else. A site with its own floating
+          button in the opposite logical corner could not avoid a collision with
+          the physical values: whichever corner it picked, the two met in one of
+          its two languages. The physical values are unchanged.
+        </li>
+        <li>
+          <strong>A preferences import path.</strong>
+          <code>window.shakuf.getPrefs()</code> returns the visitor's current
+          settings; <code>setPrefs()</code> replaces them and applies the result.
+          Bundler hosts can also pass <code>mount({ initialPrefs })</code>, which
+          seeds settings only for visitors who have none stored here yet.
+          <br>
+          This exists so a site replacing another accessibility tool does not
+          silently reset everyone who had set large text or high contrast — which
+          is exactly the population the feature is for. It also lets a site
+          restore settings from a profile of its own, so a preference is not
+          stranded on one device.
+          <br>
+          We chose to expose this rather than document the
+          <code>localStorage</code> key as a supported contract. Freezing an
+          internal storage format to serve a one-time migration means every later
+          change breaks a consumer we cannot see.
+        </li>
+      </ul>
+
+      <h3>Note for anyone storing preferences</h3>
+      <ul>
+        <li>
+          The widget still transmits nothing and still has no server. If you save
+          <code>getPrefs()</code> output to a user profile, that is your decision
+          under your own privacy policy — and worth making deliberately, since
+          values like "high contrast" or "dyslexia-friendly font" can be read as
+          an inference about disability. That is why we do not touch them.
+        </li>
+      </ul>
+
+      <h3>Internal</h3>
+      <ul>
+        <li>
+          CSS comments are stripped from the bundle at build time. They lived
+          inside a template literal, so the minifier could not reach them and
+          they were shipping to every visitor — 44% of the injected stylesheet.
+          No behaviour change; the bundle dropped from 16.99 KB to 15.43 KB
+          gzipped, which is what made room for the two features above.
+        </li>
+      </ul>
+    </div>
+  </section>
+
   <!-- ================= 0.2.1 ================= -->
   <section class="rule">
     <div class="wrap-text">

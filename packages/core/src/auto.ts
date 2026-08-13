@@ -36,6 +36,23 @@ export interface ShakufApi {
   readonly hidden: boolean;
   /** Clears every preference and undoes everything applied to the page. */
   reset(): void;
+  /**
+   * The visitor's current preferences, as feature id → level. A copy.
+   *
+   * For hosts that want to store settings against a profile of their own. The
+   * widget transmits nothing itself (PLAN.md D2); a host that sends this is
+   * making its own decision, and these values are arguably an inference about
+   * disability, so it should be a considered one.
+   */
+  getPrefs(): Record<string, number>;
+  /**
+   * Replaces every preference and applies the result. Unknown ids and
+   * out-of-range levels are dropped; anything omitted is turned off.
+   *
+   * Use it to restore a saved profile. To change one setting, spread over
+   * `getPrefs()`.
+   */
+  setPrefs(prefs: Record<string, number>): void;
   /** `he` or `en`. Pins the language and stops following the host document. */
   setLanguage(lang: Lang | string): void;
   /** The active language. */
@@ -64,6 +81,8 @@ function api(widget: A11yWidget): ShakufApi {
       return widget.hidden;
     },
     reset: () => widget.reset(),
+    getPrefs: () => widget.getPrefs(),
+    setPrefs: (prefs) => widget.setPrefs(prefs),
     setLanguage: (lang) => widget.setLanguage(lang),
     get lang() {
       return widget.lang;

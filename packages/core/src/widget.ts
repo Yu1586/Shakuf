@@ -20,7 +20,7 @@ import {
   type Lang,
 } from './i18n/index.js';
 import { clearJumpTargets } from './nav/outline.js';
-import { clearPrefs, loadPrefs, savePrefs } from './storage.js';
+import { clearPrefs, loadPrefs, sanitizePrefs, savePrefs } from './storage.js';
 import type { Feature, HostContext, PrefState, WidgetConfig } from './types.js';
 import { foregroundFor } from './ui/color.js';
 import { accessibilityIcon, el } from './ui/dom.js';
@@ -42,10 +42,18 @@ export class A11yWidget {
   private trap: FocusTrap | null = null;
   private panelOpen = false;
   private langObserver: MutationObserver | null = null;
+  /** Whether this boot took its state from `initialPrefs` rather than storage. */
+  private readonly seeded: boolean;
 
   constructor(config?: Partial<WidgetConfig>) {
     this.config = { ...readConfig(), ...config };
+
+    // Stored preferences win. `initialPrefs` is a seed for visitors who have
+    // none yet, so a host migrating from another tool can carry settings across
+    // without overriding what this visitor has since chosen here.
     this.state = loadPrefs();
+    this.seeded = Object.keys(this.state).length === 0 && this.config.initialPrefs !== null;
+    if (this.seeded) this.state = sanitizePrefs(this.config.initialPrefs);
 
     // Before anything reads a string. `buildLauncher()` below is the first
     // caller of `t()`, and the panel, features and live region all follow.
@@ -81,6 +89,12 @@ export class A11yWidget {
     // it every navigation would make the tool useless to the people it is for.
     this.applyAll();
 
+    // Persist a seed on first use, so it behaves like any other stored
+    // preference from here on: the visitor can change or reset it, and the
+    // host's migration values do not reappear every page load to undo them.
+    // `applyAll` has already zeroed anything that failed to apply.
+    if (this.seeded) savePrefs(this.state);
+
     this.watchLanguage();
   }
 
@@ -91,14 +105,30 @@ export class A11yWidget {
     this.host.style.setProperty('--accent-fg', foregroundFor(this.config.accent));
   }
 
-  /** Corner placement for the launcher and the panel that opens beside it. */
+  /**
+   * Corner placement for the launcher and the panel that opens beside it.
+   *
+   * `start` and `end` emit `inset-inline-*`, which the browser resolves against
+   * the element's own direction — and ours is set from the widget language on
+   * the shadow host. So a logical placement follows a runtime language switch on
+   * its own, with nothing to re-apply: these strings are written once and the
+   * resolution happens at layout. That is the whole reason to prefer the logical
+   * property over computing left/right ourselves.
+   */
   private placement(): { launcher: string; panel: string } {
     const gap = this.config.offset;
-    const [vertical, horizontal] = this.config.position.split('-') as ['top' | 'bottom', 'left' | 'right'];
-    const launcher = `${vertical}:${gap}px;${horizontal}:${gap}px;`;
+    const [vertical, horizontal] = this.config.position.split('-') as [
+      'top' | 'bottom',
+      'left' | 'right' | 'start' | 'end',
+    ];
+    const side =
+      horizontal === 'start' || horizontal === 'end'
+        ? `inset-inline-${horizontal}`
+        : horizontal;
+    const launcher = `${vertical}:${gap}px;${side}:${gap}px;`;
     // The panel sits beside the launcher, clear of its 56px diameter.
     const panelOffset = gap + 56 + 12;
-    const panel = `${vertical}:${panelOffset}px;${horizontal}:${gap}px;`;
+    const panel = `${vertical}:${panelOffset}px;${side}:${gap}px;`;
     return { launcher, panel };
   }
 
@@ -238,20 +268,33 @@ export class A11yWidget {
     return true;
   };
 
-  /** Replays the whole stored state onto the page. */
+  /**
+   * Replays the incoming state onto the page, and normalises it on the way.
+   *
+   * Rebuilt from the feature list rather than edited in place, so what survives
+   * is exactly what this build can actually render: known ids only, each clamped
+   * to its own feature's max. Both matter, and for the same reason — state
+   * arrives from localStorage, which a stale or hand-edited value can populate,
+   * and now also from a host's `initialPrefs`. An unknown id used to be carried
+   * along and written straight back out by `savePrefs`, so `getPrefs()` returned
+   * entries that were not features at all, contradicting its own contract and
+   * disagreeing with `setPrefs`, which has always dropped them. An out-of-range
+   * level would leave the page scaled while the panel reported "רגיל" and lit no
+   * dots.
+   *
+   * Nothing is applied at level 0 here: at boot there is nothing to undo, and no
+   * announcement is made — speaking on page load would be its own accessibility
+   * problem. Isolated per feature, so one that cannot restore itself does not
+   * stop the rest.
+   */
   private applyAll(): void {
+    const incoming = this.state;
+    this.state = {};
+
     for (const feature of getFeatures()) {
-      // Clamp here as well as in `setLevel`. Stored preferences come from
-      // localStorage, which a stale or hand-edited value can populate with a
-      // level this build has no label or CSS rule for — the page would then be
-      // scaled while the panel reported "רגיל" and lit no dots.
       const max = feature.kind === 'stepper' ? feature.max : 1;
-      const level = Math.max(0, Math.min(max, this.getLevel(feature.id)));
-      if (level !== this.getLevel(feature.id)) this.state[feature.id] = level;
-      // Isolated: one feature that cannot restore itself must not stop the
-      // others from restoring. No announcement here — nobody asked for anything
-      // yet, and speaking on page load would be its own accessibility problem.
-      if (level > 0 && !this.tryApply(feature, level)) this.state[feature.id] = 0;
+      const level = Math.max(0, Math.min(max, incoming[feature.id] ?? 0));
+      if (level > 0 && this.tryApply(feature, level)) this.state[feature.id] = level;
     }
   }
 
@@ -331,6 +374,53 @@ export class A11yWidget {
   /** Clears every preference and undoes everything applied to the page. */
   reset(): void {
     this.resetAll();
+  }
+
+  /**
+   * The visitor's current preferences, as feature id → level.
+   *
+   * A copy, so a host cannot mutate our state by holding the object. Levels
+   * absent from it are off. Pair this with `setPrefs` to store a visitor's
+   * settings against a server-side profile — an accessibility preference that
+   * only survives on one device is the weaker half of the feature.
+   *
+   * Reading this is not a licence to transmit it without asking. "High
+   * contrast" is arguably an inference about disability (PLAN.md §4), which is
+   * why the widget itself never sends it anywhere; a host that does is making
+   * its own decision under its own privacy policy.
+   */
+  getPrefs(): PrefState {
+    return { ...this.state };
+  }
+
+  /**
+   * Replaces the visitor's preferences wholesale and applies the result.
+   *
+   * Replace, not merge, and deliberately: this is how a host restores a saved
+   * profile, and a merge would leave whatever the visitor had turned on locally
+   * silently mixed into a state the host thinks it fully specified. Every
+   * feature is re-applied, including at level 0, so anything previously on runs
+   * its own undo — the same mechanism `reset()` relies on. To change one setting
+   * without disturbing the rest, spread over `getPrefs()`.
+   *
+   * Input is sanitised and then clamped per feature, so a stale level from an
+   * older version, an unknown feature id, or a hand-built object cannot put the
+   * widget into a state the panel cannot render or the visitor cannot reset.
+   */
+  setPrefs(prefs: unknown): void {
+    const next = sanitizePrefs(prefs);
+    this.state = {};
+
+    for (const feature of getFeatures()) {
+      const max = feature.kind === 'stepper' ? feature.max : 1;
+      const level = Math.max(0, Math.min(max, next[feature.id] ?? 0));
+      // Isolated per feature, as everywhere else: one feature that cannot apply
+      // must not stop the rest of the profile from being restored.
+      if (this.tryApply(feature, level) && level > 0) this.state[feature.id] = level;
+    }
+
+    savePrefs(this.state);
+    this.panel?.sync();
   }
 
   get lang(): Lang {

@@ -93,7 +93,7 @@ End with **2–3 ranked suggestions**, each with one line on why it's next and
 what it unblocks. Distinguish clearly between:
 
 - work that is blocked on the **user** (entity registration, buying ת״י 5568,
-  filling the `[למלא]` placeholders, arranging the Hebrew NVDA test), and
+  naming the accessibility coordinator, arranging the Hebrew NVDA test), and
 - work that can proceed **now** without them.
 
 Do not start any of it. Propose, then stop.
@@ -102,7 +102,7 @@ Do not start any of it. Propose, then stop.
 
 ## Useful specifics, so they don't need rediscovering
 
-- **Repo:** `Yu1586/Shakuf`, private, branch `main`. Live at
+- **Repo:** `Yu1586/Shakuf`, **public** since 2026-08-13, branch `main`. Live at
   `https://shakuf.yuvalrahamim.com` (Cloudflare Pages, auto-deploys from
   `main`; DNS CNAME at GoDaddy).
 - **Layout:** `packages/core/src` is the widget; `site/` is the static site
@@ -116,7 +116,7 @@ Do not start any of it. Propose, then stop.
 - **Fonts** are self-hosted in `site/fonts/` (Heebo for Hebrew, JetBrains Mono
   for Latin labels). Never switch to a CDN — the CSP is `font-src 'self'` and
   the site's own claim is that it makes no external requests.
-- **Known placeholders still unfilled:** `[פירוט השירותים שנמכרים]` and
-  `[כתובת דוא״ל]` in the site's disclosure section (publicly visible),
-  `[SECURITY EMAIL]` in `SECURITY.md`, `[LEGAL ENTITY NAME]` and `[YYYY]` in
-  `NOTICE`, `[DATE]` in `DISCLAIMER.md`.
+- **The placeholders are all filled** (verified 2026-08-13 by sweeping the repo
+  and the live homepage). Nothing reads `[למלא]`, `[SECURITY EMAIL]`,
+  `[LEGAL ENTITY NAME]`, `[YYYY]` or `[DATE]` any more. Do not re-raise them as
+  outstanding work; check before believing any note that says otherwise.

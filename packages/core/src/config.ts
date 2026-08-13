@@ -7,6 +7,13 @@ const POSITIONS = new Set([
   'bottom-left',
   'top-right',
   'top-left',
+  // Logical. Resolved against reading direction at layout time, not here — see
+  // `placement()` in widget.ts. Purely additive: the physical values above keep
+  // working exactly as before, so no existing install changes.
+  'bottom-start',
+  'bottom-end',
+  'top-start',
+  'top-end',
 ]);
 
 /**
@@ -141,5 +148,8 @@ export function readConfig(): WidgetConfig {
     // explicit "false" opts back out, so a host templating the attribute in
     // can write the value straight from a boolean without a special case.
     hidden: el?.hasAttribute('data-hidden') === true && str(el, 'hidden') !== 'false',
+    // Objects cannot travel on a data attribute. Bundler hosts pass this to
+    // `mount()`; on the script-tag path it is always absent.
+    initialPrefs: null,
   };
 }

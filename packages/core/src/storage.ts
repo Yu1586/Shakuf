@@ -24,24 +24,36 @@ function safeStorage(): Storage | null {
   }
 }
 
+/**
+ * Whitelists arbitrary input down to a usable `PrefState`.
+ *
+ * Shared by `loadPrefs` and the host-facing import path, and that sharing is the
+ * point: preferences now arrive from two directions — localStorage, which may be
+ * hand-edited or corrupted, and a host page importing a visitor's settings from
+ * its own store during a migration. Neither is trusted input, and an import path
+ * that skipped this check would be a way around it.
+ *
+ * The widget still clamps per feature when applying, because this cannot know a
+ * given feature's `max`. This is the outer bound: integers only, 0..10.
+ */
+export function sanitizePrefs(input: unknown): PrefState {
+  if (!input || typeof input !== 'object' || Array.isArray(input)) return {};
+  const out: PrefState = {};
+  for (const [k, v] of Object.entries(input as Record<string, unknown>)) {
+    if (typeof v === 'number' && Number.isInteger(v) && v >= 0 && v <= 10) {
+      out[k] = v;
+    }
+  }
+  return out;
+}
+
 export function loadPrefs(): PrefState {
   const store = safeStorage();
   if (!store) return {};
   try {
     const raw = store.getItem(KEY);
     if (!raw) return {};
-    const parsed: unknown = JSON.parse(raw);
-    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return {};
-
-    // Whitelist to numbers. A hand-edited or corrupted value must not be able
-    // to put the widget into a state the UI cannot render or reset.
-    const out: PrefState = {};
-    for (const [k, v] of Object.entries(parsed as Record<string, unknown>)) {
-      if (typeof v === 'number' && Number.isInteger(v) && v >= 0 && v <= 10) {
-        out[k] = v;
-      }
-    }
-    return out;
+    return sanitizePrefs(JSON.parse(raw));
   } catch {
     return {};
   }

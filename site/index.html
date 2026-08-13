@@ -143,7 +143,10 @@
         באוגוסט 2016.
       </p>
 
-      <div class="tablewrap" style="margin:28px 0">
+      <!-- tabindex+role: the wrapper scrolls horizontally on narrow screens, and a
+           scroll container that only a mouse can reach is unusable by keyboard. -->
+      <div class="tablewrap" style="margin:28px 0" tabindex="0" role="region"
+           aria-label="השוואה בין דרישות הדין לבין מה ששקוף מספק">
         <table>
           <caption class="sr-only">השוואה בין דרישות הדין לבין מה ששקוף מספק</caption>
           <thead><tr><th scope="col">requirement</th><th scope="col">shakuf?</th></tr></thead>

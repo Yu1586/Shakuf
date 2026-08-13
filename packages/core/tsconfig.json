@@ -15,5 +15,6 @@
     "noEmit": true,
     "types": []
   },
-  "include": ["src/**/*.ts", "tsup.config.ts"]
+  "//include": "tsup.config.ts is deliberately NOT here. It runs in Node and imports node:fs, which needs @types/node — and adding that would put Node globals in scope for src/** too, silently allowing a browser-only, zero-dependency widget to typecheck against APIs it will never have. `types: []` above is the guard, and it is worth more than typechecking a build file that tsup executes (and therefore fails on) every build. The cost is that its CSS-comment-stripping plugin is typed by hand against esbuild's onLoad shape rather than checked: if that shape ever changes, the plugin stops running silently rather than failing. `npm run size` is the canary — the strip is worth ~1.5 KB gzipped, so a silent regression shows up as the bundle jumping back toward the 17 KB budget.",
+  "include": ["src/**/*.ts"]
 }

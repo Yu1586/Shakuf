@@ -64,8 +64,26 @@ export type PrefState = Record<string, number>;
  * there is no server (PLAN.md §5, D2).
  */
 export interface WidgetConfig {
-  /** Corner the launcher sits in. */
-  position: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
+  /**
+   * Corner the launcher sits in.
+   *
+   * Physical values pin a literal corner. The `-start` / `-end` values are
+   * logical: they follow the reading direction, so the launcher moves to the
+   * other side when the page switches between Hebrew and English, the same way
+   * a host built on CSS logical properties moves everything else. A site with
+   * its own floating button in the opposite logical corner cannot avoid a
+   * collision with physical values — it collides in exactly one of its two
+   * languages, whichever corner it picks.
+   */
+  position:
+    | 'bottom-right'
+    | 'bottom-left'
+    | 'top-right'
+    | 'top-left'
+    | 'bottom-start'
+    | 'bottom-end'
+    | 'top-start'
+    | 'top-end';
   /** Launcher offset from the page edges, in px. */
   offset: number;
   /** URL of the site's published הצהרת נגישות. */
@@ -107,4 +125,21 @@ export interface WidgetConfig {
    * visitor has explicitly asked not to see.
    */
   hidden: boolean;
+  /**
+   * Preferences to start from when this visitor has none stored yet.
+   *
+   * For hosts replacing another accessibility tool. Without it, everyone who
+   * had set large text or high contrast in the old widget is silently reset on
+   * migration day — and that is precisely the population the feature exists for.
+   *
+   * A *seed*, not an override: it is used only when our own storage is empty, so
+   * it cannot keep overwriting choices the visitor makes afterwards. Once
+   * applied it is persisted like any other preference. To push settings in
+   * unconditionally — restoring from a server-side profile, say — call
+   * `setPrefs()` instead, which is explicit about being the stronger signal.
+   *
+   * There is no data attribute for this. It is an object, and the script-tag
+   * path has no sane way to express one; bundler hosts pass it to `mount()`.
+   */
+  initialPrefs: PrefState | null;
 }

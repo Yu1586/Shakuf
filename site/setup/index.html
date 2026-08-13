@@ -243,7 +243,10 @@ export default function App() {
       <h2 id="cfg-h">הגדרות</h2>
       <p class="dim">כל ההגדרות אופציונליות ונקראות מתג ה-script עצמו.</p>
 
-      <div class="tablewrap" style="margin-top:24px">
+      <!-- tabindex+role: the wrapper scrolls horizontally on narrow screens, and a
+           scroll container that only a mouse can reach is unusable by keyboard. -->
+      <div class="tablewrap" style="margin-top:24px" tabindex="0" role="region"
+           aria-label="רשימת מאפייני ההגדרה של התוסף">
         <table>
           <caption class="sr-only">רשימת מאפייני ההגדרה של התוסף</caption>
           <thead><tr><th scope="col">attribute</th><th scope="col">default</th><th scope="col">תיאור</th></tr></thead>
@@ -252,7 +255,7 @@ export default function App() {
             <tr><td class="v">data-coordinator-name</td><td class="v">—</td><td>שם רכז הנגישות</td></tr>
             <tr><td class="v">data-coordinator-phone</td><td class="v">—</td><td>טלפון רכז הנגישות</td></tr>
             <tr><td class="v">data-coordinator-email</td><td class="v">—</td><td>דוא״ל רכז הנגישות</td></tr>
-            <tr><td class="v">data-position</td><td class="v">bottom-right</td><td>גם bottom-left · top-right · top-left</td></tr>
+            <tr><td class="v">data-position</td><td class="v">bottom-right</td><td>גם bottom-left · top-right · top-left. בנוסף ערכים <strong>לוגיים</strong>: bottom-start · bottom-end · top-start · top-end — נצמדים לכיוון הקריאה ולכן מתהפכים יחד עם השפה, במקום להיות נעולים לפינה פיזית</td></tr>
             <tr><td class="v">data-offset</td><td class="v">20</td><td>מרחק בפיקסלים משולי המסך</td></tr>
             <tr><td class="v">data-accent</td><td class="v">#0b5fff</td><td>צבע ראשי בפורמט hex. צבע הטקסט נבחר אוטומטית לפי ניגודיות</td></tr>
             <tr><td class="v">data-mount</td><td class="v">body</td><td>סלקטור CSS של האלמנט שאליו התוסף נטען. נדרש באפליקציות שמסמנות <code>inert</code> על צאצאי <code>body</code> — ראו למטה</td></tr>
@@ -274,7 +277,7 @@ export default function App() {
         הפתרון הוא להפנות את התוסף אל תוך אותו שורש:
       </p>
       <div class="code">
-        <pre><code>&lt;script src="/shakuf.js" data-mount="#root" defer&gt;&lt;/script&gt;</code></pre>
+        <pre tabindex="0" role="region" aria-label="דוגמת קוד: התקנה עם data-mount"><code>&lt;script src="/shakuf.js" data-mount="#root" defer&gt;&lt;/script&gt;</code></pre>
       </div>
       <p class="dim">
         אם הסלקטור שגוי או לא מתאים לאף אלמנט, התוסף נטען ל-<code>body</code>
@@ -286,7 +289,8 @@ export default function App() {
         התקנה דרך תג <code>script</code> מגדירה את <code>window.shakuf</code>.
         כל הפעולות סינכרוניות ואינן מבצעות בקשות רשת:
       </p>
-      <div class="tablewrap" style="margin:20px 0">
+      <div class="tablewrap" style="margin:20px 0" tabindex="0" role="region"
+           aria-label="שיטות ה-API של התוסף">
         <table>
           <caption class="sr-only">שיטות ה-API של התוסף</caption>
           <thead><tr><th scope="col">method</th><th scope="col">תיאור</th></tr></thead>
@@ -295,6 +299,8 @@ export default function App() {
             <tr><td class="v">hide() · show()</td><td>הסתרה והצגה של כפתור הפתיחה. ההעדפות שהמבקר כבר הפעיל נשארות פעילות</td></tr>
             <tr><td class="v">hidden</td><td>האם הכפתור מוסתר כרגע</td></tr>
             <tr><td class="v">reset()</td><td>איפוס כל ההגדרות, כמו הכפתור בחלונית</td></tr>
+            <tr><td class="v">getPrefs()</td><td>ההעדפות הנוכחיות של המבקר, כמזהה־פיצ׳ר → רמה. מוחזר עותק</td></tr>
+            <tr><td class="v">setPrefs(prefs)</td><td>שחזור פרופיל שמור. <strong>מחליף</strong> את כל ההעדפות ומחיל את התוצאה — מה שלא נכלל מכובה. מזהים לא מוכרים ורמות מחוץ לטווח נזרקים. לשינוי הגדרה בודדת: פרישׂה מעל <code>getPrefs()</code></td></tr>
             <tr><td class="v">setLanguage(lang)</td><td><code>he</code> או <code>en</code>. מקבע את השפה ומפסיק לעקוב אחר <code>&lt;html lang&gt;</code></td></tr>
             <tr><td class="v">lang</td><td>השפה הפעילה</td></tr>
             <tr><td class="v">destroy()</td><td>הסרה מלאה של התוסף וביטול כל מה שהחיל</td></tr>
@@ -303,8 +309,19 @@ export default function App() {
       </div>
       <p class="dim">
         בהתקנה דרך npm אין <code>window.shakuf</code> — <code>mount()</code>
-        מחזיר את המופע עצמו, עם אותן שיטות.
+        מחזיר את המופע עצמו, עם אותן שיטות. שם גם אפשר להעביר
+        <code>mount({ initialPrefs })</code>: העדפות פתיחה למבקר שאין לו עדיין
+        שמורות אצלנו, לאתרים שמחליפים תוסף נגישות אחר ולא רוצים לאפס בשקט את מי
+        שכבר הגדיר טקסט גדול או ניגודיות גבוהה. זהו <em>זרע</em> ולא דריסה — הוא
+        חל רק כשהאחסון שלנו ריק, ולכן אינו דורס בחירות שהמבקר עשה אחר כך.
       </p>
+      <div class="callout" style="margin-top:20px">
+        <strong>לפני שמסנכרנים העדפות לשרת.</strong> התוסף עצמו לא שולח כלום
+        לשום מקום, ואין לו שרת. אם אתם שומרים את הפלט של <code>getPrefs()</code>
+        בפרופיל משתמש — זו החלטה שלכם ותחת מדיניות הפרטיות שלכם. שווה לדעת
+        שערכים כמו ״ניגודיות גבוהה״ או ״גופן ידידותי לדיסלקציה״ ניתנים לפירוש
+        כמסקנה על מוגבלות, כלומר מידע רגיש. זו הסיבה שאנחנו לא נוגעים בהם.
+      </div>
       <p class="dim">
         כדי להחיל העדפה שמורה כבר בטעינה, האזינו לאירוע
         <code>shakuf:ready</code> על <code>document</code>. האירוע נורה בתוך
@@ -312,7 +329,7 @@ export default function App() {
         <code>event.detail</code>:
       </p>
       <div class="code">
-        <pre><code>document.addEventListener('shakuf:ready', function (e) {
+        <pre tabindex="0" role="region" aria-label="דוגמת קוד: האזנה לאירוע shakuf:ready"><code>document.addEventListener('shakuf:ready', function (e) {
   if (userPrefersHidden) e.detail.hide();
 });</code></pre>
       </div>

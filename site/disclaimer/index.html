@@ -77,7 +77,10 @@
     <div class="wrap-text">
       <h2>מה שהחוק בישראל דורש, ומה הכלי הזה מכסה</h2>
 
-      <div class="tablewrap" style="margin:28px 0">
+      <!-- tabindex+role: the wrapper scrolls horizontally on narrow screens, and a
+           scroll container that only a mouse can reach is unusable by keyboard. -->
+      <div class="tablewrap" style="margin:28px 0" tabindex="0" role="region"
+           aria-label="דרישות הדין מול מה ששקוף מספק">
         <table>
           <caption class="sr-only">דרישות הדין מול מה ששקוף מספק</caption>
           <thead><tr><th scope="col">הדרישה</th><th scope="col">האם הכלי מספק?</th></tr></thead>
