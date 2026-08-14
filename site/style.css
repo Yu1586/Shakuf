@@ -370,13 +370,6 @@ details[open] summary { border-bottom: 1px solid var(--line); }
 .prose li { margin: 7px 0; }
 .prose li::marker { color: var(--fg-faint); }
 
-/* ---- Unfilled placeholders: must stay conspicuous -------------------- */
-.todo {
-  background: #4a1010; color: #ffc9c9; border: 1px dashed #ff6b6b;
-  padding: 2px 9px; font-weight: 700; font-size: .93em; display: inline-block;
-}
-@media (prefers-color-scheme: light) { .todo { background: #ffecec; color: #7a0000; border-color: #c00000; } }
-
 /* ---- Footer ----------------------------------------------------------- */
 .site-footer { border-top: 1px solid var(--line); padding-block: 44px 64px; color: var(--fg-faint); font-size: 14px; }
 .site-footer .foot-links { display: flex; gap: 22px; flex-wrap: wrap; list-style: none; padding: 0; margin: 0 0 22px; }
