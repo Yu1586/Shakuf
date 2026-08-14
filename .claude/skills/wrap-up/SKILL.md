@@ -185,21 +185,30 @@ Confirm the payload before the real publish — expect **7 files, ~50 kB**: the
 two bundles, `dist/index.d.ts`, `package.json`, and `LICENSE` / `NOTICE` /
 `DISCLAIMER.md` copied in by `prepack`. **No `.map` files.**
 
-**Authentication is the user's job and cannot be done from here.** npm is
-configured with `auth-type=web`, so publishing needs a browser and an
-interactive terminal.
+**The final publish is the user's to run, always.** npm is configured with
+`auth-type=web`, and the account has 2FA on publishes. npm therefore needs to
+open a browser and needs an interactive terminal to do it — neither of which
+this shell has. **Prepare everything, confirm the dry-run, then hand over the
+command.** Do not keep retrying; the failure is structural, not transient.
 
-> **The auth errors lie.** An expired web-login session does not say "log in".
-> It has been seen as `E404` (looks like a missing package) and as `EOTP`
-> ("requires a one-time password from your authenticator" — there is no
-> authenticator app on this account, so `--otp=` is the wrong answer and will
-> never work). **Run `npm whoami` first**: a `401` means the session expired,
-> whatever the publish error claimed. The fix is always the same, and the user
-> runs it:
+> **`EOTP` has two different causes, and its own message names neither.** It
+> reads "requires a one-time password from your authenticator", but there is no
+> authenticator app on this account — `--otp=<code>` is never the answer.
 >
-> ```bash
-> npm login --auth-type=web
-> ```
+> Run `npm whoami` to tell the two apart:
+>
+> - **`401`** → the web-login session expired. Also seen surfacing as `E404`,
+>   which looks like a missing package. Fix: `npm login --auth-type=web`.
+> - **a username** → the session is fine, and this is the ordinary per-publish
+>   2FA confirmation. Nothing is broken; it simply cannot be completed from a
+>   non-interactive shell. The user runs the publish themselves.
+>
+> Both were hit on 2026-08-14, in that order, which is how the distinction was
+> found — a valid session still returns `EOTP` on publish.
+
+```bash
+npm publish --workspace @shakuf-widget/widget
+```
 
 ### 5.4 — Verify it actually propagated
 
