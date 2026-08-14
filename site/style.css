@@ -1,25 +1,25 @@
-/* שקוף — site styles.
+/* שקוף: site styles.
  *
  * Dark-first, sharp-cornered, mono-labelled. Hebrew never renders in a
  * monospace face (they have no Hebrew glyphs), so mono is reserved for Latin
  * labels, code and numerals; Hebrew runs in a light-weight sans at tight
  * tracking, which is what carries the same feel in RTL.
  *
- * Light mode is a full sibling rather than an afterthought — shipping an
+ * Light mode is a full sibling rather than an afterthought. Shipping an
  * accessibility tool whose own site ignores a user's system preference would
  * be a poor look.
  */
 
 /* ---- Fonts ------------------------------------------------------------
  * Self-hosted, because the CSP is font-src 'self' and the whole product
- * position is "no external requests" — loading a webfont from a CDN would put
+ * position is "no external requests": loading a webfont from a CDN would put
  * a third party in the request path of a page that exists to say it doesn't.
  *
  * Heebo (Oded Ezer) for Hebrew: a neutral grotesque in the same lineage as the
  * face the reference design uses, with proper Hebrew drawing rather than a
  * Latin font limping through Hebrew glyphs.
  * JetBrains Mono for Latin labels, numerals and code.
- * Both OFL — licences ship alongside in /fonts.
+ * Both OFL. Licences ship alongside in /fonts.
  *
  * Variable fonts: one file covers 300–800, so weights cost nothing extra.
  */
@@ -50,7 +50,7 @@
   --line-soft: #1a1a1e;
   --fg:        #f4f4f5;   /* 18.1:1 on --bg */
   --fg-dim:    #a8a8b0;   /*  8.6:1 on --bg */
-  --fg-faint:  #8c8c96;   /*  6.0:1 — measured; #77777f read 4.43:1 and failed */
+  --fg-faint:  #8c8c96;   /*  6.0:1, measured; #77777f read 4.43:1 and failed */
   --invert-bg: #f4f4f5;
   --invert-fg: #0b0b0c;
   --accent:    #6ea8ff;   /*  8.0:1 on --bg */
@@ -288,8 +288,8 @@ td.yes { color: var(--ok);  font-weight: 700; white-space: nowrap; }
    `unicode-bidi: plaintext` gives every line its own base direction from its
    first strong character, so Hebrew lines stay RTL and the code lines render
    left-to-right instead of having their brackets flipped to the wrong end.
-   Copying is unaffected either way — innerText reads source order, not visual
-   order — but a snippet that *looks* mangled will not be trusted. */
+   Copying is unaffected either way (innerText reads source order, not visual
+   order), but a snippet that *looks* mangled will not be trusted. */
 .code.rtl pre {
   direction: rtl; text-align: right; unicode-bidi: plaintext;
   font-family: var(--sans); font-size: 14.5px; line-height: 1.75;
@@ -297,9 +297,9 @@ td.yes { color: var(--ok);  font-weight: 700; white-space: nowrap; }
 /* Code embedded inside the Hebrew prompt. `unicode-bidi: plaintext` alone is
    not enough: a line beginning with a neutral character such as "<" still gets
    its brackets reordered. An explicit dir="ltr" block is a hard bidi boundary,
-   so the snippet renders exactly as it will be pasted. Copying is unaffected —
-   innerText reads source order — but a snippet that looks mangled on screen
-   will not be trusted, and this one is the whole point of the page. */
+   so the snippet renders exactly as it will be pasted. Copying is unaffected,
+   since innerText reads source order, but a snippet that looks mangled on
+   screen will not be trusted, and this one is the whole point of the page. */
 .code.rtl .ltr {
   display: block; direction: ltr; text-align: left; unicode-bidi: isolate;
   font-family: var(--mono); font-size: 12.5px; line-height: 1.6;
@@ -370,7 +370,7 @@ details[open] summary { border-bottom: 1px solid var(--line); }
 .prose li { margin: 7px 0; }
 .prose li::marker { color: var(--fg-faint); }
 
-/* ---- Unfilled placeholders — must stay conspicuous -------------------- */
+/* ---- Unfilled placeholders: must stay conspicuous -------------------- */
 .todo {
   background: #4a1010; color: #ffc9c9; border: 1px dashed #ff6b6b;
   padding: 2px 9px; font-weight: 700; font-size: .93em; display: inline-block;
