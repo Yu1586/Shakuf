@@ -284,6 +284,27 @@ export default function App() {
         כרגיל ורושם אזהרה ב-console. הוא לא ייעלם בגלל טעות הגדרה.
       </p>
 
+      <div class="callout" style="margin-top:24px">
+        <strong>אל תעצבו את <code>#shakuf-root</code> עם transform, filter,
+        perspective, contain או will-change.</strong>
+        כל אחת מהן הופכת אותו ל-containing block עבור כפתור הפתיחה, שממוקם
+        <code>fixed</code>. התוצאה: הכפתור זז למקום לא צפוי, גולל יחד עם העמוד
+        ולפעמים יוצא מהמסך — בלי שגיאה ובלי סיבה גלויה.
+        <code>position: relative</code> רגיל בטוח ואינו עושה זאת.
+      </div>
+
+      <p class="dim" style="margin-top:24px">
+        <strong>מיקום בערימה.</strong> החל מ-0.3.1 התוסף כותב
+        <code>position</code> ו-<code>z-index</code> ישירות על אלמנט השורש שלו,
+        כדי ש-reset גורף באתר המארח (למשל <code>* { z-index: auto }</code>) לא
+        יבטל אותם בשקט ויסתיר את הכפתור מאחורי שכבות של האתר. אם אתם מרכיבים את
+        התוסף בתוך אלמנט שיוצר stacking context משלו ועדיין צריכים להעלות אותו,
+        אפשר לגבור על כך במפורש:
+      </p>
+      <div class="code">
+        <pre tabindex="0" role="region" aria-label="דוגמת קוד: העלאת התוסף מעל שכבות האתר"><code>#shakuf-root { position: relative !important; z-index: 10001 !important; }</code></pre>
+      </div>
+
       <h3 style="margin-top:36px">שליטה מתוך קוד</h3>
       <p class="dim">
         התקנה דרך תג <code>script</code> מגדירה את <code>window.shakuf</code>.

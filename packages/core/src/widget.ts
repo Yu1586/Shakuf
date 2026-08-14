@@ -25,7 +25,7 @@ import type { Feature, HostContext, PrefState, WidgetConfig } from './types.js';
 import { foregroundFor } from './ui/color.js';
 import { accessibilityIcon, el } from './ui/dom.js';
 import { Panel } from './ui/panel.js';
-import { PANEL_STYLES } from './ui/styles.js';
+import { HOST_Z_INDEX, PANEL_STYLES } from './ui/styles.js';
 
 const ROOT_ID = 'shakuf-root';
 
@@ -68,6 +68,7 @@ export class A11yWidget {
     this.shadow.appendChild(style);
 
     this.applyTheme();
+    this.pinHostStacking();
     this.launcher = this.buildLauncher();
     this.launcher.hidden = this.config.hidden;
     this.shadow.appendChild(this.launcher);
@@ -103,6 +104,40 @@ export class A11yWidget {
   private applyTheme(): void {
     this.host.style.setProperty('--accent', this.config.accent);
     this.host.style.setProperty('--accent-fg', foregroundFor(this.config.accent));
+  }
+
+  /**
+   * Writes the host's positioning inline, because `:host` cannot be trusted with
+   * it.
+   *
+   * Per CSS Scoping, a `:host` rule loses to *any* rule in the host document
+   * that matches the host element — not by specificity, but categorically.
+   * Measured on the live widget: `* { position: static; z-index: auto }`, the
+   * weakest selector that exists, erases both. Most applications ship a reset of
+   * exactly that shape, so the widget's entire stacking position was being
+   * switched off on a large share of real installs, leaving the launcher to
+   * paint by DOM order and disappear behind any host overlay. It surfaced as a
+   * report that we set no z-index at all — we do, in the one place a stylesheet
+   * erases for free.
+   *
+   * This is the worst failure this can have: a visitor pinned behind a blocking
+   * overlay is exactly who needs stop-animations or high contrast, and the
+   * control is gone precisely then.
+   *
+   * Inline beats normal host rules, so resets stop reaching us. Deliberately NOT
+   * `!important`: a host that means to move us — mounting inside its own
+   * stacking context, say — can still win with `!important`, and that escape
+   * hatch is load-bearing for anyone already patching this themselves.
+   *
+   * Note `position: fixed` here does NOT make the host a containing block for
+   * the fixed launcher inside it; only transform, filter, perspective, contain
+   * and will-change do that. A host applying any of those to `#shakuf-root`
+   * silently relocates the launcher, which is why the setup guide warns against
+   * it.
+   */
+  private pinHostStacking(): void {
+    this.host.style.position = 'fixed';
+    this.host.style.zIndex = String(HOST_Z_INDEX);
   }
 
   /**

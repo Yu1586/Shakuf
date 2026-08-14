@@ -59,10 +59,64 @@
     </div>
   </section>
 
+  <!-- ================= 0.3.1 ================= -->
+  <section class="rule">
+    <div class="wrap-text">
+      <h2>0.3.1 <span class="dim" style="font-weight:400;font-size:.6em">· 14 August 2026</span></h2>
+
+      <p>
+        One fix, and it affects far more installs than the report that found it.
+        If your site ships a CSS reset — most do — upgrade.
+      </p>
+
+      <h3>Fixed</h3>
+      <ul>
+        <li>
+          <strong>A CSS reset on the host page could switch off the widget's
+          stacking entirely, hiding the launcher behind site overlays.</strong>
+          The widget's <code>position</code> and <code>z-index</code> were
+          declared in a <code>:host</code> rule. Per the CSS Scoping
+          specification, a <code>:host</code> rule loses to <em>any</em> rule in
+          the host document that matches the host element — not on specificity,
+          categorically. Measured: <code>* { position: static; z-index: auto }</code>,
+          the weakest selector that exists, erased both. The launcher then
+          painted in DOM order and vanished behind anything with a
+          <code>z-index</code>.
+          <br>
+          It was reported as "the bundle sets no z-index". It always did — in the
+          one place a stylesheet erases for free.
+          <br>
+          The worst version of this is a blocking overlay: a visitor pinned
+          behind a forced-update or offline screen is exactly who may need
+          stop-animations or high contrast, and that is precisely when the button
+          disappeared. Reproduced with <code>elementFromPoint</code> against an
+          opaque overlay at <code>z-index: 10000</code>, and confirmed fixed.
+          <br>
+          Both properties are now written inline on the host element, which normal
+          host rules cannot override. Deliberately not <code>!important</code>: a
+          site that means to reposition us can still win with its own
+          <code>!important</code>, so existing workarounds keep working.
+        </li>
+      </ul>
+
+      <h3>Note for host pages</h3>
+      <ul>
+        <li>
+          Never give <code>#shakuf-root</code> a <code>transform</code>,
+          <code>filter</code>, <code>perspective</code>, <code>contain</code> or
+          <code>will-change</code>. Any of those makes it a containing block for
+          the fixed-position launcher inside it, which silently moves the button
+          somewhere unintended — no error, no obvious cause. A plain
+          <code>position: relative</code> is safe and does not do this.
+        </li>
+      </ul>
+    </div>
+  </section>
+
   <!-- ================= 0.3.0 ================= -->
   <section class="rule">
     <div class="wrap-text">
-      <h2>0.3.0 <span class="dim" style="font-weight:400;font-size:.6em">· 13 August 2026</span></h2>
+      <h2>0.3.0 <span class="dim" style="font-weight:400;font-size:.6em">· 14 August 2026</span></h2>
 
       <p>
         Two additions for sites adopting the widget, both requested by an
@@ -129,7 +183,14 @@
   <!-- ================= 0.2.1 ================= -->
   <section class="rule">
     <div class="wrap-text">
-      <h2>0.2.1 <span class="dim" style="font-weight:400;font-size:.6em">· 13 August 2026</span></h2>
+      <h2>0.2.1 <span class="dim" style="font-weight:400;font-size:.6em">· not released</span></h2>
+
+      <div class="callout">
+        <strong>This version was never published to npm.</strong> Installing
+        <code>@shakuf-widget/widget@0.2.1</code> will fail. All three fixes below
+        ship in <strong>0.3.0</strong> — upgrade to that or later. The entry is
+        kept because the fixes are real and worth reading about.
+      </div>
 
       <p>
         Three display bugs, each of which broke a feature for exactly the people

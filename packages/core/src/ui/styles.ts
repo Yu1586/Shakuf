@@ -13,6 +13,15 @@
  *    44px targets against the 24px minimum, a visible focus ring at 3:1, and
  *    `prefers-reduced-motion` honoured.
  */
+/**
+ * Stacking level for the widget host.
+ *
+ * Exported because the widget must ALSO write it inline on the host element,
+ * and the two must not drift. See `pinHostStacking()` in widget.ts for why the
+ * `:host` declaration below is not enough on its own.
+ */
+export const HOST_Z_INDEX = 2147483000;
+
 export const PANEL_STYLES = /* css */ `
 :host {
   /* --accent and --accent-fg are set at runtime from config. */
@@ -34,8 +43,11 @@ export const PANEL_STYLES = /* css */ `
   color: var(--fg);
   direction: rtl;
   text-align: start;
+  /* Kept for documentation and as a fallback, but NOT relied on: a :host rule
+     loses to any host-page rule matching the host element, including "* {}".
+     The widget writes both of these inline as well — see pinHostStacking(). */
   position: fixed;
-  z-index: 2147483000;
+  z-index: ${HOST_Z_INDEX};
 }
 
 /*
