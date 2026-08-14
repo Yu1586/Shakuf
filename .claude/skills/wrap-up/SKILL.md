@@ -216,11 +216,31 @@ Publishing is not shipping. Check, and report the results:
 
 - `npm view @shakuf-widget/widget version` and `dist-tags` — is `latest` the new
   version?
-- `https://cdn.jsdelivr.net/npm/@shakuf-widget/widget` returns 200 **and
-  contains a string unique to this release**. Do not settle for a 200; the CDN
-  happily serves the previous version. Propagation is sometimes instant and has
-  previously lagged by minutes — if it is stale, the explicit
-  `...@<version>` URL forces the cache.
+- `https://cdn.jsdelivr.net/npm/@shakuf-widget/widget` — the **unversioned** URL,
+  because that is the one `/setup/` tells installers to paste. It must contain a
+  string unique to this release. **Never settle for a 200**: the CDN serves the
+  previous build with a perfectly healthy 200, and the byte count barely moves.
+  Pick a discriminator that only exists in the new code and grep the response.
+- **Then purge, because it will be stale.** Measured on the 0.3.1 release:
+  `latest` was already 0.3.1 on npm while the unversioned URL kept serving
+  0.3.0 with `age: 1843`, `s-maxage=43200` (12h at the edge) and
+  `max-age=604800` (7 days in browsers).
+
+  ```bash
+  curl https://purge.jsdelivr.net/npm/@shakuf-widget/widget
+  ```
+
+  Expect `"status": "finished"`. Re-fetch the unversioned URL afterwards and
+  confirm the discriminator is now present — the purge is only believed once
+  re-measured.
+
+  **Fetching the `...@<version>` URL does NOT do this.** That URL is immutable
+  and cached separately; requesting it leaves the unversioned alias untouched.
+  This was tried first on 0.3.1 and did nothing, which is how the purge step
+  was found.
+- Note what a purge cannot reach: browsers that already downloaded the old file
+  keep it for up to 7 days. Edge propagation is immediate, visitor propagation
+  is not, and a release note should not imply otherwise.
 - The live site serves the new changelog entry, not just a 200.
 
 ## Step 6 — Prepare the commit
