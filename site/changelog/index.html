@@ -12,7 +12,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Changelog — Shakuf</title>
+<title>Changelog · Shakuf</title>
 <meta name="description" content="Release notes for the Shakuf accessibility widget. What was added, fixed and broken in each version.">
 <meta name="color-scheme" content="dark light">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0b0c'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23f4f4f5' stroke-width='2'/%3E%3Cpath d='M16 16 L16 5 A11 11 0 0 1 25.53 21.5 Z' fill='%23f4f4f5'/%3E%3Cpath d='M16 16 L25.53 21.5 A11 11 0 0 1 6.47 21.5 Z' fill='%23f4f4f5' opacity='.55'/%3E%3Cpath d='M16 16 L6.47 21.5 A11 11 0 0 1 16 5 Z' fill='%23f4f4f5' opacity='.28'/%3E%3C/svg%3E">
@@ -66,7 +66,7 @@
 
       <p>
         One fix, and it affects far more installs than the report that found it.
-        If your site ships a CSS reset — most do — upgrade.
+        If your site ships a CSS reset, and most do, upgrade.
       </p>
 
       <h3>Fixed</h3>
@@ -77,13 +77,13 @@
           The widget's <code>position</code> and <code>z-index</code> were
           declared in a <code>:host</code> rule. Per the CSS Scoping
           specification, a <code>:host</code> rule loses to <em>any</em> rule in
-          the host document that matches the host element — not on specificity,
+          the host document that matches the host element. Not on specificity,
           categorically. Measured: <code>* { position: static; z-index: auto }</code>,
           the weakest selector that exists, erased both. The launcher then
           painted in DOM order and vanished behind anything with a
           <code>z-index</code>.
           <br>
-          It was reported as "the bundle sets no z-index". It always did — in the
+          It was reported as "the bundle sets no z-index". It always did, in the
           one place a stylesheet erases for free.
           <br>
           The worst version of this is a blocking overlay: a visitor pinned
@@ -106,7 +106,7 @@
           <code>filter</code>, <code>perspective</code>, <code>contain</code> or
           <code>will-change</code>. Any of those makes it a containing block for
           the fixed-position launcher inside it, which silently moves the button
-          somewhere unintended — no error, no obvious cause. A plain
+          somewhere unintended: no error, no obvious cause. A plain
           <code>position: relative</code> is safe and does not do this.
         </li>
       </ul>
@@ -130,7 +130,7 @@
           accepts <code>bottom-start</code>, <code>bottom-end</code>,
           <code>top-start</code> and <code>top-end</code>. These follow reading
           direction, so the launcher moves to the other side when the page
-          switches between Hebrew and English — the same way a site built on CSS
+          switches between Hebrew and English, the same way a site built on CSS
           logical properties moves everything else. A site with its own floating
           button in the opposite logical corner could not avoid a collision with
           the physical values: whichever corner it picked, the two met in one of
@@ -144,7 +144,7 @@
           seeds settings only for visitors who have none stored here yet.
           <br>
           This exists so a site replacing another accessibility tool does not
-          silently reset everyone who had set large text or high contrast — which
+          silently reset everyone who had set large text or high contrast, which
           is exactly the population the feature is for. It also lets a site
           restore settings from a profile of its own, so a preference is not
           stranded on one device.
@@ -161,7 +161,7 @@
         <li>
           The widget still transmits nothing and still has no server. If you save
           <code>getPrefs()</code> output to a user profile, that is your decision
-          under your own privacy policy — and worth making deliberately, since
+          under your own privacy policy, and worth making deliberately, since
           values like "high contrast" or "dyslexia-friendly font" can be read as
           an inference about disability. That is why we do not touch them.
         </li>
@@ -172,7 +172,7 @@
         <li>
           CSS comments are stripped from the bundle at build time. They lived
           inside a template literal, so the minifier could not reach them and
-          they were shipping to every visitor — 44% of the injected stylesheet.
+          they were shipping to every visitor: 44% of the injected stylesheet.
           No behaviour change; the bundle dropped from 16.99 KB to 15.43 KB
           gzipped, which is what made room for the two features above.
         </li>
@@ -188,7 +188,7 @@
       <div class="callout">
         <strong>This version was never published to npm.</strong> Installing
         <code>@shakuf-widget/widget@0.2.1</code> will fail. All three fixes below
-        ship in <strong>0.3.0</strong> — upgrade to that or later. The entry is
+        ship in <strong>0.3.0</strong>. Upgrade to that or later. The entry is
         kept because the fixes are real and worth reading about.
       </div>
 
@@ -205,7 +205,7 @@
           <code>filter</code> declaration through custom properties, and the
           fallback for an unset half was <code>none</code>. That is a legal value
           for the property but not a legal item in a filter list, so any single
-          setting produced <code>filter: invert(1) none</code> — invalid, and
+          setting produced <code>filter: invert(1) none</code>: invalid, and
           dropped altogether. Turning on two at once worked, which is why it went
           unnoticed. The panel reported the setting as active throughout, so a
           visitor who could not see the page had no way to tell it had done
@@ -213,7 +213,7 @@
         </li>
         <li>
           <strong>Links were invisible in high-contrast mode.</strong> The rule
-          that forces text white outranked the rule that colours links yellow —
+          that forces text white outranked the rule that colours links yellow:
           <code>:not(svg):not(svg *)</code> each add their argument's weight, so
           the sweeping rule computed higher than the link rule that followed it.
           Links rendered <code>#fff</code>, indistinguishable from body text, in
@@ -249,25 +249,25 @@
         <li>
           <strong>Language changes are followed without a reload.</strong> Apps
           that switch language at runtime switch the widget too, including the
-          screen-reader announcement region — a live region left tagged with the
+          screen-reader announcement region: a live region left tagged with the
           wrong language is read aloud in the wrong voice.
         </li>
         <li>
-          <strong><code>data-mount</code></strong> — a CSS selector for the
+          <strong><code>data-mount</code></strong>: a CSS selector for the
           element to mount into, instead of <code>&lt;body&gt;</code>. Required
           for apps that mark <code>body</code> children <code>inert</code> behind
           a full-screen blocker, which would otherwise disable the widget at
           exactly the moment a visitor is stuck looking at one.
         </li>
         <li>
-          <strong><code>window.shakuf</code></strong> — host-page control:
+          <strong><code>window.shakuf</code></strong>: host-page control,
           <code>open</code>, <code>close</code>, <code>toggle</code>,
           <code>hide</code>, <code>show</code>, <code>hidden</code>,
           <code>reset</code>, <code>setLanguage</code>, <code>lang</code>,
           <code>destroy</code>.
         </li>
         <li>
-          <strong><code>data-hidden</code></strong> — start with the launcher
+          <strong><code>data-hidden</code></strong>: start with the launcher
           hidden, for hosts that already know the visitor turned it off. Avoids
           painting the button and then removing it on every load.
         </li>
@@ -291,7 +291,7 @@
         <li>
           <strong>A failed change was announced as a success.</strong> The panel
           announced the new state immediately after requesting it, whether or not
-          it had taken effect — telling the one person who cannot see the screen
+          it had taken effect, telling the one person who cannot see the screen
           that something happened when it had not. Announcements now describe
           what actually occurred, and a failure says so.
         </li>
@@ -313,7 +313,7 @@
         <li>
           The size budget rose from 15&nbsp;KB to 17&nbsp;KB gzipped. The bundle
           ships both languages, so a Hebrew-only install carries the English
-          strings — the cost of keeping one script tag with no language in the
+          strings: the cost of keeping one script tag with no language in the
           URL.
         </li>
       </ul>
@@ -356,7 +356,7 @@
           stop animations, focus highlighting, large cursor and a reading ruler.
         </li>
         <li>
-          Navigation lists for headings, landmarks and links — rendered in the
+          Navigation lists for headings, landmarks and links, rendered in the
           widget's own panel, never by modifying the host page.
         </li>
         <li>

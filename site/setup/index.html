@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Setup — שקוף</title>
+<title>Setup · שקוף</title>
 <meta name="description" content="מדריך התקנה של תוסף הנגישות שקוף: תג script אחד, הוראות ל-WordPress, Wix, Shopify, React ועוד, ופרומפט מוכן להעתקה עבור Claude Code, Cursor, Lovable ו-Base44.">
 <meta name="color-scheme" content="dark light">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0b0c'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23f4f4f5' stroke-width='2'/%3E%3Cpath d='M16 16 L16 5 A11 11 0 0 1 25.53 21.5 Z' fill='%23f4f4f5'/%3E%3Cpath d='M16 16 L25.53 21.5 A11 11 0 0 1 6.47 21.5 Z' fill='%23f4f4f5' opacity='.55'/%3E%3Cpath d='M16 16 L6.47 21.5 A11 11 0 0 1 16 5 Z' fill='%23f4f4f5' opacity='.28'/%3E%3C/svg%3E">
@@ -56,7 +56,7 @@
         <p>
           <strong>מומלץ מאוד להוסיף גם את פרטי הנגישות של האתר.</strong>
           אם לא תוסיפו אותם, החלונית תציג למבקר הודעה שהאתר חסר הצהרת נגישות
-          ורכז נגישות — משום שהדין הישראלי מחייב את שניהם.
+          ורכז נגישות, משום שהדין הישראלי מחייב את שניהם.
         </p>
       </div>
 
@@ -86,16 +86,16 @@
         <div class="code-bar"><span>prompt · paste into your agent</span></div>
         <pre tabindex="0" role="region" aria-label="פרומפט להעתקה לעורך AI"><code>הוסף לאתר הזה את תוסף הנגישות "שקוף" (Shakuf).
 
-לפני שאתה מתחיל — שאל אותי את הפרטים הבאים ואל תמשיך עד שתקבל תשובה:
+לפני שאתה מתחיל, שאל אותי את הפרטים הבאים ואל תמשיך עד שתקבל תשובה:
 
   • מהי הכתובת של עמוד הצהרת הנגישות באתר? (למשל /accessibility)
-    אם עדיין אין עמוד כזה — אמור לי זאת במפורש, כי הדין מחייב לפרסם אותו.
+    אם עדיין אין עמוד כזה, אמור לי זאת במפורש, כי הדין מחייב לפרסם אותו.
   • מה שמו המלא של רכז הנגישות?
   • מה מספר הטלפון שלו?
   • מה כתובת הדוא״ל שלו?
 
 אל תמציא ערכים, אל תשתמש בערכי דוגמה ואל תשאיר סוגריים מרובעים בקוד.
-אם אני עונה שאין לי רכז נגישות — אמור לי שהדין הישראלי מחייב למנות אחד,
+אם אני עונה שאין לי רכז נגישות, אמור לי שהדין הישראלי מחייב למנות אחד,
 והתקן את התוסף בלי המאפיינים האלה במקום להמציא אותם.
 
 מה לעשות אחר כך:
@@ -108,7 +108,7 @@
         data-coordinator-phone="[טלפון]"
         data-coordinator-email="[דוא״ל]"
         defer&gt;&lt;/script&gt;</span>
-2. אם זה פרויקט React / Next.js / Vue / Svelte — אל תוסיף את התג ל-JSX של
+2. אם זה פרויקט React / Next.js / Vue / Svelte, אל תוסיף את התג ל-JSX של
    קומפוננטה בודדת. הוסף אותו ל-layout או ל-index.html הראשי, פעם אחת לכל
    האפליקציה. ב-Next.js App Router השתמש ב-next/script עם
    strategy="afterInteractive" בתוך app/layout.tsx.
@@ -120,9 +120,9 @@
    אחר עלול לפגוע דווקא במשתמשי טכנולוגיה מסייעת.
 
 5. אם יש באתר Content-Security-Policy, ודא ש-script-src מתיר את
-   cdn.jsdelivr.net. אין צורך ב-connect-src — התוסף לא מבצע בקשות רשת.
+   cdn.jsdelivr.net. אין צורך ב-connect-src, כי התוסף לא מבצע בקשות רשת.
 
-חשוב מאוד — מה לא לכתוב:
+חשוב מאוד, מה לא לכתוב:
 
 אל תוסיף לאתר, לתיעוד או לקוד שום טקסט שטוען שהאתר "עומד בתקן", "נגיש לפי
 ת״י 5568", "מוגן מתביעות" או "נגיש ב-100%". התוסף אינו הופך אתר לנגיש; הוא
@@ -135,7 +135,7 @@
       <div class="callout">
         <p>
           סעיף 4 אינו ניסוח מקרי. עוזרי קוד נוטים ״לעזור״ ולהוסיף תיקוני נגישות
-          אוטומטיים — הוספת ARIA, ניחוש טקסט חלופי, שינוי כותרות — וזו בדיוק
+          אוטומטיים, כמו הוספת ARIA, ניחוש טקסט חלופי או שינוי כותרות, וזו בדיוק
           הפעולה שמקלקלת אתרים למשתמשי קורא מסך.
         </p>
       </div>
@@ -164,14 +164,14 @@
             <li><div><h3>שמרו ורעננו</h3><p class="dim">הכפתור יופיע בפינת המסך.</p></div></li>
           </ol>
           <div class="callout" style="margin-top:24px;margin-bottom:0">
-            <p>עדיף להשתמש ב<strong>ערכת בת</strong> (child theme) — אחרת עדכון התבנית ימחק את השינוי. לחלופין, כל תוסף מסוג ״Insert Headers and Footers״ יעשה את העבודה בלי לגעת בקוד.</p>
+            <p>עדיף להשתמש ב<strong>ערכת בת</strong> (child theme), אחרת עדכון התבנית ימחק את השינוי. לחלופין, כל תוסף מסוג ״Insert Headers and Footers״ יעשה את העבודה בלי לגעת בקוד.</p>
           </div>
         </div>
 
         <div class="tabpanel" role="tabpanel" id="p-wix" aria-labelledby="t-wix" tabindex="0" hidden>
           <ol class="steps">
             <li><div><h3>Settings ← Custom Code</h3><p class="dim">בלוח הבקרה של Wix.</p></div></li>
-            <li><div><h3>Add Custom Code</h3><p class="dim">הדביקו את התג, בחרו <strong>All pages</strong> ומיקום <strong>Body — end</strong>.</p></div></li>
+            <li><div><h3>Add Custom Code</h3><p class="dim">הדביקו את התג, בחרו <strong>All pages</strong> ומיקום <strong>Body - end</strong>.</p></div></li>
             <li><div><h3>Apply ואז Publish</h3><p class="dim">הקוד פועל רק באתר המפורסם, לא בעורך.</p></div></li>
           </ol>
         </div>
@@ -255,10 +255,10 @@ export default function App() {
             <tr><td class="v">data-coordinator-name</td><td class="v">—</td><td>שם רכז הנגישות</td></tr>
             <tr><td class="v">data-coordinator-phone</td><td class="v">—</td><td>טלפון רכז הנגישות</td></tr>
             <tr><td class="v">data-coordinator-email</td><td class="v">—</td><td>דוא״ל רכז הנגישות</td></tr>
-            <tr><td class="v">data-position</td><td class="v">bottom-right</td><td>גם bottom-left · top-right · top-left. בנוסף ערכים <strong>לוגיים</strong>: bottom-start · bottom-end · top-start · top-end — נצמדים לכיוון הקריאה ולכן מתהפכים יחד עם השפה, במקום להיות נעולים לפינה פיזית</td></tr>
+            <tr><td class="v">data-position</td><td class="v">bottom-right</td><td>גם bottom-left · top-right · top-left. בנוסף ערכים <strong>לוגיים</strong>: bottom-start · bottom-end · top-start · top-end, שנצמדים לכיוון הקריאה ולכן מתהפכים יחד עם השפה, במקום להיות נעולים לפינה פיזית</td></tr>
             <tr><td class="v">data-offset</td><td class="v">20</td><td>מרחק בפיקסלים משולי המסך</td></tr>
             <tr><td class="v">data-accent</td><td class="v">#0b5fff</td><td>צבע ראשי בפורמט hex. צבע הטקסט נבחר אוטומטית לפי ניגודיות</td></tr>
-            <tr><td class="v">data-mount</td><td class="v">body</td><td>סלקטור CSS של האלמנט שאליו התוסף נטען. נדרש באפליקציות שמסמנות <code>inert</code> על צאצאי <code>body</code> — ראו למטה</td></tr>
+            <tr><td class="v">data-mount</td><td class="v">body</td><td>סלקטור CSS של האלמנט שאליו התוסף נטען. נדרש באפליקציות שמסמנות <code>inert</code> על צאצאי <code>body</code>, ראו למטה</td></tr>
             <tr><td class="v">data-lang</td><td class="v">מ-<code>&lt;html lang&gt;</code></td><td><code>he</code> או <code>en</code>. בלי הערך הזה התוסף עוקב אחר שפת העמוד, כולל שינוי שפה בלי טעינה מחדש. ברירת המחדל היא עברית</td></tr>
             <tr><td class="v">data-hidden</td><td class="v">—</td><td>הכפתור מתחיל מוסתר. לאתרים ששומרים בעצמם העדפה של ״להסתיר את כפתור הנגישות״, כדי שהכפתור לא יהבהב בכל טעינה</td></tr>
           </tbody>
@@ -269,8 +269,8 @@ export default function App() {
       <p class="dim">
         כברירת מחדל התוסף נטען כילד ישיר של <code>body</code>. אפליקציות רבות
         ב-React או ב-Vue מסמנות <code>inert</code> על כל ילדי <code>body</code>
-        כשמוצג מסך חוסם — עדכון גרסה כפוי, ניתוק מהרשת, מודאל מסך מלא — ומחריגות
-        רק את אלמנט השורש שלהן. במצב כזה התוסף מושבת בדיוק ברגע שבו המבקר תקוע
+        כשמוצג מסך חוסם, כמו עדכון גרסה כפוי, ניתוק מהרשת או מודאל מסך מלא,
+        ומחריגות רק את אלמנט השורש שלהן. במצב כזה התוסף מושבת בדיוק ברגע שבו המבקר תקוע
         מול מסך חוסם ואולי דווקא זקוק לניגודיות גבוהה או לעצירת אנימציות.
       </p>
       <p class="dim">
@@ -289,7 +289,7 @@ export default function App() {
         perspective, contain או will-change.</strong>
         כל אחת מהן הופכת אותו ל-containing block עבור כפתור הפתיחה, שממוקם
         <code>fixed</code>. התוצאה: הכפתור זז למקום לא צפוי, גולל יחד עם העמוד
-        ולפעמים יוצא מהמסך — בלי שגיאה ובלי סיבה גלויה.
+        ולפעמים יוצא מהמסך, בלי שגיאה ובלי סיבה גלויה.
         <code>position: relative</code> רגיל בטוח ואינו עושה זאת.
       </div>
 
@@ -321,7 +321,7 @@ export default function App() {
             <tr><td class="v">hidden</td><td>האם הכפתור מוסתר כרגע</td></tr>
             <tr><td class="v">reset()</td><td>איפוס כל ההגדרות, כמו הכפתור בחלונית</td></tr>
             <tr><td class="v">getPrefs()</td><td>ההעדפות הנוכחיות של המבקר, כמזהה־פיצ׳ר → רמה. מוחזר עותק</td></tr>
-            <tr><td class="v">setPrefs(prefs)</td><td>שחזור פרופיל שמור. <strong>מחליף</strong> את כל ההעדפות ומחיל את התוצאה — מה שלא נכלל מכובה. מזהים לא מוכרים ורמות מחוץ לטווח נזרקים. לשינוי הגדרה בודדת: פרישׂה מעל <code>getPrefs()</code></td></tr>
+            <tr><td class="v">setPrefs(prefs)</td><td>שחזור פרופיל שמור. <strong>מחליף</strong> את כל ההעדפות ומחיל את התוצאה: מה שלא נכלל מכובה. מזהים לא מוכרים ורמות מחוץ לטווח נזרקים. לשינוי הגדרה בודדת: פרישׂה מעל <code>getPrefs()</code></td></tr>
             <tr><td class="v">setLanguage(lang)</td><td><code>he</code> או <code>en</code>. מקבע את השפה ומפסיק לעקוב אחר <code>&lt;html lang&gt;</code></td></tr>
             <tr><td class="v">lang</td><td>השפה הפעילה</td></tr>
             <tr><td class="v">destroy()</td><td>הסרה מלאה של התוסף וביטול כל מה שהחיל</td></tr>
@@ -329,17 +329,17 @@ export default function App() {
         </table>
       </div>
       <p class="dim">
-        בהתקנה דרך npm אין <code>window.shakuf</code> — <code>mount()</code>
+        בהתקנה דרך npm אין <code>window.shakuf</code>. <code>mount()</code>
         מחזיר את המופע עצמו, עם אותן שיטות. שם גם אפשר להעביר
         <code>mount({ initialPrefs })</code>: העדפות פתיחה למבקר שאין לו עדיין
         שמורות אצלנו, לאתרים שמחליפים תוסף נגישות אחר ולא רוצים לאפס בשקט את מי
-        שכבר הגדיר טקסט גדול או ניגודיות גבוהה. זהו <em>זרע</em> ולא דריסה — הוא
+        שכבר הגדיר טקסט גדול או ניגודיות גבוהה. זהו <em>זרע</em> ולא דריסה: הוא
         חל רק כשהאחסון שלנו ריק, ולכן אינו דורס בחירות שהמבקר עשה אחר כך.
       </p>
       <div class="callout" style="margin-top:20px">
         <strong>לפני שמסנכרנים העדפות לשרת.</strong> התוסף עצמו לא שולח כלום
         לשום מקום, ואין לו שרת. אם אתם שומרים את הפלט של <code>getPrefs()</code>
-        בפרופיל משתמש — זו החלטה שלכם ותחת מדיניות הפרטיות שלכם. שווה לדעת
+        בפרופיל משתמש, זו החלטה שלכם ותחת מדיניות הפרטיות שלכם. שווה לדעת
         שערכים כמו ״ניגודיות גבוהה״ או ״גופן ידידותי לדיסלקציה״ ניתנים לפירוש
         כמסקנה על מוגבלות, כלומר מידע רגיש. זו הסיבה שאנחנו לא נוגעים בהם.
       </div>
@@ -356,7 +356,7 @@ export default function App() {
       </div>
       <p class="dim">
         אם אתם כבר יודעים מראש שהכפתור צריך להיות מוסתר, עדיף
-        <code>data-hidden</code> — הוא חוסך את ההבהוב.
+        <code>data-hidden</code>, שחוסך את ההבהוב.
       </p>
     </div>
   </section>
@@ -401,7 +401,7 @@ export default function App() {
             <div class="code-bar"><span>csp</span></div>
             <pre dir="ltr" tabindex="0" role="region" aria-label="דוגמת CSP"><code>script-src 'self' https://cdn.jsdelivr.net;</code></pre>
           </div>
-          <p>אין צורך ב-<code>connect-src</code> — התוסף לא מבצע בקשות.</p>
+          <p>אין צורך ב-<code>connect-src</code>, כי התוסף לא מבצע בקשות.</p>
         </div>
       </details>
 
@@ -416,7 +416,7 @@ export default function App() {
 
           <p>
             <strong>הכתובת בלי מספר גרסה מושכת תמיד את האחרונה, וזו ההמלצה.</strong>
-            כך תיקונים מגיעים אליכם בלי לגעת בקוד — וזה משנה: בגרסאות
+            כך תיקונים מגיעים אליכם בלי לגעת בקוד, וזה משנה: בגרסאות
             0.1.0–0.2.0 שלושה ממצבי הצבע לא עשו כלום, ובגרסאות שלפני 0.3.1
             כפתור הפתיחה היה עלול להיעלם מאחורי שכבות של האתר. מי שנעץ גרסה
             נשאר עם התקלות עד שיעדכן ידנית.
@@ -429,7 +429,7 @@ export default function App() {
           </p>
 
           <p>
-            <strong>נעיצת גרסה</strong> נכונה אם אתם צריכים שליטה בשינויים —
+            <strong>נעיצת גרסה</strong> נכונה אם אתם צריכים שליטה בשינויים:
             סביבות מבוקרות, בדיקות רגרסיה, או מדיניות אבטחה שדורשת
             <code>integrity</code> (אפשרי רק על כתובת עם גרסה מדויקת, כי התוכן
             חייב להיות קבוע). המחיר: <strong>אתם אחראים לעדכן</strong>, כולל
@@ -440,7 +440,7 @@ export default function App() {
             <pre dir="ltr" tabindex="0" role="region" aria-label="נעיצת גרסה"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget@0.3.1" defer&gt;&lt;/script&gt;</code></pre>
           </div>
           <p class="dim">
-            אפשר גם לנעוץ טווח — <code>@0.3</code> מקבל תיקוני תיקון בלבד ולא
+            אפשר גם לנעוץ טווח: <code>@0.3</code> מקבל תיקוני תיקון בלבד ולא
             פיצ׳רים חדשים. פשרה סבירה בין השניים.
           </p>
         </div>
@@ -458,7 +458,7 @@ export default function App() {
       </p>
 
       <ol class="steps" style="margin-top:30px">
-        <li><div><h3>תיקון האתר עצמו</h3><p class="dim">ניווט מקלדת מלא, טקסט חלופי לתמונות, תוויות לשדות טופס, ניגודיות מספקת, מבנה כותרות תקין — לפי ת״י 5568 (WCAG 2.1 AA).</p></div></li>
+        <li><div><h3>תיקון האתר עצמו</h3><p class="dim">ניווט מקלדת מלא, טקסט חלופי לתמונות, תוויות לשדות טופס, ניגודיות מספקת, מבנה כותרות תקין, לפי ת״י 5568 (WCAG 2.1 AA).</p></div></li>
         <li><div><h3>פרסום הצהרת נגישות</h3><p class="dim">עמוד ייעודי ומתוארך שמפרט את מצב הנגישות באתר, את ההתאמות שבוצעו ואת המגבלות הידועות.</p></div></li>
         <li><div><h3>מינוי רכז נגישות</h3><p class="dim">אדם בשם ובפרטי קשר, לא כתובת כללית.</p></div></li>
         <li><div><h3>ערוץ פניות שעובד</h3><p class="dim">ושמישהו באמת עונה בו.</p></div></li>
