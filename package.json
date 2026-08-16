@@ -11,7 +11,7 @@
     "dev": "npm run dev --workspace=@shakuf-widget/widget",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "size": "npm run size --workspace=@shakuf-widget/widget",
-    "build:site": "npm run build && node -e \"require('fs').copyFileSync('packages/core/dist/shakuf.js','site/shakuf.js')\""
+    "build:site": "npm run build && node -e \"require('fs').copyFileSync('packages/core/dist/shakuf.js','site/shakuf.js')\" && node scripts/build-site-partials.mjs"
   },
   "engines": {
     "node": ">=20"

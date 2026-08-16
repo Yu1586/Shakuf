@@ -42,6 +42,9 @@
       <div class="btn-row" style="margin-top:34px">
         <a class="btn btn-solid btn-he" href="/setup/">מדריך התקנה</a>
       </div>
+      <p style="margin-top:30px;font-size:14px;color:var(--fg-faint)">
+        הכפתור בפינת המסך הוא שקוף עצמו. אפשר לנסות אותו עכשיו.
+      </p>
     </div>
   </section>
 
@@ -140,23 +143,23 @@
         באוגוסט 2016.
       </p>
 
-      <!-- tabindex+role: the wrapper scrolls horizontally on narrow screens, and a
-           scroll container that only a mouse can reach is unusable by keyboard. -->
-      <div class="tablewrap" style="margin:28px 0" tabindex="0" role="region"
-           aria-label="השוואה בין דרישות הדין לבין מה ששקוף מספק">
-        <table>
-          <caption class="sr-only">השוואה בין דרישות הדין לבין מה ששקוף מספק</caption>
-          <thead><tr><th scope="col">requirement</th><th scope="col">shakuf?</th></tr></thead>
-          <tbody>
-            <tr><td>האתר עצמו עומד בת״י 5568 (קוד, תוכן, טפסים, ניווט מקלדת, טקסט חלופי)</td><td class="no">לא</td></tr>
-            <tr><td>פרסום <strong>הצהרת נגישות</strong></td><td class="no">לא, רק מקשר</td></tr>
-            <tr><td>מינוי <strong>רכז נגישות</strong></td><td class="no">לא, רק מציג</td></tr>
-            <tr><td>ערוץ לפניות בנושא נגישות</td><td class="no">לא, רק מציג</td></tr>
-            <tr><td>בדיקה של <strong>מורשה נגישות</strong></td><td class="no">לא</td></tr>
-            <tr><td>התאמת תצוגה אישית למבקר</td><td class="yes">כן</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <!-- COMPLIANCE_TABLE:START — generated from site/_partials/compliance-table.html. Do not hand-edit; run `npm run build:site` after changing the source. -->
+<div class="tablewrap" style="margin:28px 0" tabindex="0" role="region"
+     aria-label="דרישות הדין מול מה ששקוף מספק">
+  <table>
+    <caption class="sr-only">דרישות הדין מול מה ששקוף מספק</caption>
+    <thead><tr><th scope="col">הדרישה</th><th scope="col">האם הכלי מספק?</th></tr></thead>
+    <tbody>
+      <tr><td>שהאתר עצמו יעמוד בת״י 5568 (WCAG 2.1 AA), כולל קוד, תוכן, טפסים, ניווט מקלדת, טקסט חלופי לתמונות</td><td class="no">לא, מחייב תיקונים באתר עצמו</td></tr>
+      <tr><td>פרסום <strong>הצהרת נגישות</strong></td><td class="no">לא, רק מקשר להצהרה שבעל האתר כתב</td></tr>
+      <tr><td>מינוי <strong>רכז נגישות</strong></td><td class="no">לא, רק מציג את פרטיו</td></tr>
+      <tr><td>ערוץ לפניות בנושא נגישות</td><td class="no">לא, רק מציג את פרטי הקשר</td></tr>
+      <tr><td>בדיקה של <strong>מורשה נגישות</strong></td><td class="no">לא</td></tr>
+      <tr><td>התאמת תצוגה אישית למבקר</td><td class="yes">כן, זה כל מה שהכלי עושה</td></tr>
+    </tbody>
+  </table>
+</div>
+<!-- COMPLIANCE_TABLE:END -->
 
       <p class="dim">חמש מתוך שש השורות באחריות בעל האתר בלבד. שקוף עוזר בשורה השישית ולא מתיימר ליותר.</p>
 

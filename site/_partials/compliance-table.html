@@ -1,0 +1,31 @@
+<!--
+  Single source of truth for the "law vs. what שקוף provides" table.
+
+  Injected verbatim into both site/index.html and site/disclaimer/index.html by
+  scripts/build-site-partials.mjs, between the COMPLIANCE_TABLE:START/END
+  markers in each file. Edit this file, then run `npm run build:site` — do not
+  hand-edit the table inside either page, the next build will overwrite it.
+
+  This used to be two independently-worded tables that stated the same six
+  facts differently: terser on the homepage, fuller on /disclaimer/. The risk
+  was never the duplicated prose, it was the six facts silently drifting if
+  only one page got updated when the tool's scope changed. This wording is the
+  disclaimer page's, since that page is the deliberately-thorough, read-before-
+  installing document and DISCLAIMER.md is already this project's canonical
+  legal text elsewhere.
+-->
+<div class="tablewrap" style="margin:28px 0" tabindex="0" role="region"
+     aria-label="דרישות הדין מול מה ששקוף מספק">
+  <table>
+    <caption class="sr-only">דרישות הדין מול מה ששקוף מספק</caption>
+    <thead><tr><th scope="col">הדרישה</th><th scope="col">האם הכלי מספק?</th></tr></thead>
+    <tbody>
+      <tr><td>שהאתר עצמו יעמוד בת״י 5568 (WCAG 2.1 AA), כולל קוד, תוכן, טפסים, ניווט מקלדת, טקסט חלופי לתמונות</td><td class="no">לא, מחייב תיקונים באתר עצמו</td></tr>
+      <tr><td>פרסום <strong>הצהרת נגישות</strong></td><td class="no">לא, רק מקשר להצהרה שבעל האתר כתב</td></tr>
+      <tr><td>מינוי <strong>רכז נגישות</strong></td><td class="no">לא, רק מציג את פרטיו</td></tr>
+      <tr><td>ערוץ לפניות בנושא נגישות</td><td class="no">לא, רק מציג את פרטי הקשר</td></tr>
+      <tr><td>בדיקה של <strong>מורשה נגישות</strong></td><td class="no">לא</td></tr>
+      <tr><td>התאמת תצוגה אישית למבקר</td><td class="yes">כן, זה כל מה שהכלי עושה</td></tr>
+    </tbody>
+  </table>
+</div>
