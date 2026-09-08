@@ -59,6 +59,127 @@
     </div>
   </section>
 
+  <!-- ================= 0.4.0 ================= -->
+  <section class="rule">
+    <div class="wrap-text">
+      <h2>0.4.0 <span class="dim" style="font-weight:400;font-size:.6em">· 8 September 2026</span></h2>
+
+      <p>
+        The "stop animations" control was removing animations rather than
+        stopping them, and on a common pattern that meant the visitor lost the
+        content instead of seeing it hold still. If you rely on that control,
+        upgrade. Everything else here is additive.
+      </p>
+
+      <h3>Fixed</h3>
+      <ul>
+        <li>
+          <strong>"Stop animations" could make content disappear.</strong> The
+          rule declared <code>animation: none</code>, which removes an animation
+          rather than pausing it. Anything whose visible state is produced by an
+          animation therefore reverted to its base state, and for the whole
+          reveal-on-scroll family, <code>.reveal { opacity: 0; animation: fadein
+          1s forwards }</code> and every AOS-style library, that base state is
+          invisible. Measured: such an element had zero animations and a computed
+          opacity of <code>0</code> that nothing would ever change.
+          <br>
+          The rule now runs animations to completion instantly, which is the
+          conventional reduced-motion approach, so <code>fill-mode: forwards</code>
+          lands on its final visible value. Verified against the case that
+          matters: an infinite marquee still visibly stops, at the same resting
+          position <code>animation: none</code> left it.
+          <br>
+          Animation and transition delays are zeroed too, so a staggered list
+          does not still play out over more than a second after the visitor has
+          asked for stillness. Checked on composite cases, including two
+          staggered animations fighting over one property and a delayed
+          auto-dismiss: the collapsed result is the same computed state the
+          authored sequence ends on, reached at once rather than seconds later.
+        </li>
+        <li>
+          <strong>A dead declaration in the same rule.</strong>
+          <code>animation-play-state: paused</code> never had any effect:
+          <code>animation</code> is a shorthand that resets play-state to
+          <code>running</code>, and it was declared after the longhand in the
+          same block. Removed.
+        </li>
+        <li>
+          <strong>The coordinator's phone number was not dialable from
+          abroad.</strong> The panel emitted <code>data-coordinator-phone</code>
+          verbatim into the href, so <code>055-3000-898</code> produced
+          <code>tel:055-3000-898</code>. The href is now normalised to E.164
+          (<code>tel:+972553000898</code>) while the link text stays exactly what
+          you typed. Handles a leading <code>00</code>, a number that already
+          carries <code>972</code>, a national trunk zero, both at once, and 8-
+          and 9-digit national numbers.
+          <br>
+          Numbers with no international form, <code>*6050</code> and
+          <code>1-800-…</code> lines, and anything with an extension or free
+          text typed into the field, are shown as plain text instead of a link.
+          The number is never dropped from the panel.
+        </li>
+      </ul>
+
+      <h3>Added</h3>
+      <ul>
+        <li>
+          <strong><code>html[data-shakuf-motion="off"]</code> is now documented as
+          a public, stable selector.</strong> A page cannot make
+          <code>prefers-reduced-motion: reduce</code> evaluate true from script,
+          so every <code>@media (prefers-reduced-motion: reduce)</code> block a
+          site has written stays inert when a visitor uses our control instead of
+          their OS setting. The better a site's reduced-motion work, the worse
+          that was.
+          <br>
+          A real case: a client-logo marquee is a 7500px track with five copies
+          of the list inside an <code>overflow: hidden</code> window with an edge
+          mask, and its authored reduced-motion state unwraps the track, drops the
+          duplicates and removes the mask. Held still without the rest, it reads
+          as a stalled carousel, which is precisely what that media query exists
+          to prevent.
+          <br>
+          Repeating the still-state under our attribute is enough to fix it: our
+          rule only touches <code>animation-*</code>, <code>transition-*</code>
+          and <code>scroll-behavior</code>, so a site's own layout declarations
+          sit alongside ours untouched. There is a copy-paste recipe in the
+          <a href="/setup/#motion-css">setup guide</a>.
+        </li>
+        <li>
+          <strong><code>data-motion-exclude</code></strong>, a CSS selector for
+          elements "stop animations" must leave alone, <strong>including their
+          descendants</strong>. A marquee track and its children are one unit, and
+          an exclusion stopping at the element itself would miss the point.
+          <br>
+          This is for the narrower case the recipe above cannot cover: a
+          still-state that needs to own the animation itself, such as slowing one
+          rather than stopping it. Our declarations are <code>!important</code>,
+          and not matching in the first place is the only thing that reliably
+          overrides them. Most sites do not need this.
+          <br>
+          An exclusion is a trade, not an improvement: an excluded element stops
+          responding to the control entirely unless your own CSS handles it.
+          Invalid selectors, and any value containing braces, are rejected with a
+          console warning and treated as absent.
+        </li>
+      </ul>
+
+      <h3>Note for installers</h3>
+      <ul>
+        <li>
+          <strong>jsDelivr is a third party on your site.</strong> The widget
+          still makes no network requests of its own, but the visitor's browser
+          fetches the script from <code>cdn.jsdelivr.net</code>, which exposes
+          their IP address and user-agent to it. That is true of any CDN-hosted
+          library and is worth stating plainly: if your privacy policy enumerates
+          third parties by name, jsDelivr belongs on that list. The setup guide
+          now has <a href="/setup/#selfhost">self-hosting instructions</a> for
+          sites that would rather not add one, which also answer sites that need
+          Subresource Integrity and therefore a pinned version.
+        </li>
+      </ul>
+    </div>
+  </section>
+
   <!-- ================= 0.3.1 ================= -->
   <section class="rule">
     <div class="wrap-text">

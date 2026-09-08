@@ -110,6 +110,33 @@ export interface WidgetConfig {
    */
   mount: string | null;
   /**
+   * CSS selector for elements the "stop motion" control must leave alone.
+   *
+   * Exists because a page cannot make `prefers-reduced-motion: reduce` evaluate
+   * true from script, so every `@media (prefers-reduced-motion: reduce)` block
+   * a site has written stays inert when a visitor uses our control instead of
+   * their OS setting. Most of the time that costs nothing, because our rule
+   * only touches `animation-*`, `transition-*` and `scroll-behavior`, and a
+   * site can simply repeat its still-state under
+   * `html[data-shakuf-motion="off"]` — those declarations sit alongside ours
+   * untouched.
+   *
+   * This attribute is for the remaining case: a still-state that needs to own
+   * the animation itself, which our `!important` would otherwise win. A marquee
+   * whose reduced-motion state is "stop the loop *and* unwrap the 7500px track,
+   * drop the duplicate logos and remove the edge mask" is the motivating
+   * example — held still without the rest, it reads as a stalled carousel.
+   *
+   * **Descendants of a match are excluded too.** A marquee's still-state is
+   * about the track and its children together, and an exclusion that stopped at
+   * the element itself would be the wrong default for every case we have seen.
+   *
+   * Script-tag installs pass `data-motion-exclude`. Invalid selectors, and any
+   * value containing braces, are rejected with a console warning and treated as
+   * absent — see `safeSelector` in config.ts.
+   */
+  motionExclude: string | null;
+  /**
    * `he` or `en`. Falls back to `<html lang>`, then Hebrew.
    *
    * Set this only to override the host document. Leaving it unset is usually

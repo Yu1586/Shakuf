@@ -72,6 +72,35 @@ function safeColor(raw: string | null): string | null {
   return raw && /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(raw) ? raw : null;
 }
 
+/**
+ * A CSS selector that is safe to interpolate into our stylesheet text.
+ *
+ * Unlike `data-mount`, this value does not go to `querySelector` at runtime —
+ * it is concatenated into a `<style>` we write onto the host page. So a value
+ * like `x} body{display:none} .y{` would close our rule and open one of its
+ * own: CSS injection on the site owner's own page. Braces are rejected
+ * explicitly, and `querySelector` is then used purely as a parser (it raises
+ * SyntaxError rather than returning null, the same idiom as `resolveMount`),
+ * which also rejects comment openers and other malformed input.
+ *
+ * Rejection warns and falls back to "no exclusion", which is the previous
+ * behaviour rather than a broken sheet.
+ */
+export function safeSelector(raw: string | null, attr: string): string | null {
+  if (!raw) return null;
+  if (/[{}]/.test(raw)) {
+    warn(`data-${attr} may not contain braces: ${raw}`);
+    return null;
+  }
+  try {
+    document.querySelector(raw);
+    return raw;
+  } catch {
+    warn(`data-${attr} is not a valid CSS selector: ${raw}`);
+    return null;
+  }
+}
+
 const DEFAULT_OFFSET = 20;
 
 /**
@@ -142,6 +171,7 @@ export function readConfig(): WidgetConfig {
     byUrl: safeUrl(str(el, 'by-url')),
     byName: str(el, 'by-name'),
     mount: str(el, 'mount'),
+    motionExclude: safeSelector(str(el, 'motion-exclude'), 'motion-exclude'),
     lang: str(el, 'lang'),
     // Presence-or-value, the way HTML booleans normally work: `data-hidden`,
     // `data-hidden=""` and `data-hidden="true"` all mean hidden. Only an

@@ -49,6 +49,7 @@
 | `data-coordinator-name` | — | שם רכז הנגישות |
 | `data-coordinator-phone` | — | טלפון רכז הנגישות |
 | `data-coordinator-email` | — | דוא״ל רכז הנגישות |
+| `data-motion-exclude` | — | סלקטור CSS של אלמנטים ש״עצירת אנימציות״ לא תיגע בהם, כולל צאצאיהם. לאתרים שכתבו בעצמם מצב `prefers-reduced-motion` ורוצים שה-CSS שלהם ימשיך לנהל אותם |
 
 אם לא הוגדרו פרטי הצהרת נגישות ורכז נגישות, החלונית מציגה למבקר הודעה שהאתר
 חסר אותם — משום שהדין הישראלי מחייב את שניהם.
@@ -122,7 +123,7 @@ npx serve -l 4321 .
 | `npm run build` | בונה את `dist/shakuf.js` (script tag) ואת `dist/index.js` (npm) |
 | `npm run typecheck` | בדיקת טיפוסים |
 
-גודל נוכחי: **14.1KB gzipped**, ללא תלויות בזמן ריצה.
+גודל נוכחי: **15.9KB gzipped**, ללא תלויות בזמן ריצה.
 
 ---
 

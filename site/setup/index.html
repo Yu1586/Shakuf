@@ -264,6 +264,7 @@ export default function App() {
             <tr><td class="v">data-offset</td><td class="v">20</td><td>מרחק בפיקסלים משולי המסך</td></tr>
             <tr><td class="v">data-accent</td><td class="v">#0b5fff</td><td>צבע ראשי בפורמט hex. צבע הטקסט נבחר אוטומטית לפי ניגודיות</td></tr>
             <tr><td class="v">data-mount</td><td class="v">body</td><td>סלקטור CSS של האלמנט שאליו התוסף נטען. נדרש באפליקציות שמסמנות <code>inert</code> על צאצאי <code>body</code>, ראו למטה</td></tr>
+            <tr><td class="v">data-motion-exclude</td><td class="v">—</td><td>סלקטור CSS של אלמנטים ש״עצירת אנימציות״ לא תיגע בהם, <strong>כולל הצאצאים שלהם</strong>. לאתרים שכתבו בעצמם מצב <code>prefers-reduced-motion</code> ורוצים שה-CSS שלהם ימשיך לנהל את האלמנטים האלה. <a href="#motion-css">ראו למטה</a>, ורוב האתרים לא צריכים את זה</td></tr>
             <tr><td class="v">data-lang</td><td class="v">מ-<code>&lt;html lang&gt;</code></td><td><code>he</code> או <code>en</code>. בלי הערך הזה התוסף עוקב אחר שפת העמוד, כולל שינוי שפה בלי טעינה מחדש. ברירת המחדל היא עברית</td></tr>
             <tr><td class="v">data-hidden</td><td class="v">—</td><td>הכפתור מתחיל מוסתר. לאתרים ששומרים בעצמם העדפה של ״להסתיר את כפתור הנגישות״, כדי שהכפתור לא יהבהב בכל טעינה</td></tr>
           </tbody>
@@ -308,6 +309,73 @@ export default function App() {
       </p>
       <div class="code">
         <pre tabindex="0" role="region" aria-label="דוגמת קוד: העלאת התוסף מעל שכבות האתר"><code>#shakuf-root { position: relative !important; z-index: 10001 !important; }</code></pre>
+      </div>
+
+      <h3 id="motion-css" style="margin-top:36px">אנימציות: כשלאתר כבר יש מצב <code>prefers-reduced-motion</code> משלו</h3>
+      <p class="dim">
+        אין דרך שדף יגרום ל-<code>prefers-reduced-motion: reduce</code> להתקיים
+        מתוך קוד. זו הגדרה של מערכת ההפעלה של המבקר, ו-JavaScript לא יכול להדליק
+        אותה. לכן כשמבקר מפעיל אצלנו את ״עצירת אנימציות״, כל בלוק
+        <code>@media (prefers-reduced-motion: reduce)</code> שכתבתם נשאר כבוי,
+        כולל בלוקים שנכתבו בדיוק למצב הזה.
+      </p>
+      <p class="dim">
+        <strong><code>html[data-shakuf-motion="off"]</code> הוא סלקטור ציבורי
+        ויציב.</strong> אנחנו כותבים את המאפיין הזה על תגית <code>&lt;html&gt;</code>
+        כשהמבקר מפעיל את הפקד ומסירים אותו כשהוא מכבה. מותר לכתוב עליו CSS משלכם,
+        והוא לא ישתנה בלי גרסה ראשית חדשה. הכלל שלנו נוגע רק ב-<code>animation-*</code>,
+        ב-<code>transition-*</code> וב-<code>scroll-behavior</code>, ולכן שאר
+        ההצהרות שלכם עוברות לצידו בלי התנגשות:
+      </p>
+      <div class="code" data-copy="מצב רגיעה לשני המסלולים">
+        <div class="code-bar"><span>css</span></div>
+        <pre dir="ltr" tabindex="0" role="region" aria-label="מצב רגיעה שמשרת גם את הגדרת מערכת ההפעלה וגם את הפקד של שקוף"><code>/* the still state, once for the OS setting */
+@media (prefers-reduced-motion: reduce) {
+  .logos-track { animation: none; width: auto; flex-wrap: wrap; justify-content: center }
+  .logos-track &gt; :nth-child(n+12) { display: none }
+  .logos-marquee { mask-image: none }
+}
+
+/* and once for the Shakuf control. animation is already handled for you. */
+html[data-shakuf-motion="off"] .logos-track { width: auto; flex-wrap: wrap; justify-content: center }
+html[data-shakuf-motion="off"] .logos-track &gt; :nth-child(n+12) { display: none }
+html[data-shakuf-motion="off"] .logos-marquee { mask-image: none }</code></pre>
+      </div>
+      <p class="dim">
+        שתי הרשימות זהות, ואם אתם עובדים עם Sass או PostCSS אפשר לגזור אותן
+        מ-mixin אחד. למה זה שווה את הטרחה: קרוסלת לוגואים היא לרוב מסילה ברוחב
+        אלפי פיקסלים עם כמה עותקים של הרשימה, בתוך חלון <code>overflow: hidden</code>
+        עם דהייה בקצוות, וכל המנגנון הזה קיים רק כדי שהלולאה תיראה רציפה. עצירה
+        של האנימציה לבדה משאירה כמה לוגואים שנמוגים לתוך הדהייה, וזה נראה כמו
+        קרוסלה תקועה ולא כמו פריסה מכוונת. זה בדיוק המצב שה-<code>@media</code>
+        שלכם נכתב כדי למנוע.
+      </p>
+
+      <p class="dim" style="margin-top:28px">
+        <strong>וכשה-CSS שלכם צריך לנהל את האנימציה עצמה.</strong>
+        ההצהרות שלנו הן <code>!important</code>, ולכן המתכון שלמעלה עובד כל עוד
+        מצב הרגיעה שלכם לא נלחם עלינו על אותן תכונות. אם הוא כן, למשל אם אתם
+        רוצים להאט אנימציה במקום לעצור אותה או להשאיר מחוון טעינה מסתובב, אפשר
+        לומר לתוסף לא לגעת באלמנטים האלה מלכתחילה:
+      </p>
+      <div class="code" data-copy="data-motion-exclude">
+        <div class="code-bar"><span>html</span></div>
+        <pre dir="ltr" tabindex="0" role="region" aria-label="דוגמת קוד: data-motion-exclude"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget"
+        data-motion-exclude=".logos-track, .status-spinner"
+        defer&gt;&lt;/script&gt;</code></pre>
+      </div>
+      <p class="dim">
+        <strong>ההחרגה כוללת את הצאצאים.</strong> מסילת קרוסלה והפריטים שבתוכה
+        הם יחידה אחת, והחרגה שנעצרת באלמנט עצמו הייתה משאירה את הילדים תחת הכלל
+        שלנו ומפספסת את הנקודה. סלקטור לא חוקי, או ערך שמכיל סוגריים מסולסלים,
+        נדחה עם אזהרה ב-console והתוסף מתנהג כאילו לא הוגדר כלום. הערך נכתב לתוך
+        גיליון הסגנון שאנחנו מזריקים, ולכן הוא נבדק לפני.
+      </p>
+      <div class="callout" style="margin-top:20px">
+        <strong>החרגה היא ויתור, לא שיפור.</strong> אלמנט מוחרג מפסיק להגיב לפקד
+        ״עצירת אנימציות״ לגמרי, אלא אם ה-CSS שלכם מטפל בו בעצמו תחת
+        <code>html[data-shakuf-motion="off"]</code>. השתמשו בזה רק כשהמתכון שלמעלה
+        באמת לא מספיק.
       </div>
 
       <h3 style="margin-top:36px">שליטה מתוך קוד</h3>
@@ -395,6 +463,16 @@ export default function App() {
             ב-<code>localStorage</code> על הדומיין שלכם בלבד. משמעות מעשית: אין
             יחסי מעבד-מידע, אין צורך בהסכם עיבוד מידע, ואין תוספת לבאנר הקוקיז.
           </p>
+          <p>
+            <strong>אבל הקובץ עצמו מגיע מ-jsDelivr.</strong> התוסף לא מבצע
+            בקשות, ובכל זאת הדפדפן של המבקר פונה ל-<code>cdn.jsdelivr.net</code>
+            כדי להוריד את הסקריפט, ובפנייה הזו נחשפות כתובת ה-IP שלו ומחרוזת
+            הדפדפן. זה נכון לכל ספרייה שנטענת מ-CDN, אבל שווה לומר אותו במפורש:
+            <strong>אם מדיניות הפרטיות שלכם מונה צדדים שלישיים בשמם, jsDelivr
+            שייך לרשימה הזו.</strong> אתרים שמעדיפים לא להוסיף צד שלישי יכולים
+            לארח את הקובץ אצלם, ואז אין פנייה חיצונית כלל. ראו
+            <a href="#selfhost">אירוח עצמי</a> למטה.
+          </p>
         </div>
       </details>
 
@@ -406,7 +484,11 @@ export default function App() {
             <div class="code-bar"><span>csp</span></div>
             <pre dir="ltr" tabindex="0" role="region" aria-label="דוגמת CSP"><code>script-src 'self' https://cdn.jsdelivr.net;</code></pre>
           </div>
-          <p>אין צורך ב-<code>connect-src</code>, כי התוסף לא מבצע בקשות.</p>
+          <p>
+            אין צורך ב-<code>connect-src</code>, כי התוסף לא מבצע בקשות.
+            אם אתם מארחים את הקובץ אצלכם, <code>script-src 'self'</code> מספיק
+            ואפשר להשמיט את jsDelivr לגמרי. ראו <a href="#selfhost">אירוח עצמי</a>.
+          </p>
         </div>
       </details>
 
@@ -414,7 +496,7 @@ export default function App() {
         <summary>גודל, ביצועים ונעיצת גרסה</summary>
         <div class="details-body">
           <p>
-            כ-15.5KB דחוס (gzip), ללא תלויות בזמן ריצה. נטען עם <code>defer</code>
+            כ-15.9KB דחוס (gzip), ללא תלויות בזמן ריצה. נטען עם <code>defer</code>
             ולכן אינו חוסם את הצגת העמוד. חלונית ההגדרות נבנית רק כשהמבקר פותח
             אותה בפועל.
           </p>
@@ -422,9 +504,10 @@ export default function App() {
           <p>
             <strong>הכתובת בלי מספר גרסה מושכת תמיד את האחרונה, וזו ההמלצה.</strong>
             כך תיקונים מגיעים אליכם בלי לגעת בקוד, וזה משנה: בגרסאות
-            0.1.0–0.2.0 שלושה ממצבי הצבע לא עשו כלום, ובגרסאות שלפני 0.3.1
-            כפתור הפתיחה היה עלול להיעלם מאחורי שכבות של האתר. מי שנעץ גרסה
-            נשאר עם התקלות עד שיעדכן ידנית.
+            0.1.0–0.2.0 שלושה ממצבי הצבע לא עשו כלום, בגרסאות שלפני 0.3.1
+            כפתור הפתיחה היה עלול להיעלם מאחורי שכבות של האתר, ובגרסאות שלפני
+            0.4.0 ״עצירת אנימציות״ הייתה עלולה להעלים תוכן שמופיע דרך אנימציה
+            במקום רק לעצור אותו. מי שנעץ גרסה נשאר עם התקלות עד שיעדכן ידנית.
           </p>
           <p class="dim">
             כמה זמן לוקח לתיקון להגיע: הקובץ נשמר במטמון הדפדפן של המבקר לשבוע,
@@ -442,11 +525,48 @@ export default function App() {
           </p>
           <div class="code" data-copy="נעיצת גרסה">
             <div class="code-bar"><span>html · pinned</span></div>
-            <pre dir="ltr" tabindex="0" role="region" aria-label="נעיצת גרסה"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget@0.3.1" defer&gt;&lt;/script&gt;</code></pre>
+            <pre dir="ltr" tabindex="0" role="region" aria-label="נעיצת גרסה"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget@0.4.0" defer&gt;&lt;/script&gt;</code></pre>
           </div>
           <p class="dim">
-            אפשר גם לנעוץ טווח: <code>@0.3</code> מקבל תיקוני תיקון בלבד ולא
+            אפשר גם לנעוץ טווח: <code>@0.4</code> מקבל תיקוני תיקון בלבד ולא
             פיצ׳רים חדשים. פשרה סבירה בין השניים.
+          </p>
+
+          <h3 id="selfhost" style="margin-top:32px;font-size:17px">אירוח עצמי</h3>
+          <p>
+            שתי סיבות טובות לארח את הקובץ אצלכם: מדיניות פרטיות שלא רוצה להוסיף
+            צד שלישי, ומדיניות אבטחה שדורשת <code>integrity</code>. שימו לב
+            שהשנייה מחייבת גם נעיצת גרסה, כי חישוב ה-hash אפשרי רק על תוכן קבוע,
+            ולכן היא סותרת את ההמלצה שלמעלה. זו החלטה לגיטימית, ובלבד שתדעו
+            שאתם לוקחים על עצמכם את העדכונים.
+          </p>
+          <div class="code" data-copy="אירוח עצמי">
+            <div class="code-bar"><span>shell</span></div>
+            <pre dir="ltr" tabindex="0" role="region" aria-label="הורדת הקובץ לאירוח עצמי"><code>curl -o assets/shakuf.js \
+  https://cdn.jsdelivr.net/npm/@shakuf-widget/widget@0.4.0</code></pre>
+          </div>
+          <div class="code" data-copy="תג לאירוח עצמי">
+            <div class="code-bar"><span>html · self-hosted</span></div>
+            <pre dir="ltr" tabindex="0" role="region" aria-label="תג script לאירוח עצמי"><code>&lt;script src="/assets/shakuf.js" defer&gt;&lt;/script&gt;</code></pre>
+          </div>
+          <p class="dim">
+            ה-CSP הופך ל-<code>script-src 'self'</code> ואפשר להוריד את
+            <code>cdn.jsdelivr.net</code> ממנו. אין שינוי אחר בהתנהגות: כל
+            ההגדרות נקראות מתג ה-script בדיוק כמו קודם.
+          </p>
+          <p class="dim">
+            למי שנשאר על ה-CDN וצריך <code>integrity</code>, אפשר לחשב את
+            ה-hash מהגרסה הנעוצה:
+          </p>
+          <div class="code" data-copy="חישוב hash ל-SRI">
+            <div class="code-bar"><span>shell</span></div>
+            <pre dir="ltr" tabindex="0" role="region" aria-label="חישוב hash עבור Subresource Integrity"><code>curl -sL https://cdn.jsdelivr.net/npm/@shakuf-widget/widget@0.4.0 \
+  | openssl dgst -sha384 -binary | openssl base64 -A</code></pre>
+          </div>
+          <p class="dim">
+            ואז <code>integrity="sha384-<em>התוצאה</em>"</code> יחד עם
+            <code>crossorigin="anonymous"</code> על התג. עדכון גרסה מחייב חישוב
+            מחדש, אחרת הדפדפן יסרב לטעון את הקובץ והתוסף פשוט לא יופיע.
           </p>
         </div>
       </details>

@@ -21,16 +21,87 @@ const SELF = '#shakuf-root';
 const NO_SPACING = `svg, svg *, i, [class*="icon"], [class*="Icon"], [class*="fa-"], .material-icons`;
 
 /**
- * NOTE ON COMMENT LENGTH IN THIS FILE
+ * Builds the "stop motion" rule.
  *
- * The comments below sit inside a template literal, so they are string content:
- * `minify: true` strips every JS comment in the bundle but cannot touch these,
- * and they ship to every visitor of every site running the widget. Keep the
- * rationale here short and put the long version in the commit message. Roughly
- * 5 KB of this file is comment text, which is why a build-time strip is worth
- * doing before the bundle needs the headroom.
+ * This used to declare `animation: none`, which removes an animation rather
+ * than stopping it — not the same thing. Anything whose visible state is
+ * produced by an animation reverts to its base state, and for the whole
+ * reveal-on-scroll family (`.reveal { opacity: 0; animation: fadein 1s
+ * forwards }`, every AOS-style library) that base state is invisible. Measured:
+ * under the old rule such an element had zero animations and a computed opacity
+ * of 0 that nothing would ever change, so a visitor who asked to stop
+ * animations lost the content instead. Running animations to completion
+ * instantly is the conventional reduced-motion approach and lands
+ * `fill-mode: forwards` on its final, visible value.
+ *
+ * The same block also carried `animation-play-state: paused`, which never did
+ * anything: `animation` is a shorthand that resets play-state to `running`, and
+ * it was declared after the longhand in the same block.
+ *
+ * Delays are zeroed too. The canonical snippet leaves them alone, but a
+ * staggered list with `animation-delay: .1s … 1.2s` then still plays out over
+ * more than a second, which is motion the visitor just asked to stop. Measured
+ * on composite cases — two staggered animations on one element, including two
+ * fighting over the same property, and a delayed auto-dismiss — the collapsed
+ * result is the same computed state the authored sequence ends on, reached at
+ * once rather than seconds later.
+ *
+ * Not measured, spec reasoning only: zeroing the delay rather than making it
+ * negative should keep each animation running normally for its .01ms, so
+ * `animationend` and `transitionend` still fire and host scripts waiting on
+ * them still run. Same reasoning behind .01ms rather than a flat zero, and
+ * behind dropping `transition: none`, which sets `transition-property: none`
+ * and so can fire no `transitionend` at all — silently stalling any script that
+ * reveals content from that handler. Worth confirming with a real event probe
+ * if this rule is ever revisited.
+ *
+ * `exclude` is baked into the selector rather than layered on as a later rule.
+ * These declarations are `!important`, and no author rule can take an
+ * `!important` declaration back off an element once it applies — not matching
+ * in the first place is the only thing that actually works.
  */
-export const HOST_STYLES = /* css */ `
+function motionRule(exclude: string | null): string {
+  // `:is()` normalises a comma list inside `:not()` and forgives an invalid
+  // arm; the second `:not()` covers descendants, so an excluded element keeps
+  // the machinery its own reduced-motion CSS was written to rearrange.
+  const skip = exclude ? `:not(:is(${exclude})):not(:is(${exclude}) *)` : '';
+  const base = `html[data-shakuf-motion="off"] body *:not(${SELF})${skip}`;
+
+  return /* css */ `
+/* ---- Stop motion ------------------------------------------------------
+   Runs animations to completion instantly instead of removing them, so
+   fill-mode: forwards lands on its final value rather than a blank base
+   state. Delays are zeroed so a staggered reveal does not still play out. */
+${base},
+${base}::before,
+${base}::after {
+  animation-duration: .01ms !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: .01ms !important;
+  transition-delay: 0s !important;
+  scroll-behavior: auto !important;
+}
+`;
+}
+
+/**
+ * NOTE ON COMMENTS IN THIS FILE
+ *
+ * The comments below sit inside a template literal, so `minify: true` cannot
+ * touch them — they are string content, not code. They used to ship to every
+ * visitor of every site running the widget for exactly that reason. They no
+ * longer do: `stripCssComments` in tsup.config.ts removes every `/* *\/` block
+ * from this file before esbuild sees it, in both the IIFE and the ESM build.
+ * Verified on the built output — none of these strings survive into
+ * `dist/shakuf.js` or `dist/index.js`.
+ *
+ * So write the rationale here rather than hiding it in a commit message. Two
+ * things the strip does constrain: keep every comment on its own line between
+ * rules, so removing one cannot weld two tokens together, and keep comment
+ * markers out of the inline SVG data URIs below.
+ */
+export const buildHostStyles = (motionExclude: string | null = null): string => /* css */ `
 /* ---- Text spacing (WCAG 1.4.12 values) ------------------------------- */
 html[data-shakuf-line="1"] body *:not(${NO_SPACING}):not(${SELF}) { line-height: 1.6 !important; }
 html[data-shakuf-line="2"] body *:not(${NO_SPACING}):not(${SELF}) { line-height: 2 !important; }
@@ -152,15 +223,7 @@ html[data-shakuf-images="hidden"] body *:not(${SELF}) {
   background-image: none !important;
 }
 
-/* ---- Stop motion ------------------------------------------------------ */
-html[data-shakuf-motion="off"] body *:not(${SELF}),
-html[data-shakuf-motion="off"] body *:not(${SELF})::before,
-html[data-shakuf-motion="off"] body *:not(${SELF})::after {
-  animation-play-state: paused !important;
-  animation: none !important;
-  transition: none !important;
-  scroll-behavior: auto !important;
-}
+${motionRule(motionExclude)}
 
 /* ---- Strong focus indicator ------------------------------------------
    Restores a visible focus ring on sites that have removed it — one of the
@@ -192,12 +255,19 @@ html[data-shakuf-cursor="big"] body [role="button"]:not(${SELF}) {
 
 const STYLE_ID = 'shakuf-host-styles';
 
-/** Injects the stylesheet once. Idempotent. */
-export function ensureHostStyles(): void {
+/**
+ * Injects the stylesheet once. Idempotent.
+ *
+ * `motionExclude` is a validated CSS selector (see `safeSelector` in config.ts)
+ * or null. It is read here rather than toggled later because it changes the
+ * selector text itself, which means it is fixed for the life of the sheet —
+ * `destroy()` removes the element, so a re-mount picks up a new value.
+ */
+export function ensureHostStyles(motionExclude: string | null = null): void {
   if (document.getElementById(STYLE_ID)) return;
   const style = document.createElement('style');
   style.id = STYLE_ID;
-  style.textContent = HOST_STYLES;
+  style.textContent = buildHostStyles(motionExclude);
   document.head.appendChild(style);
 }
 

@@ -61,6 +61,27 @@
     setTimeout(function () { live.textContent = msg; }, 60);
   }
 
+  // ---- Fragments inside collapsed <details> ----------------------------
+  //
+  // A link to an id that sits inside a closed <details> does nothing visible on
+  // most browsers: the target is display:none, so there is nothing to scroll
+  // to. Recent Chrome and Firefox expand the ancestor automatically, but that
+  // is far from universal, so open it ourselves and let the browser do the
+  // scrolling afterwards.
+  function revealHash() {
+    var id = location.hash.slice(1);
+    if (!id) return;
+    var target = document.getElementById(id);
+    if (!target) return;
+    var open = false;
+    for (var el = target.parentElement; el; el = el.parentElement) {
+      if (el.tagName === 'DETAILS' && !el.open) { el.open = true; open = true; }
+    }
+    if (open) target.scrollIntoView();
+  }
+  window.addEventListener('hashchange', revealHash);
+  revealHash();
+
   // ---- Platform tabs ---------------------------------------------------
   document.querySelectorAll('[data-tabs]').forEach(function (group) {
     var tabs = Array.prototype.slice.call(group.querySelectorAll('[role="tab"]'));

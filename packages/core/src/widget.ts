@@ -5,7 +5,7 @@ import {
   setAnnouncerContainer,
 } from './a11y/announcer.js';
 import { FocusTrap } from './a11y/focus-trap.js';
-import { readConfig, resolveMount } from './config.js';
+import { readConfig, resolveMount, safeSelector } from './config.js';
 import { getFeature, getFeatures } from './features/index.js';
 import { clearHostAttrs, ensureHostStyles, setHostAttr } from './host/host-styles.js';
 import { ReadingGuide } from './host/reading-guide.js';
@@ -46,7 +46,16 @@ export class A11yWidget {
   private readonly seeded: boolean;
 
   constructor(config?: Partial<WidgetConfig>) {
-    this.config = { ...readConfig(), ...config };
+    const merged = { ...readConfig(), ...config };
+
+    // `motionExclude` is concatenated into a stylesheet we write onto the host
+    // page, and this merge lets a `mount()` caller supply it without passing
+    // through the attribute parser that validates it. Normalising here rather
+    // than at the injection site keeps `this.config` and the selector actually
+    // written into the sheet from ever disagreeing.
+    merged.motionExclude = safeSelector(merged.motionExclude, 'motion-exclude');
+
+    this.config = merged;
 
     // Stored preferences win. `initialPrefs` is a seed for visitors who have
     // none yet, so a host migrating from another tool can carry settings across
@@ -73,7 +82,7 @@ export class A11yWidget {
     this.launcher.hidden = this.config.hidden;
     this.shadow.appendChild(this.launcher);
 
-    ensureHostStyles();
+    ensureHostStyles(this.config.motionExclude);
 
     // Both of our light-DOM elements go to the same place. The live region is
     // wired up before the first `announce()` can fire, which is why this sits

@@ -5,6 +5,7 @@ import { getHeadings, getLandmarks, getLinks, jumpTo } from '../nav/outline.js';
 import type { OutlineItem } from '../nav/outline.js';
 import type { Feature, GroupId, StepperFeature, ToggleFeature, WidgetConfig } from '../types.js';
 import { chevronIcon, closeIcon, el } from './dom.js';
+import { telHref } from './phone.js';
 
 export interface PanelHandlers {
   getLevel(id: string): number;
@@ -331,10 +332,22 @@ export class Panel {
       );
     }
     if (coordinatorPhone) {
+      // The displayed text stays exactly what the site owner typed — that is
+      // the form their visitors recognise — while the href is normalised to
+      // E.164 so the link also dials from outside Israel.
+      //
+      // An empty href means the value has no international form (*6050, a
+      // 1-800 line, an extension typed into the field). Those numbers are still
+      // shown, as text: dropping the row would delete an Israeli site's
+      // accessibility contact from the panel over a formatting detail, and
+      // would also flip the "nothing configured" branch below.
+      const href = telHref(coordinatorPhone);
       section.appendChild(
         el('p', { class: 'info-row' }, [
           el('span', { class: 'info-label', text: `${t().coordinatorPhone}: ` }),
-          el('a', { href: `tel:${coordinatorPhone}`, text: coordinatorPhone }),
+          href
+            ? el('a', { href: `tel:${href}`, text: coordinatorPhone })
+            : el('span', { text: coordinatorPhone }),
         ]),
       );
     }
