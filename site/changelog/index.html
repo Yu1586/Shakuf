@@ -185,6 +185,25 @@
           Subresource Integrity and therefore a pinned version.
         </li>
       </ul>
+
+      <h3>Internal</h3>
+      <ul>
+        <li>
+          <strong>Sourcemaps are now published.</strong> Both bundles have always
+          ended with a <code>sourceMappingURL</code>, but the maps were excluded
+          from the package, so every installer who opened devtools on a page
+          running the widget got a 404 for <code>shakuf.js.map</code>. They were
+          excluded because tsup embeds the original source in the map and the
+          repository was private; it has been public since August, so that reason
+          no longer exists.
+          <br>
+          The package grows from 54.6 kB to 157.9 kB as a result. Visitors pay
+          none of it: a browser requests a <code>.map</code> only when devtools
+          are open, jsDelivr serves each file on request, and the bundle itself
+          is unchanged at 15.95 KB gzipped. What you get for it is a readable
+          stack trace instead of one line of minified code.
+        </li>
+      </ul>
     </div>
   </section>
 

@@ -278,9 +278,20 @@ the site describes the version that is about to exist. Then:
 npm publish --dry-run --workspace @shakuf-widget/widget
 ```
 
-Confirm the payload before the real publish — expect **7 files, ~50 kB**: the
-two bundles, `dist/index.d.ts`, `package.json`, and `LICENSE` / `NOTICE` /
-`DISCLAIMER.md` copied in by `prepack`. **No `.map` files.**
+Confirm the payload before the real publish — expect **9 files, ~158 kB**: the
+two bundles **and their two `.map` files**, `dist/index.d.ts`, `package.json`,
+and `LICENSE` / `NOTICE` / `DISCLAIMER.md` copied in by `prepack`.
+
+> The maps were excluded until 2026-09-09, and older notes still say "no `.map`
+> files". They are published now: both bundles carry a `sourceMappingURL`, so
+> excluding them made every installer's devtools 404 against the CDN. The
+> exclusion existed because tsup embeds the original source and the repo was
+> private, which stopped being true in August. Verified before switching it on
+> that the maps embed only `packages/core/src/**` and nothing else.
+>
+> The tarball roughly tripled, 54.6 kB to 157.9 kB. That is not the size budget:
+> `scripts/size.mjs` measures `shakuf.js` alone, and a browser fetches a `.map`
+> only with devtools open, so no visitor pays for it.
 
 **The final publish is the user's to run, always.** npm is configured with
 `auth-type=web`, and the account has 2FA on publishes. npm therefore needs to

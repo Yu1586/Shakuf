@@ -33,10 +33,9 @@
     },
     "./dist/shakuf.js": "./dist/shakuf.js"
   },
-  "//files": "Sourcemaps are excluded deliberately: tsup embeds sourcesContent, so shipping them would publish the entire TypeScript source on npm while the repo is still private. Drop the negation when the repo goes public.",
+  "//files": "Sourcemaps ARE published. They were excluded while the repo was private, because tsup embeds sourcesContent and that would have put the whole TypeScript source on npm; the repo went public on 2026-08-13, so that reason is gone. Both bundles carry a sourceMappingURL, so excluding the maps made every installer's devtools request 404 against the CDN. Visitors pay nothing: a browser fetches a .map only with devtools open, and the size budget in scripts/size.mjs measures shakuf.js alone.",
   "files": [
     "dist",
-    "!dist/**/*.map",
     "NOTICE",
     "DISCLAIMER.md",
     "LICENSE"
