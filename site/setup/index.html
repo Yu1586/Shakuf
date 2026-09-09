@@ -303,12 +303,26 @@ export default function App() {
         <strong>מיקום בערימה.</strong> החל מ-0.3.1 התוסף כותב
         <code>position</code> ו-<code>z-index</code> ישירות על אלמנט השורש שלו,
         כדי ש-reset גורף באתר המארח (למשל <code>* { z-index: auto }</code>) לא
-        יבטל אותם בשקט ויסתיר את הכפתור מאחורי שכבות של האתר. אם אתם מרכיבים את
-        התוסף בתוך אלמנט שיוצר stacking context משלו ועדיין צריכים להעלות אותו,
-        אפשר לגבור על כך במפורש:
+        יבטל אותם בשקט ויסתיר את הכפתור מאחורי שכבות של האתר. אם אתם רוצים בכל
+        זאת לשלוט במיקום שלנו בערימה, למשל להעלות אותנו מעל שכבה משלכם או
+        להוריד אותנו מתחתיה, אפשר לגבור על כך במפורש:
       </p>
       <div class="code">
         <pre tabindex="0" role="region" aria-label="דוגמת קוד: העלאת התוסף מעל שכבות האתר"><code>#shakuf-root { position: relative !important; z-index: 10001 !important; }</code></pre>
+      </div>
+
+      <div class="callout" style="margin-top:24px">
+        <strong>אם הרכבתם אותנו עם <code>data-mount</code> בתוך אלמנט שיוצר
+        stacking context משלו, הכלל שלמעלה לא יעזור.</strong>
+        כשההסתרה מגיעה משכבה שיושבת מחוץ לאותו context, כל תת-העץ שלנו נצבע
+        ברמת אלמנט האב, ולכן שום <code>z-index</code> על
+        <code>#shakuf-root</code> אינו יכול לחלץ אותנו. נמדד מול overlay חיצוני:
+        גם הערך המקסימלי לא שינה דבר.
+        <br>
+        התיקון שייך לאלמנט שאליו הרכבתם ולא לנו. שתי דרכים עובדות: להעלות את
+        <strong>יעד ההרכבה עצמו</strong> מעל אותה שכבה, או להעביר את השכבה אל
+        תוכו. זו גם הסיבה שאין ולא יהיה <code>data-z-index</code>: הוא נראה כמו
+        הפתרון ונכשל בשקט בדיוק במקרה הזה.
       </div>
 
       <h3 id="motion-css" style="margin-top:36px">אנימציות: כשלאתר כבר יש מצב <code>prefers-reduced-motion</code> משלו</h3>
