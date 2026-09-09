@@ -1,9 +1,9 @@
 ---
-name: resume
-description: Start-of-session orientation for the שקוף project. Reads the handoff note and Robells board, re-loads the standing constraints, verifies the project still builds and the site is up, then proposes the next actions. Use when the user starts a session with resume, catch me up, where were we, what's the state, or what should I work on.
+name: pick-up
+description: Start-of-session orientation for the שקוף project. Reads the handoff note and Robells board, re-loads the standing constraints, verifies the project still builds and the site is up, then proposes the next actions. Use when the user starts a session with pick up, pick-up, resume, catch me up, where were we, what's the state, or what should I work on.
 ---
 
-# Resume work on שקוף
+# Pick up work on שקוף
 
 Rebuild context from durable state rather than from memory, then propose what to
 do next. **Read-only: make no code changes, no commits, no board writes.** End
@@ -39,12 +39,21 @@ In this order:
 
 ## Step 2 — Read the board
 
-Board: `Israeli accessibility widget`, id `dbe070e5-0af9-4f4a-b4fa-77ebee21fcbe`.
-Backlog column: `1b053f37-b8ac-456a-b821-b4a3605bc450`.
+Board **`תוסף - Shakuf`**, id `dbe070e5-0af9-4f4a-b4fa-77ebee21fcbe`. Tools are
+`mcp__robells__*`. Columns, in flow order: `Backlog`
+(`1b053f37-b8ac-456a-b821-b4a3605bc450`), `מוכן לפיתוח`, `בתהליך`, `ביקורת קוד`,
+`בבדיקות`, then `הושק` (`1899e62b-b979-434d-b953-f8f2756ee91f`), which is the
+only terminal one. `get_board` for the full id list.
 
 `list_tasks`, then note which cards are `critical`/`high`, and — more useful —
 which are *blocking others*. The entity decision, for instance, blocks
 publishing but blocks no development at all; conflating those wastes sessions.
+
+Treat a card's column as a claim about when someone last touched it, not as
+fact: cards have sat in `ביקורת קוד` for weeks after the work shipped. If one
+matters to what you are about to propose, check the repo or the live site before
+repeating what the board says. Reconciling the board is `/wrap-up`'s job, not
+this one — note the discrepancy and move on.
 
 ## Step 3 — Verify it still works
 

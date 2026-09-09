@@ -1,6 +1,6 @@
 ---
 name: wrap-up
-description: End-of-session close-out for the שקוף project. Verifies the build and accessibility, syncs the Robells board, writes a handoff note, and prepares a commit for approval. Also drives a release when one is shipping — version bump, changelog entry, npm publish, and propagation checks. Use when the user says they want to wrap up, finish, stop for the day, clear the session, asks what state things are in before leaving, or asks to publish, release, or cut a version.
+description: End-of-session close-out for the שקוף project. Verifies the build and accessibility, reconciles the Robells board against what actually shipped, writes a handoff note, and prepares a commit for approval. Also drives a release when one is shipping — version bump, changelog entry, npm publish, and propagation checks. Use when the user says they want to wrap up, finish, stop for the day, clear the session, asks what state things are in before leaving, asks to publish, release or cut a version, or asks to tidy, sync, audit or update the board — reviewing cards, moving statuses between columns, editing card details, filing new tasks, or adding comments.
 ---
 
 # Wrap up a שקוף session
@@ -69,26 +69,95 @@ still applied. Cloudflare Pages auto-deploys from `main`, so a push during the
 session should already be live; if the deployed content is older than the last
 commit, say so.
 
-## Step 3 — Read the Robells board
+## Step 3 — Board hygiene
 
-Board: `Israeli accessibility widget`, id `dbe070e5-0af9-4f4a-b4fa-77ebee21fcbe`.
-Backlog column: `1b053f37-b8ac-456a-b821-b4a3605bc450`.
+Board **`תוסף - Shakuf`**, id `dbe070e5-0af9-4f4a-b4fa-77ebee21fcbe`. Tools are
+`mcp__robells__*`.
 
-Use `list_tasks`, then work out — **as a proposal, not an action**:
+| column | id | meaning |
+|---|---|---|
+| `Backlog` | `1b053f37-b8ac-456a-b821-b4a3605bc450` | not started, not scheduled |
+| `מוכן לפיתוח` | `16ea59fd-c15d-43a0-8e8f-5fc5a8ad0626` | ready to pick up |
+| `בתהליך` | `65ddc979-468f-4874-9a65-45e47510eb76` | in progress |
+| `ביקורת קוד` | `ba4b9482-cd8a-4c83-9b1e-8935d1ebe5f7` | written, under review |
+| `בבדיקות` | `c035e24c-800d-4c3f-a5d5-f3274f06d447` | in testing |
+| `הושק` | `1899e62b-b979-434d-b953-f8f2756ee91f` | **the only `is_terminal` column** — "closed" means this id |
 
-- Which cards this session actually completed → propose closing
-- Which cards advanced partially → propose a comment recording what moved and
-  what remains, rather than closing
-- What the session discovered that has no card → propose creating one
+Sole member and default assignee: יובל רחמים,
+`3e03c452-f844-48a1-8dd9-c5f617d1cbfc`. Never invent a UUID — re-read it with
+`get_board` (columns, members) or `list_boards` (board ids) if you don't have it
+in front of you.
 
-Two contract details that matter: `create_task` and `add_comment` are **not
-idempotent**, so check for an existing card or comment before proposing one.
-`add_comment` caps `body` at 500 characters.
+### 3.1 — Read the board, not just the backlog
+
+`list_tasks` returns full descriptions, and this board's cards are long, so pull
+**one column at a time** with `status_id` rather than the whole board at once.
+`get_task` for a single card, `list_comments` for its discussion.
+
+The columns that matter for hygiene are the mid-flow ones — `בתהליך`,
+`ביקורת קוד`, `בבדיקות`. A card parked there is the board's way of saying "this
+is still in motion", and that claim decays silently.
+
+### 3.2 — Reconcile every mid-flow card against reality
+
+**The board does not know when work finished. Only the repo, the site and npm
+do.** So for each card outside `Backlog` and `הושק`, go and check whether the
+thing it describes is actually present now: grep the source, load the live page,
+read the changelog entry, check `npm view` for the version it targets.
+
+Then propose a move **with that evidence attached**. Never infer completion from
+age — "it's been in review three weeks so it's probably done" is how a genuinely
+unfinished card gets closed.
+
+> **This is not hypothetical.** On 2026-09-09 two cards had been sitting in
+> `ביקורת קוד` since 14 August: the `:host` stacking bug and the `data-mount`
+> stacking-context documentation. Both had shipped in 0.3.1 three weeks earlier
+> — the fix is in `pinHostStacking()`, and the warning callout is live on
+> `/setup/`. Nothing moved them, because closing a card is the one step of a
+> release with no build error to force it.
+
+### 3.3 — What to propose, and with which tool
+
+| situation | tool | notes |
+|---|---|---|
+| finished this session, or found already shipped | `set_task_status` → `הושק` | say what you checked, not just "done" |
+| advanced but not finished | `add_comment` | record what moved *and* what remains; do **not** close |
+| card's facts are now wrong or the scope changed | `update_task` | fixes title / description / priority |
+| discovered work with no card | `create_task` | search first, see below |
+| card belongs to someone else's queue | `assign_task` / `unassign_task` | this board has one member, so rarely |
+
+### 3.4 — Contract details that are easy to get wrong
+
+- **`set_task_status` vs `move_task`.** `set_task_status(task_id, status_id)`
+  moves a card between **columns on the same board** — that is the one you want
+  almost always. `move_task(task_id, board_id, status_id)` moves it to a
+  **different board**. The names invite exactly the wrong guess.
+- **`create_task` and `add_comment` are not idempotent** — a blind retry
+  duplicates. `update_task`, `set_task_status`, `assign_task` and `unassign_task`
+  are safe to retry.
+- **Before filing:** `search_tasks` (fuzzy over title + description, across every
+  board, `q` ≤ 100 chars) to avoid a duplicate card.
+- **Before commenting:** `list_comments` returns **newest last**, so read the
+  tail, not the head, to see whether you already said this.
+- **Limits:** comment body 500 chars, description 3500, title 750. This board's
+  cards run near the description cap, so an `update_task` that appends can
+  silently need trimming.
+
+### 3.5 — Write cards that match the board
+
+Existing cards are in Hebrew and carry the measurement, the reasoning, and what
+was *ruled out* — not just the ask. A one-line card is out of place here and
+will not survive contact with a future session that needs to know why. Match
+that: what was observed, what it means, what to do, and what was already tried
+and rejected.
+
+**Propose all of this as one batch. Write nothing until the single yes in
+Step 7.**
 
 ## Step 4 — Draft the handoff note
 
 Prepare an entry to prepend to `.claude/handoff.md` (gitignored). Keep it
-short enough to actually be read on resume:
+short enough to actually be read by `/pick-up` at the start of the next session:
 
 ```markdown
 ## <YYYY-MM-DD>
@@ -149,6 +218,14 @@ Insert a new `<section class="rule">` **above** the previous version's
 </section>
 ```
 
+Two heading kinds the existing entries use that the template above omits, both
+worth reaching for: a **`<h3>Note for …</h3>`** aimed at a specific audience
+("Note for host pages", "Note for anyone storing preferences") for a consequence
+that is not itself a change, and **`<h3>Internal</h3>`** for work with no
+user-visible effect that still explains a number, such as a bundle-size move.
+Order runs Added, Fixed, Breaking, then any Notes, then Internal; omit what is
+empty.
+
 What an entry has to do:
 
 - **Say what the reader loses by not upgrading.** If a feature was broken, name
@@ -176,6 +253,26 @@ number is also the canary for the build-time CSS comment strip in
 
 Order matters: commit and push first, so Cloudflare deploys the changelog and
 the site describes the version that is about to exist. Then:
+
+> **If the publish does not immediately follow, the site is left lying.** The
+> push makes `/setup/`'s pinned examples point at `@<new version>` and puts the
+> entry on `/changelog/`, whose own header promises "every released version".
+> Until npm has the version, those pinned URLs return **404** and the changelog
+> claims something untrue.
+>
+> Measured on 2026-09-09, when the publish was blocked for days by a 2FA
+> lockout: `@0.4.0` → 404, `@0.3.1` → 200, unversioned → 200 still serving
+> 0.3.1. The quick-install block was never affected, because it uses the
+> unversioned URL. What broke was aimed squarely at the installers least able to
+> shrug it off — controlled environments and anyone needing SRI.
+>
+> So if publishing stalls for any reason, **ship a holding commit the same
+> session**: roll the pinned examples back to the last real version, and mark
+> the changelog entry as pending rather than released. `site/changelog/index.html`
+> already has the pattern in its `0.2.1` entry — a callout stating plainly that
+> installing it will fail. Reverting that commit is then part of the eventual
+> publish. Leave `packages/core/package.json` at the new version; the source
+> genuinely is that version, only the publish is missing.
 
 ```bash
 npm publish --dry-run --workspace @shakuf-widget/widget
@@ -205,6 +302,19 @@ command.** Do not keep retrying; the failure is structural, not transient.
 >
 > Both were hit on 2026-08-14, in that order, which is how the distinction was
 > found — a valid session still returns `EOTP` on publish.
+>
+> **A `401` is not always just an expired session.** On 2026-09-09 it was a full
+> lockout: the account's only 2FA method was a security key, that key was
+> deleted, and there were no recovery codes, so `npm login` could not complete
+> either. Recovery is a support ticket at `npmjs.com/support` under
+> *"I'm having trouble with my password, 2FA, or using my account"*, quoted at
+> 1–3 business days. If you hit this, do not treat the release as a few minutes
+> away: ship the holding commit from 5.3 and write the block into the handoff.
+>
+> Two facts worth offering him, because both are provable in minutes and
+> strengthen the ticket: the published package metadata names
+> `github.com/Yu1586/Shakuf` as its repository and
+> `https://shakuf.yuvalrahamim.com` as its homepage, and he controls both.
 
 ```bash
 npm publish --workspace @shakuf-widget/widget
