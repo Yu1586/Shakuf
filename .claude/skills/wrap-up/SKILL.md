@@ -397,6 +397,34 @@ is a separate confirmation again if the user only approved committing, and
 publishing is separate again from pushing: it is the one step that cannot be
 undone, since npm does not allow republishing a version number.
 
+### The closing line
+
+Once the approved writes are done and the project is genuinely in a complete
+state, end the final message with exactly this, on its own line:
+
+```
+✅ Clean state — safe to /clear. Next session, run /pick-up.
+```
+
+That is a claim, not a sign-off flourish, so only make it when **all** of these
+hold:
+
+- the working tree is clean and everything is pushed
+- every write proposed in this wrap-up was approved and carried out, with
+  nothing still waiting on a yes
+- the board reflects reality and the handoff note is written
+- verification passed, or whatever failed is recorded on the board and in the
+  handoff rather than living only in this conversation
+
+**An external blocker does not disqualify it.** A release waiting on npm support
+is a clean state, provided it is committed, documented, and on a card. What
+disqualifies it is work that exists only in the session: an unapproved edit, a
+finding not written down, a check that could not be run.
+
+If any of those fails, say plainly what is outstanding instead. The user acts on
+this line by clearing the session, so a false one destroys exactly the context
+that would have told them what was left undone.
+
 ---
 
 ## Standing project constraints — do not violate these while wrapping up
