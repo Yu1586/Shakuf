@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { defineConfig } from 'tsup';
 
@@ -17,8 +18,13 @@ import { defineConfig } from 'tsup';
  * Safe on this file specifically, and both conditions were checked rather than
  * assumed: every comment sits on its own line between rules, so removing one
  * cannot weld two tokens together, and no comment marker appears inside the
- * inline SVG data URIs. It is scoped to this one file for that reason — do not
+ * inline SVG data URIs. It is scoped to named files for that reason — do not
  * widen the filter without re-checking both.
+ *
+ * Widened to `ui/styles.ts` on 2026-10-10, after the same two checks were run
+ * on it by script: all 29 comments sit between whitespace on both sides, and
+ * the file contains no `url(` at all. Its comments had been shipping too, and
+ * the 0.4.0 accessibility fixes pushed the bundle to 98% of budget without this.
  */
 const stripCssComments = {
   name: 'strip-css-comments',
@@ -28,11 +34,29 @@ const stripCssComments = {
       callback: (args: { path: string }) => Promise<{ contents: string; loader: 'ts' }>,
     ): void;
   }) {
-    build.onLoad({ filter: /host-styles\.ts$/ }, async (args) => ({
+    build.onLoad({ filter: /(host-styles|[\\/]ui[\\/]styles)\.ts$/ }, async (args) => ({
       contents: (await readFile(args.path, 'utf8')).replace(/\/\*[\s\S]*?\*\//g, ''),
       loader: 'ts' as const,
     }));
   },
+};
+
+/**
+ * Licence and disclaimer banner, kept by the minifier because it opens with /*!.
+ *
+ * Self-hosters are told to download dist/shakuf.js and serve it themselves, so
+ * that file is the most-copied artefact this project produces. Without a banner
+ * it travelled with no licence notice, no version and none of the disclaimer.
+ * The disclaimer sentence matches NOTICE; the version is read from package.json
+ * so it can never drift.
+ */
+const { version } = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8')) as {
+  version: string;
+};
+const BANNER = {
+  js:
+    `/*! Shakuf v${version} | Apache-2.0 | (c) 2026 Yuval Rahamim | https://shakuf.yuvalrahamim.com\n` +
+    ' * Adjusts display only. Does not ensure conformance with SI 5568 and does not replace making a site accessible. */',
 };
 
 export default defineConfig([
@@ -49,6 +73,7 @@ export default defineConfig([
     dts: false,
     outExtension: () => ({ js: '.js' }),
     esbuildPlugins: [stripCssComments],
+    banner: BANNER,
   },
   // npm build, for bundlers (React/Vue wrappers in phase 2).
   {
@@ -60,5 +85,6 @@ export default defineConfig([
     clean: false,
     dts: true,
     esbuildPlugins: [stripCssComments],
+    banner: BANNER,
   },
 ]);

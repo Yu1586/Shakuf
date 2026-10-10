@@ -5,6 +5,7 @@ dist/
 # Build artifact, copied from packages/core/dist by the build step. Cloudflare
 # Pages regenerates it on deploy, so it should not be committed.
 site/shakuf.js
+site/shakuf.js.map
 
 # Secrets — never commit.
 .env
@@ -40,3 +41,4 @@ Thumbs.db
 packages/core/LICENSE
 packages/core/NOTICE
 packages/core/DISCLAIMER.md
+packages/core/README.md

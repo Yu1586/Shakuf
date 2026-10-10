@@ -11,6 +11,7 @@
     "widget"
   ],
   "license": "Apache-2.0",
+  "author": "Yuval Rahamim (https://yuvalrahamim.com/)",
   "homepage": "https://shakuf.yuvalrahamim.com",
   "repository": {
     "type": "git",
@@ -38,14 +39,15 @@
     "dist",
     "NOTICE",
     "DISCLAIMER.md",
-    "LICENSE"
+    "LICENSE",
+    "README.md"
   ],
   "sideEffects": [
     "./dist/shakuf.js"
   ],
   "scripts": {
-    "//prepack": "npm requires these beside package.json to include them in the tarball. Copied at pack time rather than committed, so the published copies can never drift from the originals at the repo root.",
-    "prepack": "node -e \"['LICENSE','NOTICE','DISCLAIMER.md'].forEach(f=>require('fs').copyFileSync('../../'+f,f))\"",
+    "//prepack": "npm requires these beside package.json to include them in the tarball, and the npm page shows the README only if it is there. Copied at pack time rather than committed, so the published copies can never drift from the originals at the repo root.",
+    "prepack": "node -e \"['LICENSE','NOTICE','DISCLAIMER.md','README.md'].forEach(f=>require('fs').copyFileSync('../../'+f,f))\"",
     "build": "tsup",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
