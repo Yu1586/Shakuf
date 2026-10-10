@@ -4,10 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>שקוף · כלי עזר נגישות לאתרים ישראליים</title>
-<meta name="description" content="כלי עזר חינמי בעברית שמאפשר למבקרים באתר להתאים לעצמם את התצוגה. ללא שרת, ללא איסוף מידע, בקוד פתוח. אינו מבטיח עמידה בת״י 5568 ואינו תחליף להנגשת האתר.">
-<meta name="color-scheme" content="dark light">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0b0c'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23f4f4f5' stroke-width='2'/%3E%3Cpath d='M16 16 L16 5 A11 11 0 0 1 25.53 21.5 Z' fill='%23f4f4f5'/%3E%3Cpath d='M16 16 L25.53 21.5 A11 11 0 0 1 6.47 21.5 Z' fill='%23f4f4f5' opacity='.55'/%3E%3Cpath d='M16 16 L6.47 21.5 A11 11 0 0 1 16 5 Z' fill='%23f4f4f5' opacity='.28'/%3E%3C/svg%3E">
+<meta name="description" content="כלי עזר חינמי בעברית שמאפשר למבקרים באתר להתאים לעצמם את התצוגה. ללא שרת, התוסף לא אוסף מידע, בקוד פתוח. אינו מבטיח עמידה בת״י 5568 ואינו תחליף להנגשת האתר.">
+<link rel="canonical" href="https://shakuf.yuvalrahamim.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="שקוף">
+<meta property="og:locale" content="he_IL">
+<meta property="og:url" content="https://shakuf.yuvalrahamim.com/">
+<meta property="og:title" content="שקוף · כלי עזר נגישות לאתרים ישראליים">
+<meta property="og:description" content="כלי עזר חינמי בעברית שמאפשר למבקרים באתר להתאים לעצמם את התצוגה. אינו מבטיח עמידה בת״י 5568 ואינו תחליף להנגשת האתר.">
+<meta name="twitter:card" content="summary">
+<!-- HEAD_ASSETS:START — generated from site/_partials/head-assets.html. Do not hand-edit; run `npm run build:site` after changing the source. -->
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f4f5f7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23f4f5f7'/%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%230e0f12' stroke-width='2.5'/%3E%3Cpath d='M16 16 L16 4 A12 12 0 0 1 26.4 22 Z' fill='%231e4fd8'/%3E%3Cpath d='M16 16 L26.4 22 A12 12 0 0 1 5.6 22 Z' fill='%230e0f12'/%3E%3Cpath d='M16 16 L5.6 22 A12 12 0 0 1 16 4 Z' fill='%23dfe7ff'/%3E%3C/svg%3E">
+<link rel="preload" href="/fonts/rubik-hebrew-v31.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css">
+<!-- HEAD_ASSETS:END -->
 </head>
 <body>
 
@@ -17,114 +29,147 @@
   <div class="wrap bar">
     <a class="brand" href="/">
       <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-        <circle cx="16" cy="16" r="13.6" fill="none" stroke="currentColor" stroke-width="2"/>
-        <path d="M16 16 L16 2.4 A13.6 13.6 0 0 1 27.78 22.8 Z" fill="currentColor"/>
-        <path d="M16 16 L27.78 22.8 A13.6 13.6 0 0 1 4.22 22.8 Z" fill="currentColor" opacity=".55"/>
-        <path d="M16 16 L4.22 22.8 A13.6 13.6 0 0 1 16 2.4 Z" fill="currentColor" opacity=".28"/>
+        <circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <path d="M16 16 L16 2 A14 14 0 0 1 28.1 23 Z" fill="#1e4fd8"/>
+        <path d="M16 16 L28.1 23 A14 14 0 0 1 3.9 23 Z" fill="currentColor"/>
+        <path d="M16 16 L3.9 23 A14 14 0 0 1 16 2 Z" fill="#dfe7ff"/>
       </svg>
       <b>שקוף</b>
     </a>
-    <a class="btn btn-line btn-sm btn-he" href="/setup/">מדריך התקנה</a>
+    <nav class="site-nav" aria-label="ניווט ראשי">
+      <ul>
+        <li><a href="/setup/">מדריך התקנה</a></li>
+        <li><a href="/disclaimer/">מה הכלי לא עושה</a></li>
+        <li><a href="/changelog/">יומן גרסאות</a></li>
+        <li><a href="https://github.com/Yu1586/Shakuf">קוד מקור</a></li>
+      </ul>
+    </nav>
+    <div class="header-tools">
+      <!-- A real checkbox, so the pause works without JavaScript: the CSS reads
+           its :checked state. WCAG 2.2.2 for the looping shapes, marquee and demo. -->
+      <label class="btn btn-sm btn-line motion-toggle" id="motion-toggle">
+        <input type="checkbox" id="motion-pause">
+        עצירת תנועה
+      </label>
+    </div>
   </div>
 </header>
 
 <main id="main">
 
   <!-- ================= HERO ================= -->
-  <section class="hero">
-    <div class="wrap center">
-      <h1>התאמות תצוגה למבקרים באתר שלכם</h1>
-      <p class="lead">
-        שקוף מאפשר למבקרים באתר שלכם להתאים לעצמם את התצוגה: גודל טקסט,
-        ניגודיות, מרווחים ועצירת אנימציות. מתקינים בשורה אחת. אין חשבון, אין
-        שרת ואין איסוף מידע.
-      </p>
-      <div class="btn-row" style="margin-top:34px">
-        <a class="btn btn-solid btn-he" href="/setup/">מדריך התקנה</a>
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="shape shape-1" aria-hidden="true"></div>
+    <div class="shape shape-2" aria-hidden="true"></div>
+    <div class="shape shape-3" aria-hidden="true"></div>
+
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="chip rise"><span class="chip-dot" aria-hidden="true"></span>חינמי · קוד פתוח · התוסף לא אוסף מידע</span>
+        <h1 id="hero-h" class="rise rise-2"><span class="accent">המבקר</span> בוחר איך האתר נראה.</h1>
+        <p class="lead rise rise-3">
+          שקוף מוסיף לאתר שלכם כפתור שבו כל מבקר מתאים לעצמו את התצוגה: גודל
+          טקסט, ניגודיות, מרווחים ועצירת אנימציות. מתקינים בשורה אחת. אין חשבון
+          ואין שרת.
+        </p>
+        <div class="btn-row rise rise-4">
+          <a class="btn btn-solid" href="/setup/">למדריך ההתקנה</a>
+          <button type="button" class="btn btn-line" data-shakuf-open hidden>פתחו את החלונית</button>
+        </div>
+        <p class="hero-note">
+          שקוף אינו הופך אתר לנגיש ואינו מבטיח עמידה בת״י 5568.
+          <a href="#limits">למה אנחנו אומרים את זה קודם</a>
+        </p>
       </div>
-      <p style="margin-top:30px;font-size:14px;color:var(--fg-faint)">
-        הכפתור בפינת המסך הוא שקוף עצמו. אפשר לנסות אותו עכשיו.
-      </p>
+
+      <div class="demo rise rise-3">
+        <div class="demo-page" aria-hidden="true">
+          <span class="demo-tag">sample page</span>
+          <p class="demo-title">תפריט הצהריים של השבוע</p>
+          <p>מנות יומיות משתנות. אפשר להזמין מראש בטלפון או דרך <span class="demo-link">הטופס באתר</span>.</p>
+          <p>שעות פעילות: ימים א׳ עד ה׳, 11:30 עד 16:00.</p>
+        </div>
+        <div class="demo-toggles" aria-hidden="true">
+          <span class="demo-toggle t1">טקסט גדול<span class="demo-sw"></span></span>
+          <span class="demo-toggle t2">ניגודיות<span class="demo-sw"></span></span>
+          <span class="demo-toggle t3">מרווחים<span class="demo-sw"></span></span>
+        </div>
+        <p class="demo-caption">
+          הדגמה מתחלפת: אותו עמוד כשהמבקר מגדיל טקסט, מפעיל ניגודיות גבוהה
+          ומרחיב מרווחים. החלונית האמיתית נפתחת מהכפתור הכחול בפינת המסך.
+        </p>
+      </div>
     </div>
   </section>
 
-  <!-- ================= PANEL PREVIEW ================= -->
-  <section class="rule" style="padding-block:clamp(48px,6vw,84px)">
-    <div class="wrap" style="display:flex;justify-content:center">
-      <div class="mock" aria-hidden="true">
-        <div class="mock-bar"><span>shakuf_panel</span><span>ESC</span></div>
-        <div class="mock-body">
-          <p class="mock-group">text</p>
-          <div class="mock-row on"><span>גופן קריא</span><span class="mock-sw"></span></div>
-          <div class="mock-row"><span>יישור טקסט לימין</span><span class="mock-sw"></span></div>
-          <p class="mock-group">colour</p>
-          <div class="mock-row on"><span>הדגשת קישורים</span><span class="mock-sw"></span></div>
-          <div class="mock-row"><span>ניגודיות גבוהה</span><span class="mock-sw"></span></div>
-          <p class="mock-group">motion</p>
-          <div class="mock-row"><span>עצירת אנימציות</span><span class="mock-sw"></span></div>
-        </div>
-        <div class="mock-note">כלי זה מתאים תצוגה בלבד ואינו מבטיח עמידה בת״י 5568 ואינו תחליף להנגשת האתר.</div>
-      </div>
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>גודל טקסט</span><span>ניגודיות גבוהה</span><span>מרווח אותיות</span><span>עצירת אנימציות</span><span>הדגשת קישורים</span><span>סרגל קריאה</span><span>רשימת כותרות</span><span>איפוס בלחיצה</span>
+      <span>גודל טקסט</span><span>ניגודיות גבוהה</span><span>מרווח אותיות</span><span>עצירת אנימציות</span><span>הדגשת קישורים</span><span>סרגל קריאה</span><span>רשימת כותרות</span><span>איפוס בלחיצה</span>
     </div>
-  </section>
+  </div>
 
   <!-- ================= FEATURES ================= -->
-  <section class="rule" aria-labelledby="what-h">
+  <section aria-labelledby="what-h">
     <div class="wrap">
-      <h2 id="what-h">מה המבקר יכול לשנות</h2>
-      <p class="lead" style="margin-bottom:44px">
-        דבר לא משתנה בטעינת העמוד מלבד הצגת הכפתור. כל שינוי מופעל רק כשהמבקר
-        בוחר בו, ונשמר בדפדפן שלו בלבד.
-      </p>
+      <div class="section-head">
+        <h2 id="what-h">כל שינוי הוא בחירה של המבקר.</h2>
+        <p class="lead">
+          בביקור ראשון דבר לא משתנה מלבד הצגת הכפתור. כל התאמה מופעלת רק כשהמבקר
+          בוחר בה ונשמרת בדפדפן שלו בלבד, ומבקר שחוזר מקבל את ההגדרות ששמר.
+        </p>
+      </div>
 
-      <div class="cells cells-3">
-        <div class="cell">
-          <span class="cell-num">01 / TEXT</span>
+      <div class="cards">
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7V5h16v2M12 5v14M9 19h6"/></svg></div>
           <h3>טקסט</h3>
           <ul><li>גודל טקסט, ארבע רמות</li><li>מרווח שורות, אותיות ומילים</li><li>גופן קריא</li><li>ביטול יישור דו-צדדי</li></ul>
-        </div>
-        <div class="cell">
-          <span class="cell-num">02 / COLOUR</span>
+        </article>
+        <article class="card tint">
+          <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></div>
           <h3>צבע וניגודיות</h3>
           <ul><li>ניגודיות גבוהה</li><li>צבעים הפוכים</li><li>גווני אפור ורוויה</li><li>הדגשת קישורים</li><li>הסתרת תמונות</li></ul>
-        </div>
-        <div class="cell">
-          <span class="cell-num">03 / MOTION</span>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></div>
           <h3>תנועה ומיקוד</h3>
           <ul><li>עצירת אנימציות וניגון אוטומטי</li><li>הדגשת מיקוד מקלדת</li><li>סמן עכבר גדול</li><li>סרגל קריאה</li></ul>
-        </div>
-        <div class="cell">
-          <span class="cell-num">04 / NAVIGATION</span>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h13"/></svg></div>
           <h3>ניווט</h3>
           <ul><li>רשימת כותרות</li><li>רשימת אזורים</li><li>רשימת קישורים</li><li>מעבר ממוקד לכל פריט</li></ul>
-        </div>
-        <div class="cell">
-          <span class="cell-num">05 / COMPLIANCE INFO</span>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg></div>
           <h3>נגישות באתר</h3>
           <ul><li>קישור להצהרת הנגישות</li><li>פרטי רכז הנגישות</li><li>ערוץ לפניות</li></ul>
-        </div>
-        <div class="cell">
-          <span class="cell-num">06 / RESET</span>
+        </article>
+        <article class="card blue">
+          <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></div>
           <h3>איפוס מלא</h3>
           <ul><li>כל שינוי הפיך בלחיצה אחת</li><li>לא נשאר דבר בעמוד</li><li>לא נשאר דבר בדפדפן</li></ul>
-        </div>
+        </article>
       </div>
     </div>
   </section>
 
   <!-- ================= LIMITS ================= -->
-  <section id="limits" class="rule" aria-labelledby="limits-h">
-    <div class="wrap-text">
-      <div class="notice">
-        <h2 id="limits-h" style="margin-top:0;font-size:clamp(1.35rem, 1rem + 1.5vw, 1.95rem)">שקוף אינו הופך אתר לנגיש ואינו מבטיח עמידה בת״י 5568 או בכל דין אחר.</h2>
-        <p class="dim">
+  <section id="limits" class="band" aria-labelledby="limits-h">
+    <div class="wrap band-grid">
+      <h2 id="limits-h">שקוף אינו הופך אתר לנגיש ואינו מבטיח עמידה בת״י 5568 או בכל דין אחר. <span class="soft">אנחנו אומרים את זה קודם, בכוונה.</span></h2>
+      <div>
+        <p class="lead" style="max-width:none">
           כלים מסוג זה (״overlay״) נמכרים לא פעם כפתרון מלא לנגישות. הם אינם כאלה.
+        </p>
+        <p class="dim">
           בינואר 2025 הטיל ה-FTC בארצות הברית קנס של מיליון דולר על חברת accessiBe
           בגין טענה שיווקית שהכלי שלה הופך אתרים לתואמי WCAG 2.1 AA. הצו הסופי
           אוסר על החברה לטעון שמוצר אוטומטי מביא אתר לעמידה בתקן, או שומר על
           עמידה כזו לאורך זמן, ללא ראיות התומכות בכך.
         </p>
-        <p class="dim">
+        <p class="dim" style="margin-bottom:0">
           שקוף נוגע בתצוגה בלבד. הוא אינו משנה ARIA, אינו משנה את מבנה האתר,
           ואינו מתערב בקורא המסך של המבקר. אלה בדיוק שלוש הפעולות שבגללן כלים
           כאלה פוגעים דווקא במשתמשים שהם אמורים לשרת.
@@ -134,13 +179,12 @@
   </section>
 
   <!-- ================= LAW ================= -->
-  <section class="rule" aria-labelledby="law-h">
+  <section aria-labelledby="law-h">
     <div class="wrap-text">
       <h2 id="law-h">מה החוק באמת דורש</h2>
       <p class="dim">
         תקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), תשע״ג-2013,
-        תקנה 35, מחייבות אתרים לעמוד בת״י 5568. המועד לאתרים קיימים חלף
-        באוגוסט 2016.
+        תקנה 35, מחייבות אתרים לעמוד בת״י 5568. המועד לאתרים קיימים חלף מזמן.
       </p>
 
       <!-- COMPLIANCE_TABLE:START — generated from site/_partials/compliance-table.html. Do not hand-edit; run `npm run build:site` after changing the source. -->
@@ -152,7 +196,7 @@
     <tbody>
       <tr><td>שהאתר עצמו יעמוד בת״י 5568 (WCAG 2.1 AA), כולל קוד, תוכן, טפסים, ניווט מקלדת, טקסט חלופי לתמונות</td><td class="no">לא, מחייב תיקונים באתר עצמו</td></tr>
       <tr><td>פרסום <strong>הצהרת נגישות</strong></td><td class="no">לא, רק מקשר להצהרה שבעל האתר כתב</td></tr>
-      <tr><td>מינוי <strong>רכז נגישות</strong></td><td class="no">לא, רק מציג את פרטיו</td></tr>
+      <tr><td>מינוי <strong>רכז נגישות</strong>, כשהחובה חלה</td><td class="no">לא, רק מציג את פרטיו</td></tr>
       <tr><td>ערוץ לפניות בנושא נגישות</td><td class="no">לא, רק מציג את פרטי הקשר</td></tr>
       <tr><td>בדיקה של <strong>מורשה נגישות</strong></td><td class="no">לא</td></tr>
       <tr><td>התאמת תצוגה אישית למבקר</td><td class="yes">כן, זה כל מה שהכלי עושה</td></tr>
@@ -176,7 +220,7 @@
             שם בדיוק נמצא ההבדל בין אתר עם תיעוד מתוארך של תהליך הנגשה לבין אתר
             עם כפתור צף.
           </p>
-          <p style="color:var(--fg-faint)">
+          <p class="faint">
             המידע כאן הוא רקע כללי ואינו ייעוץ משפטי. ראו
             <a href="/terms/">תנאי השימוש</a>.
           </p>
@@ -188,89 +232,102 @@
   <!-- ================= PRIVACY ================= -->
   <section class="rule" aria-labelledby="priv-h">
     <div class="wrap">
-      <h2 id="priv-h">שקוף לא אוסף מידע. בכלל.</h2>
-
-      <div class="cells cells-2" style="margin-top:36px">
-        <div class="cell">
-          <span class="cell-num">NO SERVER</span>
-          <h3>אין שרת, אין בקשות רשת</h3>
-          <p class="dim" style="font-size:15px">
-            אין חשבון, אין מפתח רישוי ואין בקשת רשת כלשהי מהתוסף. ההעדפות נשמרות
-            ב-<code>localStorage</code> בדפדפן של המבקר, על הדומיין שלכם, ולא
-            נשלחות לשום מקום.
-          </p>
-        </div>
-        <div class="cell">
-          <span class="cell-num">BY DESIGN</span>
-          <h3>למה זה מכוון</h3>
-          <p class="dim" style="font-size:15px">
-            העדפה כמו ״ניגודיות גבוהה״ או ״גופן קריא״ עשויה להעיד על מוגבלות.
-            מידע כזה לא צריך להגיע לשרת של אף אחד, גם לא שלנו. לכן אין לנו שרת
-            שיוכל לקבל אותו.
-          </p>
-        </div>
+      <div class="counters">
+        <div class="counter"><b>0</b><strong>בקשות רשת מהתוסף</strong><span>אין לו שרת שיוכל לקבל משהו.</span></div>
+        <div class="counter"><b>0</b><strong>קוקיז שהתוסף מגדיר</strong><span>אין מה להוסיף לבאנר הקוקיז שלכם.</span></div>
+        <div class="counter"><b>1</b><strong>מקום שמירה</strong><span>הדפדפן של המבקר, על הדומיין שלכם.</span></div>
       </div>
-
-      <div class="callout" style="margin-top:22px">
-        <p><strong>מה זה אומר עבורכם:</strong> התקנת שקוף אינה יוצרת יחסי מעבד-מידע, אינה מחייבת הסכם עיבוד מידע, ואינה מוסיפה דבר לבאנר הקוקיז שלכם.</p>
+      <div class="split">
+        <h2 id="priv-h">התוסף לא אוסף מידע. בכלל.</h2>
+        <div>
+          <p class="dim">
+            אין חשבון, אין מפתח רישוי ואין בקשת רשת כלשהי מהתוסף. ההעדפות נשמרות
+            ב-<code>localStorage</code> בדפדפן של המבקר ולא נשלחות לשום מקום.
+            העדפה כמו ״ניגודיות גבוהה״ עשויה להעיד על מוגבלות, ומידע כזה לא צריך
+            להגיע לשרת של אף אחד, גם לא שלנו. לכן אין לנו שרת.
+          </p>
+          <div class="callout">
+            <p>
+              <strong>מה זה אומר עבורכם:</strong> התוסף עצמו אינו יוצר יחסי
+              מעבד-מידע ואינו מוסיף דבר לבאנר הקוקיז. אם אתם טוענים אותו
+              מ-jsDelivr, הדפדפן של המבקר פונה אליהם להורדת הקובץ, ולכן כדאי
+              למנות אותם במדיניות הפרטיות שלכם. באירוח עצמי אין צד שלישי כלל.
+              <a href="/setup/#selfhost">איך מארחים אצלכם</a>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ================= CTA ================= -->
-  <section class="rule" aria-labelledby="cta-h">
-    <div class="wrap center">
-      <h2 id="cta-h">התקנה בשורה אחת</h2>
-      <p class="lead">
-        מדריך ההתקנה כולל הוראות ל-WordPress, Wix, Shopify, React ועוד, וגם
-        פרומפט מוכן להעתקה עבור Claude Code, Cursor, Lovable ו-Base44.
-      </p>
-      <div class="btn-row" style="margin-top:32px">
-        <a class="btn btn-solid btn-he" href="/setup/">למדריך ההתקנה</a>
+  <!-- ================= INSTALL ================= -->
+  <section aria-labelledby="cta-h" style="padding-top:0">
+    <div class="wrap">
+      <div class="cta">
+        <div>
+          <h2 id="cta-h">התקנה בשורה אחת.</h2>
+          <p>
+            מדריך ההתקנה כולל הוראות ל-WordPress, Wix, Shopify, React ועוד, וגם
+            פרומפט מוכן להעתקה עבור Claude Code, Cursor, Lovable ו-Base44.
+          </p>
+          <a class="btn btn-line" href="/setup/">למדריך ההתקנה</a>
+        </div>
+        <div class="code" data-copy="תג ההתקנה">
+          <div class="code-bar"><span lang="en">html · before &lt;/body&gt;</span></div>
+          <pre dir="ltr" tabindex="0" role="region" aria-label="קוד התקנה בסיסי"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget" defer&gt;&lt;/script&gt;</code></pre>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- ================= DISCLOSURE ================= -->
-  <section class="rule" aria-labelledby="who-h">
-    <div class="wrap-text">
+  <section aria-labelledby="who-h" style="padding-top:0">
+    <div class="wrap">
       <div class="disclosure">
         <h2 id="who-h">מי עומד מאחורי הכלי</h2>
-        <p>
-          שקוף נבנה ומתוחזק על ידי
-          <strong><a href="https://yuvalrahamim.com/">יובל רחמים</a></strong>.
-        </p>
-        <p class="dim">
-          הכלי חינמי, בקוד פתוח, ואין מאחוריו שירות בתשלום. אין לנו מה למכור
-          לכם כאן. אם אחרי שקראתם את הטבלה למעלה הגעתם למסקנה שאתם צריכים הנגשה
-          אמיתית, פנו לעורך דין ולמורשה נגישות. לא אלינו.
-        </p>
-        <p class="dim">
-          מה שלא נעשה: לא נטען שהכלי מכשיר אתכם לתקן, לא נטען שהוא מגן מפני
-          תביעות, ולא נפרסם ביקורות שנכתבו על ידינו כאילו הן עצמאיות.
-        </p>
-        <p>
-          יצירת קשר:
-          <a href="mailto:shakuf@yuvalrahamim.com" dir="ltr">shakuf@yuvalrahamim.com</a>
-        </p>
-        <p class="dim">
-          תנאי השימוש המלאים, לרבות מה שאיננו מתחייבים אליו:
-          <a href="/terms/">תנאי שימוש</a>.
-        </p>
+        <div>
+          <p>
+            שקוף נבנה ומתוחזק על ידי
+            <strong><a href="https://yuvalrahamim.com/">יובל רחמים</a></strong>.
+          </p>
+          <p class="dim">
+            הכלי חינמי, בקוד פתוח, ואין מאחוריו שירות בתשלום. אין לנו מה למכור
+            לכם כאן. אם אחרי שקראתם את הטבלה למעלה הגעתם למסקנה שאתם צריכים הנגשה
+            אמיתית, פנו לעורך דין ולמורשה נגישות. לא אלינו.
+          </p>
+          <p class="dim">
+            מה שלא נעשה: לא נטען שהכלי מכשיר אתכם לתקן, לא נטען שהוא מגן מפני
+            תביעות, ולא נפרסם ביקורות שנכתבו על ידינו כאילו הן עצמאיות.
+          </p>
+          <p>
+            יצירת קשר:
+            <a href="mailto:shakuf@yuvalrahamim.com" dir="ltr">shakuf@yuvalrahamim.com</a>
+          </p>
+          <p class="dim">
+            תנאי השימוש המלאים, לרבות מה שאיננו מתחייבים אליו:
+            <a href="/terms/">תנאי שימוש</a>.
+          </p>
+        </div>
       </div>
     </div>
   </section>
 
 </main>
 
+<!-- FOOTER:START — generated from site/_partials/footer.html. Do not hand-edit; run `npm run build:site` after changing the source. -->
 <footer class="site-footer">
   <div class="wrap">
-    <ul class="foot-links">
-      <li><a href="/setup/">Setup</a></li>
-      <li><a href="/terms/">Terms</a></li>
-      <li><a href="/disclaimer/">Disclaimer</a></li>
-      <li><a href="/changelog/">Changelog</a></li>
-    </ul>
+    <nav aria-label="קישורי האתר">
+      <ul class="foot-links">
+        <li><a href="/setup/">מדריך התקנה</a></li>
+        <li><a href="/disclaimer/">הבהרה</a></li>
+        <li><a href="/terms/">תנאי שימוש</a></li>
+        <li><a href="/accessibility/">הצהרת נגישות</a></li>
+        <li><a href="/changelog/" hreflang="en">יומן גרסאות (באנגלית)</a></li>
+        <li><a href="https://github.com/Yu1586/Shakuf">קוד מקור</a></li>
+        <li><a href="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget/LICENSE">רישיון Apache 2.0</a></li>
+      </ul>
+    </nav>
     <p>
       שקוף מתאים את התצוגה בלבד ואינו מבטיח עמידה בת״י 5568. הנגשה מלאה מחייבת
       תיקונים באתר עצמו, פרסום הצהרת נגישות, מינוי רכז נגישות ובדיקה של מורשה
@@ -278,7 +335,9 @@
     </p>
   </div>
 </footer>
+<!-- FOOTER:END -->
 
-<script src="/shakuf.js" defer></script>
+<script src="/app.js" defer></script>
+<script src="/shakuf.js" data-statement-url="/accessibility/" data-accent="#1e4fd8" defer></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-/* שקוף site — copy buttons and platform tabs.
+/* שקוף site: copy buttons, platform tabs, and the homepage's open-panel button.
  *
  * External file rather than inline, because the CSP is script-src 'self'.
  * Progressive enhancement throughout: with JS off, every code block is still
@@ -16,7 +16,9 @@
     btn.type = 'button';
     btn.className = 'copy-btn';
     btn.textContent = 'העתקה';
-    btn.setAttribute('aria-label', 'העתקת ' + (block.dataset.copy || 'הקוד'));
+    // The accessible name starts with the visible word, so a speech-input user
+    // who says what they see still hits it (WCAG 2.5.3).
+    btn.setAttribute('aria-label', 'העתקה: ' + (block.dataset.copy || 'הקוד'));
 
     var reset;
     btn.addEventListener('click', function () {
@@ -116,5 +118,21 @@
     });
 
     select(0, false);
+  });
+
+  // ---- Open the real widget ------------------------------------------------
+  //
+  // Wired from shakuf:ready rather than window.shakuf, because the event fires
+  // inside the widget's own startup, before the global exists, and carries the
+  // instance in event.detail. This file loads first (both are defer, and defer
+  // preserves order), so the listener is in place in time. The button stays
+  // hidden until the widget is actually there to open.
+  document.addEventListener('shakuf:ready', function (e) {
+    var api = e.detail;
+    if (!api || typeof api.open !== 'function') return;
+    document.querySelectorAll('[data-shakuf-open]').forEach(function (b) {
+      b.hidden = false;
+      b.addEventListener('click', function () { api.open(); });
+    });
   });
 })();

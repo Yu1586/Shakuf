@@ -5,16 +5,19 @@
 # third-party embed is ever added, this file is the thing that will break
 # first, and that is the intended behaviour.
 #
-# 'unsafe-inline' is present for style-src only, because the pages use a few
-# inline style attributes for one-off layout. There is no inline script: app.js
-# and shakuf.js are both same-origin files, so script-src stays 'self'.
+# 'unsafe-inline' is present for style-src only. The real reason is the widget:
+# it creates two <style> elements of its own (one in its shadow root, one in
+# <head>), and style-src governs both. A few inline style attributes on the pages
+# need it too, but removing those would not let it go. There is no inline
+# script: app.js and shakuf.js are both same-origin files, so script-src stays
+# 'self'.
 
 /*
   Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; form-action 'none'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=(), interest-cohort=()
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
   Cross-Origin-Opener-Policy: same-origin
 
 # Rebuilt on every deploy, so keep the window short.
@@ -25,4 +28,13 @@
   Cache-Control: public, max-age=3600
 
 /app.js
+  Cache-Control: public, max-age=3600
+
+# Fonts are cached for a year as immutable, so a font file must get a NEW NAME
+# whenever it changes (the Rubik files carry their upstream version for that
+# reason). Before this they revalidated on every page view.
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/shakuf.js.map
   Cache-Control: public, max-age=3600

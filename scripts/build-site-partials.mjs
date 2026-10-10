@@ -6,8 +6,9 @@
  * complete, hand-written, independently servable file, and this script is
  * deliberately narrow rather than a general templating system. It solves one
  * problem: content that must say the exact same thing on more than one page
- * (right now, only the "law vs. what שקוף provides" table) had no way to stay
- * in sync except a human remembering to edit both.
+ * (the "law vs. what שקוף provides" table, the shared head assets and the
+ * Hebrew footer) had no way to stay in sync except a human remembering to edit
+ * every copy.
  *
  * Each partial in site/_partials/*.html is injected, verbatim, between a
  * matching pair of `<!-- NAME:START -->` / `<!-- NAME:END -->` markers in
@@ -36,7 +37,17 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE_DIR = join(ROOT, 'site');
 const PARTIALS_DIR = join(SITE_DIR, '_partials');
 
-const TARGET_FILES = ['site/index.html', 'site/disclaimer/index.html'].map((p) => join(ROOT, p));
+// Every page. A page that lacks a given marker pair is simply skipped for that
+// partial (/changelog/ is English and has no FOOTER pair, for instance).
+const TARGET_FILES = [
+  'site/index.html',
+  'site/setup/index.html',
+  'site/disclaimer/index.html',
+  'site/terms/index.html',
+  'site/changelog/index.html',
+  'site/accessibility/index.html',
+  'site/404.html',
+].map((p) => join(ROOT, p));
 
 function markerName(partialFilename) {
   return partialFilename.replace(/\.html$/, '').replace(/-/g, '_').toUpperCase();
@@ -82,7 +93,7 @@ function main() {
     for (const { name, block, source } of partials) {
       const re = new RegExp(`<!--\\s*${name}:START[\\s\\S]*?${name}:END\\s*-->`, 'm');
       if (!re.test(updated)) continue;
-      updated = updated.replace(re, block);
+      updated = updated.replace(re, () => block);
       markersFilled++;
       console.log(`  ${relTarget}: filled ${name} from ${source}`);
     }

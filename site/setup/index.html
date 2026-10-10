@@ -3,37 +3,56 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Setup · שקוף</title>
+<title>מדריך התקנה · שקוף</title>
 <meta name="description" content="מדריך התקנה של תוסף הנגישות שקוף: תג script אחד, הוראות ל-WordPress, Wix, Shopify, React ועוד, ופרומפט מוכן להעתקה עבור Claude Code, Cursor, Lovable ו-Base44.">
-<meta name="color-scheme" content="dark light">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0b0c'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23f4f4f5' stroke-width='2'/%3E%3Cpath d='M16 16 L16 5 A11 11 0 0 1 25.53 21.5 Z' fill='%23f4f4f5'/%3E%3Cpath d='M16 16 L25.53 21.5 A11 11 0 0 1 6.47 21.5 Z' fill='%23f4f4f5' opacity='.55'/%3E%3Cpath d='M16 16 L6.47 21.5 A11 11 0 0 1 16 5 Z' fill='%23f4f4f5' opacity='.28'/%3E%3C/svg%3E">
+<link rel="canonical" href="https://shakuf.yuvalrahamim.com/setup/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="שקוף">
+<meta property="og:locale" content="he_IL">
+<meta property="og:url" content="https://shakuf.yuvalrahamim.com/setup/">
+<meta property="og:title" content="מדריך התקנה · שקוף">
+<meta property="og:description" content="מדריך התקנה של תוסף הנגישות שקוף: תג script אחד, הוראות ל-WordPress, Wix, Shopify, React ועוד, ופרומפט מוכן להעתקה עבור Claude Code, Cursor, Lovable ו-Base44.">
+<meta name="twitter:card" content="summary">
+<!-- HEAD_ASSETS:START — generated from site/_partials/head-assets.html. Do not hand-edit; run `npm run build:site` after changing the source. -->
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f4f5f7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23f4f5f7'/%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%230e0f12' stroke-width='2.5'/%3E%3Cpath d='M16 16 L16 4 A12 12 0 0 1 26.4 22 Z' fill='%231e4fd8'/%3E%3Cpath d='M16 16 L26.4 22 A12 12 0 0 1 5.6 22 Z' fill='%230e0f12'/%3E%3Cpath d='M16 16 L5.6 22 A12 12 0 0 1 16 4 Z' fill='%23dfe7ff'/%3E%3C/svg%3E">
+<link rel="preload" href="/fonts/rubik-hebrew-v31.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css">
+<!-- HEAD_ASSETS:END -->
 </head>
 <body>
 
 <a class="skip" href="#main">דילוג לתוכן</a>
 
 <header class="site-header">
-  <div class="wrap bar narrow">
+  <div class="wrap bar">
     <a class="brand" href="/">
       <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-        <circle cx="16" cy="16" r="13.6" fill="none" stroke="currentColor" stroke-width="2"/>
-        <path d="M16 16 L16 2.4 A13.6 13.6 0 0 1 27.78 22.8 Z" fill="currentColor"/>
-        <path d="M16 16 L27.78 22.8 A13.6 13.6 0 0 1 4.22 22.8 Z" fill="currentColor" opacity=".55"/>
-        <path d="M16 16 L4.22 22.8 A13.6 13.6 0 0 1 16 2.4 Z" fill="currentColor" opacity=".28"/>
+        <circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <path d="M16 16 L16 2 A14 14 0 0 1 28.1 23 Z" fill="#1e4fd8"/>
+        <path d="M16 16 L28.1 23 A14 14 0 0 1 3.9 23 Z" fill="currentColor"/>
+        <path d="M16 16 L3.9 23 A14 14 0 0 1 16 2 Z" fill="#dfe7ff"/>
       </svg>
       <b>שקוף</b>
     </a>
-    <a class="btn btn-line btn-sm btn-he" href="/">חזור לדף הבית</a>
+    <nav class="site-nav" aria-label="ניווט ראשי">
+      <ul>
+        <li><a href="/setup/" aria-current="page">מדריך התקנה</a></li>
+        <li><a href="/disclaimer/">מה הכלי לא עושה</a></li>
+        <li><a href="/changelog/">יומן גרסאות</a></li>
+        <li><a href="https://github.com/Yu1586/Shakuf">קוד מקור</a></li>
+      </ul>
+    </nav>
   </div>
 </header>
 
 <main id="main">
 
   <!-- ================= HERO ================= -->
-  <section class="hero" style="padding-block:clamp(48px,7vw,92px) clamp(32px,4vw,56px)">
+  <section class="page-head">
     <div class="wrap">
-      <h1 style="max-width:16ch;margin-inline:0">חיבור שקוף לאתר שלכם</h1>
+      <h1 style="max-width:16ch">חיבור שקוף לאתר שלכם</h1>
       <p class="lead">
         תג <code>script</code> אחד. אין הרשמה, אין מפתח רישוי ואין בקשת רשת
         מהתוסף. עובד בכל אתר, בכל טכנולוגיה.
@@ -48,7 +67,7 @@
       <p class="dim">הדביקו את השורה הזו לפני תג <code>&lt;/body&gt;</code> באתר שלכם.</p>
 
       <div class="code" data-copy="תג ההתקנה">
-        <div class="code-bar"><span>html · minimal</span></div>
+        <div class="code-bar"><span lang="en">html · minimal</span></div>
         <pre dir="ltr" tabindex="0" role="region" aria-label="קוד התקנה בסיסי"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget" defer&gt;&lt;/script&gt;</code></pre>
       </div>
 
@@ -56,12 +75,12 @@
         <p>
           <strong>מומלץ מאוד להוסיף גם את פרטי הנגישות של האתר.</strong>
           אם לא תוסיפו אותם, החלונית תציג למבקר הודעה שהאתר חסר הצהרת נגישות
-          ורכז נגישות, משום שהדין הישראלי מחייב את שניהם.
+          ורכז נגישות, משום שהדין הישראלי מחייב אתרים רבים בשניהם.
         </p>
       </div>
 
       <div class="code" data-copy="תג ההתקנה המלא">
-        <div class="code-bar"><span>html · recommended</span></div>
+        <div class="code-bar"><span lang="en">html · recommended</span></div>
         <pre dir="ltr" tabindex="0" role="region" aria-label="קוד התקנה מלא"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget"
         data-statement-url="/accessibility"
         data-coordinator-name="שם הרכז"
@@ -86,27 +105,28 @@
         <summary>פתיחת הפרומפט המלא</summary>
         <div class="details-body" style="padding:0">
       <div class="code rtl" data-copy="הפרומפט">
-        <div class="code-bar"><span>prompt · paste into your agent</span></div>
+        <div class="code-bar"><span lang="en">prompt · paste into your agent</span></div>
         <pre tabindex="0" role="region" aria-label="פרומפט להעתקה לעורך AI"><code>הוסף לאתר הזה את תוסף הנגישות "שקוף" (Shakuf).
 
 לפני שאתה מתחיל, שאל אותי את הפרטים הבאים ואל תמשיך עד שתקבל תשובה:
 
   • מהי הכתובת של עמוד הצהרת הנגישות באתר? (למשל /accessibility)
-    אם עדיין אין עמוד כזה, אמור לי זאת במפורש, כי הדין מחייב לפרסם אותו.
+    אם עדיין אין עמוד כזה, אמור לי זאת במפורש, כי הדין מחייב אתרים רבים לפרסם אותו.
   • מה שמו המלא של רכז הנגישות?
   • מה מספר הטלפון שלו?
   • מה כתובת הדוא״ל שלו?
 
 אל תמציא ערכים, אל תשתמש בערכי דוגמה ואל תשאיר סוגריים מרובעים בקוד.
-אם אני עונה שאין לי רכז נגישות, אמור לי שהדין הישראלי מחייב למנות אחד,
-והתקן את התוסף בלי המאפיינים האלה במקום להמציא אותם.
+אם אני עונה שאין לי רכז נגישות, אמור לי שהדין הישראלי מחייב אתרים רבים
+למנות אחד ושכדאי לבדוק אם זה חל עליי, והתקן את התוסף בלי המאפיינים האלה
+במקום להמציא אותם.
 
 מה לעשות אחר כך:
 
 1. הוסף את התג הבא ממש לפני &lt;/body&gt; בתבנית הראשית של האתר, כך שייטען בכל עמוד,
    כשהערכים מולאו מהתשובות שקיבלת:
 <span class="ltr">&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget"
-        data-statement-url="/accessibility"
+        data-statement-url="[כתובת הצהרת הנגישות]"
         data-coordinator-name="[שם רכז הנגישות]"
         data-coordinator-phone="[טלפון]"
         data-coordinator-email="[דוא״ל]"
@@ -123,7 +143,8 @@
    אחר עלול לפגוע דווקא במשתמשי טכנולוגיה מסייעת.
 
 5. אם יש באתר Content-Security-Policy, ודא ש-script-src מתיר את
-   cdn.jsdelivr.net. אין צורך ב-connect-src, כי התוסף לא מבצע בקשות רשת.
+   cdn.jsdelivr.net, וש-style-src כולל 'unsafe-inline', כי התוסף מוסיף
+   גיליונות סגנון משלו. אין צורך ב-connect-src, כי התוסף לא מבצע בקשות רשת.
 
 חשוב מאוד, מה לא לכתוב:
 
@@ -173,38 +194,38 @@
           </div>
         </div>
 
-        <div class="tabpanel" role="tabpanel" id="p-wix" aria-labelledby="t-wix" tabindex="0" hidden>
+        <div class="tabpanel" role="tabpanel" id="p-wix" aria-labelledby="t-wix" tabindex="0">
           <ol class="steps">
-            <li><div><h3>Settings ← Custom Code</h3><p class="dim">בלוח הבקרה של Wix.</p></div></li>
+            <li><div><h3><bdi dir="ltr" lang="en">Settings → Custom Code</bdi></h3><p class="dim">בלוח הבקרה של Wix.</p></div></li>
             <li><div><h3>Add Custom Code</h3><p class="dim">הדביקו את התג, בחרו <strong>All pages</strong> ומיקום <strong>Body - end</strong>.</p></div></li>
             <li><div><h3>Apply ואז Publish</h3><p class="dim">הקוד פועל רק באתר המפורסם, לא בעורך.</p></div></li>
           </ol>
         </div>
 
-        <div class="tabpanel" role="tabpanel" id="p-shopify" aria-labelledby="t-shopify" tabindex="0" hidden>
+        <div class="tabpanel" role="tabpanel" id="p-shopify" aria-labelledby="t-shopify" tabindex="0">
           <ol class="steps">
-            <li><div><h3>Online Store ← Themes</h3><p class="dim">בתפריט <strong>Actions</strong> של התבנית הפעילה בחרו <strong>Edit code</strong>.</p></div></li>
+            <li><div><h3><bdi dir="ltr" lang="en">Online Store → Themes</bdi></h3><p class="dim">בתפריט <strong>Actions</strong> של התבנית הפעילה בחרו <strong>Edit code</strong>.</p></div></li>
             <li><div><h3>פתחו <code>theme.liquid</code></h3><p class="dim">והדביקו את התג ממש לפני <code>&lt;/body&gt;</code>.</p></div></li>
             <li><div><h3>Save</h3></div></li>
           </ol>
         </div>
 
-        <div class="tabpanel" role="tabpanel" id="p-webflow" aria-labelledby="t-webflow" tabindex="0" hidden>
+        <div class="tabpanel" role="tabpanel" id="p-webflow" aria-labelledby="t-webflow" tabindex="0">
           <ol class="steps">
-            <li><div><h3>Project settings ← Custom code</h3></div></li>
+            <li><div><h3><bdi dir="ltr" lang="en">Project settings → Custom code</bdi></h3></div></li>
             <li><div><h3>Footer code</h3><p class="dim">הדביקו את התג בשדה <strong>Before &lt;/body&gt; tag</strong>.</p></div></li>
             <li><div><h3>Save ואז Publish</h3></div></li>
           </ol>
         </div>
 
-        <div class="tabpanel" role="tabpanel" id="p-react" aria-labelledby="t-react" tabindex="0" hidden>
+        <div class="tabpanel" role="tabpanel" id="p-react" aria-labelledby="t-react" tabindex="0">
           <p class="dim">דרך npm, או פשוט להשאיר את תג ה-script ב-<code>index.html</code>.</p>
           <div class="code" data-copy="התקנה דרך npm">
-            <div class="code-bar"><span>shell</span></div>
+            <div class="code-bar"><span lang="en">shell</span></div>
             <pre dir="ltr" tabindex="0" role="region" aria-label="התקנה דרך npm"><code>npm install @shakuf-widget/widget</code></pre>
           </div>
           <div class="code" data-copy="שימוש ב-React">
-            <div class="code-bar"><span>App.tsx</span></div>
+            <div class="code-bar"><span lang="en">App.tsx</span></div>
             <pre dir="ltr" tabindex="0" role="region" aria-label="קוד React"><code>// Mount once for the whole app, not per component.
 import { useEffect } from 'react';
 import { mount, unmount } from '@shakuf-widget/widget';
@@ -227,10 +248,10 @@ export default function App() {
           </div>
         </div>
 
-        <div class="tabpanel" role="tabpanel" id="p-html" aria-labelledby="t-html" tabindex="0" hidden>
+        <div class="tabpanel" role="tabpanel" id="p-html" aria-labelledby="t-html" tabindex="0">
           <p class="dim">הדביקו לפני <code>&lt;/body&gt;</code> בכל עמוד:</p>
           <div class="code" data-copy="קוד HTML">
-            <div class="code-bar"><span>index.html</span></div>
+            <div class="code-bar"><span lang="en">index.html</span></div>
             <pre dir="ltr" tabindex="0" role="region" aria-label="קוד HTML"><code>  &lt;script src="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget"
           data-statement-url="/accessibility"
           defer&gt;&lt;/script&gt;
@@ -254,19 +275,19 @@ export default function App() {
            aria-label="רשימת מאפייני ההגדרה של התוסף">
         <table>
           <caption class="sr-only">רשימת מאפייני ההגדרה של התוסף</caption>
-          <thead><tr><th scope="col">attribute</th><th scope="col">default</th><th scope="col">תיאור</th></tr></thead>
+          <thead><tr><th scope="col" lang="en">attribute</th><th scope="col" lang="en">default</th><th scope="col">תיאור</th></tr></thead>
           <tbody>
             <tr><td class="v">data-statement-url</td><td class="v">—</td><td>קישור להצהרת הנגישות של האתר</td></tr>
             <tr><td class="v">data-coordinator-name</td><td class="v">—</td><td>שם רכז הנגישות</td></tr>
             <tr><td class="v">data-coordinator-phone</td><td class="v">—</td><td>טלפון רכז הנגישות</td></tr>
             <tr><td class="v">data-coordinator-email</td><td class="v">—</td><td>דוא״ל רכז הנגישות</td></tr>
             <tr><td class="v">data-position</td><td class="v">bottom-right</td><td>גם bottom-left · top-right · top-left. בנוסף ערכים <strong>לוגיים</strong>: bottom-start · bottom-end · top-start · top-end, שנצמדים לכיוון הקריאה ולכן מתהפכים יחד עם השפה, במקום להיות נעולים לפינה פיזית</td></tr>
-            <tr><td class="v">data-offset</td><td class="v">20</td><td>מרחק בפיקסלים משולי המסך</td></tr>
-            <tr><td class="v">data-accent</td><td class="v">#0b5fff</td><td>צבע ראשי בפורמט hex. צבע הטקסט נבחר אוטומטית לפי ניגודיות</td></tr>
+            <tr><td class="v">data-offset</td><td class="v">20</td><td>מרחק בפיקסלים משולי המסך, בין 0 ל-200</td></tr>
+            <tr><td class="v">data-accent</td><td class="v">#0b5fff</td><td>צבע ראשי בפורמט hex של 3 או 6 ספרות, למשל <code>#1e4fd8</code>. צבע הטקסט נבחר אוטומטית, לבן או כהה. בחרו צבע שמגיע לניגודיות 4.5:1 לפחות מול אחד מהם</td></tr>
             <tr><td class="v">data-mount</td><td class="v">body</td><td>סלקטור CSS של האלמנט שאליו התוסף נטען. נדרש באפליקציות שמסמנות <code>inert</code> על צאצאי <code>body</code>, ראו למטה</td></tr>
             <tr><td class="v">data-motion-exclude</td><td class="v">—</td><td>סלקטור CSS של אלמנטים ש״עצירת אנימציות״ לא תיגע בהם, <strong>כולל הצאצאים שלהם</strong>. לאתרים שכתבו בעצמם מצב <code>prefers-reduced-motion</code> ורוצים שה-CSS שלהם ימשיך לנהל את האלמנטים האלה. <a href="#motion-css">ראו למטה</a>, ורוב האתרים לא צריכים את זה</td></tr>
             <tr><td class="v">data-lang</td><td class="v">מ-<code>&lt;html lang&gt;</code></td><td><code>he</code> או <code>en</code>. בלי הערך הזה התוסף עוקב אחר שפת העמוד, כולל שינוי שפה בלי טעינה מחדש. ברירת המחדל היא עברית</td></tr>
-            <tr><td class="v">data-hidden</td><td class="v">—</td><td>הכפתור מתחיל מוסתר. לאתרים ששומרים בעצמם העדפה של ״להסתיר את כפתור הנגישות״, כדי שהכפתור לא יהבהב בכל טעינה</td></tr>
+            <tr><td class="v">data-hidden</td><td class="v">—</td><td>הכפתור מתחיל מוסתר. לאתרים ששומרים בעצמם העדפה של ״להסתיר את כפתור הנגישות״, כדי שהכפתור לא יהבהב בכל טעינה. <code>data-hidden="false"</code> משאיר אותו גלוי</td></tr>
           </tbody>
         </table>
       </div>
@@ -282,8 +303,10 @@ export default function App() {
       <p class="dim">
         הפתרון הוא להפנות את התוסף אל תוך אותו שורש:
       </p>
-      <div class="code">
-        <pre tabindex="0" role="region" aria-label="דוגמת קוד: התקנה עם data-mount"><code>&lt;script src="/shakuf.js" data-mount="#root" defer&gt;&lt;/script&gt;</code></pre>
+      <div class="code" data-copy="התקנה עם data-mount">
+        <div class="code-bar"><span lang="en">html · data-mount</span></div>
+        <pre dir="ltr" tabindex="0" role="region" aria-label="דוגמת קוד: התקנה עם data-mount"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget"
+        data-mount="#root" defer&gt;&lt;/script&gt;</code></pre>
       </div>
       <p class="dim">
         אם הסלקטור שגוי או לא מתאים לאף אלמנט, התוסף נטען ל-<code>body</code>
@@ -307,8 +330,9 @@ export default function App() {
         זאת לשלוט במיקום שלנו בערימה, למשל להעלות אותנו מעל שכבה משלכם או
         להוריד אותנו מתחתיה, אפשר לגבור על כך במפורש:
       </p>
-      <div class="code">
-        <pre tabindex="0" role="region" aria-label="דוגמת קוד: העלאת התוסף מעל שכבות האתר"><code>#shakuf-root { position: relative !important; z-index: 10001 !important; }</code></pre>
+      <div class="code" data-copy="כלל הערימה">
+        <div class="code-bar"><span lang="en">css</span></div>
+        <pre dir="ltr" tabindex="0" role="region" aria-label="דוגמת קוד: העלאת התוסף מעל שכבות האתר"><code>#shakuf-root { position: relative !important; z-index: 10001 !important; }</code></pre>
       </div>
 
       <div class="callout" style="margin-top:24px">
@@ -342,7 +366,7 @@ export default function App() {
         ההצהרות שלכם עוברות לצידו בלי התנגשות:
       </p>
       <div class="code" data-copy="מצב רגיעה לשני המסלולים">
-        <div class="code-bar"><span>css</span></div>
+        <div class="code-bar"><span lang="en">css</span></div>
         <pre dir="ltr" tabindex="0" role="region" aria-label="מצב רגיעה שמשרת גם את הגדרת מערכת ההפעלה וגם את הפקד של שקוף"><code>/* the still state, once for the OS setting */
 @media (prefers-reduced-motion: reduce) {
   .logos-track { animation: none; width: auto; flex-wrap: wrap; justify-content: center }
@@ -373,7 +397,7 @@ html[data-shakuf-motion="off"] .logos-marquee { mask-image: none }</code></pre>
         לומר לתוסף לא לגעת באלמנטים האלה מלכתחילה:
       </p>
       <div class="code" data-copy="data-motion-exclude">
-        <div class="code-bar"><span>html</span></div>
+        <div class="code-bar"><span lang="en">html</span></div>
         <pre dir="ltr" tabindex="0" role="region" aria-label="דוגמת קוד: data-motion-exclude"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget"
         data-motion-exclude=".logos-track, .status-spinner"
         defer&gt;&lt;/script&gt;</code></pre>
@@ -401,7 +425,7 @@ html[data-shakuf-motion="off"] .logos-marquee { mask-image: none }</code></pre>
            aria-label="שיטות ה-API של התוסף">
         <table>
           <caption class="sr-only">שיטות ה-API של התוסף</caption>
-          <thead><tr><th scope="col">method</th><th scope="col">תיאור</th></tr></thead>
+          <thead><tr><th scope="col" lang="en">method</th><th scope="col">תיאור</th></tr></thead>
           <tbody>
             <tr><td class="v">open() · close() · toggle()</td><td>פתיחה וסגירה של החלונית</td></tr>
             <tr><td class="v">hide() · show()</td><td>הסתרה והצגה של כפתור הפתיחה. ההעדפות שהמבקר כבר הפעיל נשארות פעילות</td></tr>
@@ -436,8 +460,9 @@ html[data-shakuf-motion="off"] .logos-marquee { mask-image: none }</code></pre>
         הטעינה, לפני ש-<code>window.shakuf</code> קיים, ולכן המופע מגיע בתוך
         <code>event.detail</code>:
       </p>
-      <div class="code">
-        <pre tabindex="0" role="region" aria-label="דוגמת קוד: האזנה לאירוע shakuf:ready"><code>document.addEventListener('shakuf:ready', function (e) {
+      <div class="code" data-copy="האזנה לאירוע shakuf:ready">
+        <div class="code-bar"><span lang="en">js</span></div>
+        <pre dir="ltr" tabindex="0" role="region" aria-label="דוגמת קוד: האזנה לאירוע shakuf:ready"><code>document.addEventListener('shakuf:ready', function (e) {
   if (userPrefersHidden) e.detail.hide();
 });</code></pre>
       </div>
@@ -457,10 +482,11 @@ html[data-shakuf-motion="off"] .logos-marquee { mask-image: none }</code></pre>
         <summary>מה התוסף עושה לעמוד</summary>
         <div class="details-body">
           <p>
-            מוסיף אלמנט אחד ל-<code>&lt;body&gt;</code> עם <strong>Shadow DOM</strong>,
-            כך שהעיצוב שלו לא יכול לדלוף לאתר ולא יכול להישבר ממנו. ההתאמות
-            מיושמות דרך מאפייני <code>data-shakuf-*</code> על תגית
-            <code>&lt;html&gt;</code> וגיליון סגנון אחד.
+            מוסיף ל-<code>&lt;body&gt;</code> שני אלמנטים: התוסף עצמו, בתוך
+            <strong>Shadow DOM</strong> כך שהעיצוב שלו לא יכול לדלוף לאתר ולא יכול
+            להישבר ממנו, ואזור הכרזות סמוי לקוראי מסך. ל-<code>&lt;head&gt;</code>
+            הוא מוסיף גיליון סגנון אחד. ההתאמות מיושמות דרך מאפייני
+            <code>data-shakuf-*</code> על תגית <code>&lt;html&gt;</code>.
           </p>
           <p>
             התוסף <strong>אינו</strong> משנה ARIA, roles או סמנטיקה, ואינו מתערב
@@ -474,8 +500,8 @@ html[data-shakuf-motion="off"] .logos-marquee { mask-image: none }</code></pre>
         <div class="details-body">
           <p>
             אפס. אין שרת, אין חשבון, אין מפתח רישוי, אין טלמטריה. ההעדפות נשמרות
-            ב-<code>localStorage</code> על הדומיין שלכם בלבד. משמעות מעשית: אין
-            יחסי מעבד-מידע, אין צורך בהסכם עיבוד מידע, ואין תוספת לבאנר הקוקיז.
+            ב-<code>localStorage</code> על הדומיין שלכם בלבד. משמעות מעשית: התוסף
+            עצמו אינו יוצר יחסי מעבד-מידע ואינו מוסיף דבר לבאנר הקוקיז.
           </p>
           <p>
             <strong>אבל הקובץ עצמו מגיע מ-jsDelivr.</strong> התוסף לא מבצע
@@ -493,15 +519,16 @@ html[data-shakuf-motion="off"] .logos-marquee { mask-image: none }</code></pre>
       <details>
         <summary>Content-Security-Policy</summary>
         <div class="details-body">
-          <p>אם באתר יש CSP, צריך להתיר את מקור הסקריפט:</p>
+          <p>אם באתר יש CSP, צריך להתיר את מקור הסקריפט <strong>וגם</strong> סגנונות מוטמעים. התוסף יוצר שני גיליונות סגנון משלו, אחד בתוך ה-Shadow DOM ואחד ב-<code>&lt;head&gt;</code>, ו-<code>style-src</code> חל על שניהם. בלי זה החלונית מופיעה בלי עיצוב וההתאמות לא חלות.</p>
           <div class="code" data-copy="הנחיית CSP">
-            <div class="code-bar"><span>csp</span></div>
-            <pre dir="ltr" tabindex="0" role="region" aria-label="דוגמת CSP"><code>script-src 'self' https://cdn.jsdelivr.net;</code></pre>
+            <div class="code-bar"><span lang="en">csp</span></div>
+            <pre dir="ltr" tabindex="0" role="region" aria-label="דוגמת CSP"><code>script-src 'self' https://cdn.jsdelivr.net;
+style-src 'self' 'unsafe-inline';</code></pre>
           </div>
           <p>
             אין צורך ב-<code>connect-src</code>, כי התוסף לא מבצע בקשות.
             אם אתם מארחים את הקובץ אצלכם, <code>script-src 'self'</code> מספיק
-            ואפשר להשמיט את jsDelivr לגמרי. ראו <a href="#selfhost">אירוח עצמי</a>.
+            ואפשר להשמיט את jsDelivr לגמרי. <code>style-src</code> נשאר כמו למעלה. ראו <a href="#selfhost">אירוח עצמי</a>.
           </p>
         </div>
       </details>
@@ -510,7 +537,7 @@ html[data-shakuf-motion="off"] .logos-marquee { mask-image: none }</code></pre>
         <summary>גודל, ביצועים ונעיצת גרסה</summary>
         <div class="details-body">
           <p>
-            כ-15.9KB דחוס (gzip), ללא תלויות בזמן ריצה. נטען עם <code>defer</code>
+            כ-15KB דחוס (gzip), ללא תלויות בזמן ריצה. נטען עם <code>defer</code>
             ולכן אינו חוסם את הצגת העמוד. חלונית ההגדרות נבנית רק כשהמבקר פותח
             אותה בפועל.
           </p>
@@ -518,7 +545,7 @@ html[data-shakuf-motion="off"] .logos-marquee { mask-image: none }</code></pre>
           <p>
             <strong>הכתובת בלי מספר גרסה מושכת תמיד את האחרונה, וזו ההמלצה.</strong>
             כך תיקונים מגיעים אליכם בלי לגעת בקוד, וזה משנה: בגרסאות
-            0.1.0–0.2.0 שלושה ממצבי הצבע לא עשו כלום, בגרסאות שלפני 0.3.1
+            0.1.0–0.2.0 ארבע הגדרות צבע לא עשו כלום כשהופעלו לבדן, בגרסאות שלפני 0.3.1
             כפתור הפתיחה היה עלול להיעלם מאחורי שכבות של האתר, ובגרסאות שלפני
             0.4.0 ״עצירת אנימציות״ הייתה עלולה להעלים תוכן שמופיע דרך אנימציה
             במקום רק לעצור אותו. מי שנעץ גרסה נשאר עם התקלות עד שיעדכן ידנית.
@@ -538,7 +565,7 @@ html[data-shakuf-motion="off"] .logos-marquee { mask-image: none }</code></pre>
             תיקוני נגישות. עקבו אחרי <a href="/changelog/">היומן</a>.
           </p>
           <div class="code" data-copy="נעיצת גרסה">
-            <div class="code-bar"><span>html · pinned</span></div>
+            <div class="code-bar"><span lang="en">html · pinned</span></div>
             <pre dir="ltr" tabindex="0" role="region" aria-label="נעיצת גרסה"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget@0.3.1" defer&gt;&lt;/script&gt;</code></pre>
           </div>
           <p class="dim">
@@ -555,16 +582,16 @@ html[data-shakuf-motion="off"] .logos-marquee { mask-image: none }</code></pre>
             שאתם לוקחים על עצמכם את העדכונים.
           </p>
           <div class="code" data-copy="אירוח עצמי">
-            <div class="code-bar"><span>shell</span></div>
+            <div class="code-bar"><span lang="en">shell</span></div>
             <pre dir="ltr" tabindex="0" role="region" aria-label="הורדת הקובץ לאירוח עצמי"><code>curl -o assets/shakuf.js \
   https://cdn.jsdelivr.net/npm/@shakuf-widget/widget@0.3.1</code></pre>
           </div>
           <div class="code" data-copy="תג לאירוח עצמי">
-            <div class="code-bar"><span>html · self-hosted</span></div>
+            <div class="code-bar"><span lang="en">html · self-hosted</span></div>
             <pre dir="ltr" tabindex="0" role="region" aria-label="תג script לאירוח עצמי"><code>&lt;script src="/assets/shakuf.js" defer&gt;&lt;/script&gt;</code></pre>
           </div>
           <p class="dim">
-            ה-CSP הופך ל-<code>script-src 'self'</code> ואפשר להוריד את
+            ה-<code>script-src</code> הופך ל-<code>'self'</code> ואפשר להוריד את
             <code>cdn.jsdelivr.net</code> ממנו. אין שינוי אחר בהתנהגות: כל
             ההגדרות נקראות מתג ה-script בדיוק כמו קודם.
           </p>
@@ -573,7 +600,7 @@ html[data-shakuf-motion="off"] .logos-marquee { mask-image: none }</code></pre>
             ה-hash מהגרסה הנעוצה:
           </p>
           <div class="code" data-copy="חישוב hash ל-SRI">
-            <div class="code-bar"><span>shell</span></div>
+            <div class="code-bar"><span lang="en">shell</span></div>
             <pre dir="ltr" tabindex="0" role="region" aria-label="חישוב hash עבור Subresource Integrity"><code>curl -sL https://cdn.jsdelivr.net/npm/@shakuf-widget/widget@0.3.1 \
   | openssl dgst -sha384 -binary | openssl base64 -A</code></pre>
           </div>
@@ -592,35 +619,40 @@ html[data-shakuf-motion="off"] .logos-marquee { mask-image: none }</code></pre>
     <div class="wrap-text">
       <h2 id="after-h">מה עוד צריך כדי באמת להיות נגישים</h2>
       <p class="dim">
-        התוסף הוא הצעד הקטן. אלה הדברים שהוא <strong>לא</strong> עושה, ושבלעדיהם
-        האתר אינו עומד בדרישות הדין:
+        התוסף הוא הצעד הקטן. אלה הדברים שהוא <strong>לא</strong> עושה, ושהדין
+        מחייב בהם אתרים רבים:
       </p>
 
       <ol class="steps" style="margin-top:30px">
         <li><div><h3>תיקון האתר עצמו</h3><p class="dim">ניווט מקלדת מלא, טקסט חלופי לתמונות, תוויות לשדות טופס, ניגודיות מספקת, מבנה כותרות תקין, לפי ת״י 5568 (WCAG 2.1 AA).</p></div></li>
         <li><div><h3>פרסום הצהרת נגישות</h3><p class="dim">עמוד ייעודי ומתוארך שמפרט את מצב הנגישות באתר, את ההתאמות שבוצעו ואת המגבלות הידועות.</p></div></li>
-        <li><div><h3>מינוי רכז נגישות</h3><p class="dim">אדם בשם ובפרטי קשר, לא כתובת כללית.</p></div></li>
+        <li><div><h3>מינוי רכז נגישות</h3><p class="dim">כשהחובה חלה על האתר: אדם בשם ובפרטי קשר, לא כתובת כללית.</p></div></li>
         <li><div><h3>ערוץ פניות שעובד</h3><p class="dim">ושמישהו באמת עונה בו.</p></div></li>
         <li><div><h3>בדיקה של מורשה נגישות</h3><p class="dim">בדיקה חיצונית מקצועית. שקוף אינו תחליף לה, ואיננו מורשי נגישות.</p></div></li>
       </ol>
 
       <div class="btn-row" style="margin-top:34px">
-        <a class="btn btn-line btn-he" href="/#limits">פירוט הדרישות והחשיפה</a>
+        <a class="btn btn-line" href="/#limits">פירוט הדרישות והחשיפה</a>
       </div>
     </div>
   </section>
 
 </main>
 
+<!-- FOOTER:START — generated from site/_partials/footer.html. Do not hand-edit; run `npm run build:site` after changing the source. -->
 <footer class="site-footer">
   <div class="wrap">
-    <ul class="foot-links">
-      <li><a href="/">Home</a></li>
-      <li><a href="/terms/">Terms</a></li>
-      <li><a href="/disclaimer/">Disclaimer</a></li>
-      <li><a href="/changelog/">Changelog</a></li>
-      <li><a href="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget/LICENSE">Apache 2.0</a></li>
-    </ul>
+    <nav aria-label="קישורי האתר">
+      <ul class="foot-links">
+        <li><a href="/setup/">מדריך התקנה</a></li>
+        <li><a href="/disclaimer/">הבהרה</a></li>
+        <li><a href="/terms/">תנאי שימוש</a></li>
+        <li><a href="/accessibility/">הצהרת נגישות</a></li>
+        <li><a href="/changelog/" hreflang="en">יומן גרסאות (באנגלית)</a></li>
+        <li><a href="https://github.com/Yu1586/Shakuf">קוד מקור</a></li>
+        <li><a href="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget/LICENSE">רישיון Apache 2.0</a></li>
+      </ul>
+    </nav>
     <p>
       שקוף מתאים את התצוגה בלבד ואינו מבטיח עמידה בת״י 5568. הנגשה מלאה מחייבת
       תיקונים באתר עצמו, פרסום הצהרת נגישות, מינוי רכז נגישות ובדיקה של מורשה
@@ -628,8 +660,9 @@ html[data-shakuf-motion="off"] .logos-marquee { mask-image: none }</code></pre>
     </p>
   </div>
 </footer>
+<!-- FOOTER:END -->
 
 <script src="/app.js" defer></script>
-<script src="/shakuf.js" defer></script>
+<script src="/shakuf.js" data-statement-url="/accessibility/" data-accent="#1e4fd8" defer></script>
 </body>
 </html>
