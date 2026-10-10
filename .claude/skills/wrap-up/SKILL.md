@@ -260,8 +260,8 @@ the site describes the version that is about to exist. Then:
 > Until npm has the version, those pinned URLs return **404** and the changelog
 > claims something untrue.
 >
-> Measured on 2026-09-09, when the publish was blocked for days by a 2FA
-> lockout: `@0.4.0` → 404, `@0.3.1` → 200, unversioned → 200 still serving
+> Measured on 2026-09-09, when the publish was blocked for days by an
+> account issue: `@0.4.0` → 404, `@0.3.1` → 200, unversioned → 200 still serving
 > 0.3.1. The quick-install block was never affected, because it uses the
 > unversioned URL. What broke was aimed squarely at the installers least able to
 > shrug it off — controlled environments and anyone needing SRI.
@@ -278,9 +278,11 @@ the site describes the version that is about to exist. Then:
 npm publish --dry-run --workspace @shakuf-widget/widget
 ```
 
-Confirm the payload before the real publish — expect **9 files, ~158 kB**: the
+Confirm the payload before the real publish — expect **10 files, ~158 kB**: the
 two bundles **and their two `.map` files**, `dist/index.d.ts`, `package.json`,
-and `LICENSE` / `NOTICE` / `DISCLAIMER.md` copied in by `prepack`.
+and `LICENSE` / `NOTICE` / `DISCLAIMER.md` / `README.md` copied in by
+`prepack`. The README joined on 2026-10-10 so the npm page shows it; notes
+quoting 9 files predate that and are stale, not a failed check.
 
 > The maps were excluded until 2026-09-09, and older notes still say "no `.map`
 > files". They are published now: both bundles carry a `sourceMappingURL`, so
@@ -300,8 +302,8 @@ this shell has. **Prepare everything, confirm the dry-run, then hand over the
 command.** Do not keep retrying; the failure is structural, not transient.
 
 > **`EOTP` has two different causes, and its own message names neither.** It
-> reads "requires a one-time password from your authenticator", but there is no
-> authenticator app on this account — `--otp=<code>` is never the answer.
+> reads "requires a one-time password from your authenticator", but with web
+> login `--otp=<code>` is not the answer.
 >
 > Run `npm whoami` to tell the two apart:
 >
@@ -314,18 +316,12 @@ command.** Do not keep retrying; the failure is structural, not transient.
 > Both were hit on 2026-08-14, in that order, which is how the distinction was
 > found — a valid session still returns `EOTP` on publish.
 >
-> **A `401` is not always just an expired session.** On 2026-09-09 it was a full
-> lockout: the account's only 2FA method was a security key, that key was
-> deleted, and there were no recovery codes, so `npm login` could not complete
-> either. Recovery is a support ticket at `npmjs.com/support` under
-> *"I'm having trouble with my password, 2FA, or using my account"*, quoted at
-> 1–3 business days. If you hit this, do not treat the release as a few minutes
-> away: ship the holding commit from 5.3 and write the block into the handoff.
->
-> Two facts worth offering him, because both are provable in minutes and
-> strengthen the ticket: the published package metadata names
-> `github.com/Yu1586/Shakuf` as its repository and
-> `https://shakuf.yuvalrahamim.com` as its homepage, and he controls both.
+> **A `401` that `npm login` cannot clear is an account problem, not a session
+> one.** Account-recovery details belong in the gitignored handoff note, never in
+> this file: the repo is public, and a recovery narrative here is a ready-made
+> script for anyone trying to social-engineer the account that every unpinned
+> install trusts. If you hit it, do not treat the release as minutes away: ship
+> the holding commit from 5.3 and record the block in the handoff.
 
 ```bash
 npm publish --workspace @shakuf-widget/widget

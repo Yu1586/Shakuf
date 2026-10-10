@@ -90,7 +90,8 @@ briefly so they are active in the session rather than rediscovered mid-task:
 - **Widget design invariants** (these are legal positions expressed as code
   rules, not preferences): every change user-invoked; never override existing
   ARIA/roles/semantics; never fight the visitor's assistive tech; everything
-  reversible in one click; the widget itself meets WCAG 2.1 AA; **zero
+  reversible in one click; the widget itself is built to WCAG 2.1 AA (a
+  design target, never stated as achieved conformance anywhere public); **zero
   telemetry** — a preference like "high contrast" is arguably an inference
   about disability and must never reach a server.
 - **The disclaimer rendered by the widget core is not configurable** and must
@@ -122,8 +123,9 @@ Do not start any of it. Propose, then stop.
 - **Preview:** `preview_start` with name `site` serves `./site` on 4322 — use
   that rather than the repo root, since the pages use absolute asset paths.
   Name `demo` serves the repo root on 4321 for the widget test page.
-- **Fonts** are self-hosted in `site/fonts/` (Heebo for Hebrew, JetBrains Mono
-  for Latin labels). Never switch to a CDN — the CSP is `font-src 'self'` and
+- **Fonts** are self-hosted in `site/fonts/` (Rubik for all text since the
+  2026-10-10 redesign, JetBrains Mono for code). They are cached as immutable,
+  so a changed font file must get a new name. Never switch to a CDN — the CSP is `font-src 'self'` and
   the site's own claim is that it makes no external requests.
 - **The placeholders are all filled** (verified 2026-08-13 by sweeping the repo
   and the live homepage). Nothing reads `[למלא]`, `[SECURITY EMAIL]`,
