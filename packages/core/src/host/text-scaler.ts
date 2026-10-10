@@ -111,6 +111,9 @@ export class TextScaler {
       // Drop the attribute entirely if we left it empty, so we don't litter
       // the host's DOM with `style=""`.
       if (el.getAttribute('style') === '') el.removeAttribute('style');
+      // Forget nodes the host has removed. The map holds strong references, so
+      // on an SPA or infinite scroll every element ever resized stayed in memory.
+      if (!el.isConnected) this.original.delete(el);
     }
   }
 

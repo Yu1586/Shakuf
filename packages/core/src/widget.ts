@@ -172,7 +172,15 @@ export class A11yWidget {
     const launcher = `${vertical}:${gap}px;${side}:${gap}px;`;
     // The panel sits beside the launcher, clear of its 56px diameter.
     const panelOffset = gap + 56 + 12;
-    const panel = `${vertical}:${panelOffset}px;${side}:${gap}px;`;
+    // Capped to what is left of the viewport. The stylesheet's 82vh ignored the
+    // offset, so below ~490px of height (landscape phones, 400% zoom) the panel
+    // ran off-screen: the title and Close at bottom placements, Reset and the
+    // disclaimer at top ones. The dvh line is dropped by browsers that lack it.
+    const room = panelOffset + gap;
+    const panel =
+      `${vertical}:${panelOffset}px;${side}:${gap}px;` +
+      `max-height:min(720px,calc(100vh - ${room}px));` +
+      `max-height:min(720px,calc(100dvh - ${room}px));`;
     return { launcher, panel };
   }
 

@@ -87,7 +87,12 @@ export function getLandmarks(): OutlineItem[] {
     }
 
     const role = el.getAttribute('role') ?? IMPLICIT_ROLE[tag] ?? 'region';
-    const roleName = t().landmarkNames[role] ?? t().landmarkNames['region']!;
+    // Own-property check: a host <nav role="constructor"> would otherwise read
+    // Object.prototype and print function source as the item's name.
+    const names = t().landmarkNames;
+    const roleName = Object.prototype.hasOwnProperty.call(names, role)
+      ? names[role]!
+      : names['region']!;
     const own = el.getAttribute('aria-label')?.trim();
 
     seen.add(el);

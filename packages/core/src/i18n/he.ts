@@ -33,7 +33,7 @@ export const HE = {
 
   // ---- Text ------------------------------------------------------------
   textSize: 'גודל טקסט',
-  textSizeDesc: 'הגדלת הטקסט באתר מבלי לשנות את מבנה העמוד',
+  textSizeDesc: 'הגדלת הטקסט באתר בלי לשנות את העיצוב שלו',
   lineHeight: 'מרווח שורות',
   letterSpacing: 'מרווח אותיות',
   wordSpacing: 'מרווח מילים',
@@ -97,7 +97,7 @@ export const HE = {
   coordinatorPhone: 'טלפון',
   coordinatorEmail: 'דוא״ל',
   infoMissing:
-    'בעל האתר לא הגדיר פרטי הצהרת נגישות ורכז נגישות. לפי הדין הישראלי חלה חובה לפרסם הצהרת נגישות ולמנות רכז נגישות.',
+    'בעל האתר לא הגדיר פרטי הצהרת נגישות ורכז נגישות. הדין הישראלי מחייב אתרים רבים לפרסם הצהרת נגישות ולמנות רכז נגישות.',
 
   // ---- Disclaimer — mandatory, not configurable ------------------------
   // Tightened deliberately. The two load-bearing claims are kept verbatim —

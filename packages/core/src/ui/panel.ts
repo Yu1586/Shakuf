@@ -24,12 +24,22 @@ export interface PanelHandlers {
   announce(message: string): void;
 }
 
-const GROUP_TITLES: Record<GroupId, string> = {
-  text: t().groupText,
-  color: t().groupColor,
-  motion: t().groupMotion,
-  nav: t().groupNav,
-  info: t().groupInfo,
+/**
+ * A function, not a constant, and that is the whole fix. As a module-level
+ * object this called `t()` once at import, before the widget had resolved its
+ * language, so every English panel rendered its five section headings in
+ * Hebrew — and a runtime language switch could not repair it. Same class of
+ * bug as the one fixed in features/index.ts; resolve strings at render time.
+ */
+const groupTitle = (group: GroupId): string => {
+  const s = t();
+  return {
+    text: s.groupText,
+    color: s.groupColor,
+    motion: s.groupMotion,
+    nav: s.groupNav,
+    info: s.groupInfo,
+  }[group];
 };
 
 let uid = 0;
@@ -97,7 +107,7 @@ export class Panel {
   private buildFeatureGroup(group: GroupId): HTMLElement {
     const headingId = nextId('grp');
     const section = el('section', { class: 'group', 'aria-labelledby': headingId }, [
-      el('h3', { class: 'group-title', id: headingId, text: GROUP_TITLES[group] }),
+      el('h3', { class: 'group-title', id: headingId, text: groupTitle(group) }),
     ]);
 
     for (const feature of getFeatures().filter((f) => f.group === group)) {
@@ -229,7 +239,7 @@ export class Panel {
   private buildNavGroup(): HTMLElement {
     const headingId = nextId('grp');
     const section = el('section', { class: 'group', 'aria-labelledby': headingId }, [
-      el('h3', { class: 'group-title', id: headingId, text: GROUP_TITLES.nav }),
+      el('h3', { class: 'group-title', id: headingId, text: groupTitle('nav') }),
       el('p', { class: 'nav-hint', text: t().navHint }),
     ]);
 
@@ -313,7 +323,7 @@ export class Panel {
     const { statementUrl, coordinatorName, coordinatorPhone, coordinatorEmail } = this.config;
     const headingId = nextId('grp');
     const section = el('section', { class: 'group', 'aria-labelledby': headingId }, [
-      el('h3', { class: 'group-title', id: headingId, text: GROUP_TITLES.info }),
+      el('h3', { class: 'group-title', id: headingId, text: groupTitle('info') }),
     ]);
 
     if (statementUrl) {
@@ -407,16 +417,20 @@ export class Panel {
     // were on. `aria-label` carries that fact, because a new tab opening
     // unannounced is disorienting for screen-reader users (WCAG G201).
     // Only the name itself is the link — "תוסף" stays plain text beside it.
+    // `noreferrer` because the destination is not ours to vouch for: without it
+    // a click handed the host page's URL to whatever analytics the author's
+    // site runs, telling us where the widget is installed and that someone
+    // opened it. The widget collects nothing, and its links must not either.
     const productLink = el('a', {
       href: byUrl,
-      rel: 'noopener',
+      rel: 'noopener noreferrer',
       target: '_blank',
       'aria-label': `${byName} — ${t().newTab}`,
       text: byName,
     });
     const authorLink = el('a', {
       href: BRAND.authorUrl,
-      rel: 'noopener',
+      rel: 'noopener noreferrer',
       target: '_blank',
       'aria-label': `${authorName} — ${t().newTab}`,
       text: authorName,

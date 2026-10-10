@@ -36,9 +36,17 @@ const POSITIONS = new Set([
  * Reading `currentScript` at module top level removes the heuristic entirely.
  * It is null on the npm/bundler path, where callers pass config to `mount()`
  * directly, so nothing is lost there.
+ *
+ * The `typeof document` guard is what keeps the npm entry importable outside a
+ * browser. Without it, `import '@shakuf-widget/widget'` threw a ReferenceError
+ * at evaluation under Next/Nuxt/Remix SSR and Node test runners, before anyone
+ * had called `mount()` — contradicting the promise in index.ts that importing
+ * does nothing on its own.
  */
 const OWN_SCRIPT: HTMLScriptElement | null =
-  document.currentScript instanceof HTMLScriptElement ? document.currentScript : null;
+  typeof document !== 'undefined' && document.currentScript instanceof HTMLScriptElement
+    ? document.currentScript
+    : null;
 
 function str(el: Element | null, name: string): string | null {
   const v = el?.getAttribute(`data-${name}`);

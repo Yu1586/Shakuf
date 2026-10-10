@@ -110,7 +110,13 @@ export class FocusTrap {
     // Belt and braces: if that focus call did not land (a detached or
     // non-focusable target), hand focus to the launcher rather than leaving the
     // visitor at the top of the document.
-    if (this.shadow.activeElement === null) {
+    //
+    // "Did not land" must check the document too. shadow.activeElement is null
+    // whenever focus sits OUTSIDE our shadow root, so a panel opened from the
+    // host's own link (window.shakuf.open()) restored focus there correctly and
+    // then had it stolen to the launcher by this branch.
+    const landed = this.shadow.activeElement === target || document.activeElement === target;
+    if (!landed) {
       this.shadow.querySelector<HTMLElement>('.launcher')?.focus();
     }
   }

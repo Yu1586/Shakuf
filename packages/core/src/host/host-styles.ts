@@ -82,6 +82,15 @@ ${base}::after {
   transition-delay: 0s !important;
   scroll-behavior: auto !important;
 }
+/* body * never matched html or body themselves, and html is the most common
+   place smooth scrolling is set, so it kept running with the control on. */
+html[data-shakuf-motion="off"],
+html[data-shakuf-motion="off"] body {
+  scroll-behavior: auto !important;
+  animation-duration: .01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: .01ms !important;
+}
 `;
 }
 
@@ -192,6 +201,13 @@ html[data-shakuf-contrast="high"] body *:not(${SELF}):not(:where(svg, svg *)) {
   text-shadow: none !important;
   box-shadow: none !important;
 }
+/* The rule above clears box-shadow everywhere, which is how most design systems
+   draw focus, so this mode used to delete the host's focus ring. Yellow on
+   black is 16.6:1. */
+html[data-shakuf-contrast="high"] body *:not(${SELF}):focus-visible {
+  outline: 3px solid #ffe600 !important;
+  outline-offset: 2px !important;
+}
 html[data-shakuf-contrast="high"] body a:not(${SELF}) { color: #ffe600 !important; }
 html[data-shakuf-contrast="high"] body a:not(${SELF}):visited { color: #ffb3ff !important; }
 html[data-shakuf-contrast="high"] body button:not(${SELF}),
@@ -203,21 +219,33 @@ html[data-shakuf-contrast="high"] body textarea:not(${SELF}) {
   border: 2px solid #fff !important;
 }
 
-/* ---- Highlight links -------------------------------------------------- */
+/* ---- Highlight links --------------------------------------------------
+   The base outline is !important, so it beat the host's own focus ring and a
+   focused link looked exactly like its neighbours. The focus rule restores a
+   difference without removing the ring from sites that strip focus styles. */
 html[data-shakuf-links="1"] body a:not(${SELF}) {
   text-decoration: underline !important;
   text-underline-offset: 2px !important;
   outline: 2px solid currentColor !important;
   outline-offset: 2px !important;
 }
+html[data-shakuf-links="1"] body a:not(${SELF}):focus-visible {
+  outline-width: 4px !important;
+  outline-offset: 4px !important;
+}
 
 /* ---- Hide images ------------------------------------------------------
-   Uses visibility rather than display, so the page does not reflow and the
-   visitor does not lose their reading position. */
+   opacity rather than visibility or display. All three keep or drop layout as
+   intended, but visibility: hidden also removes the element from the
+   accessibility tree: alt text vanished and image-only links lost their names,
+   which is the one thing this widget promises never to change. opacity hides
+   the pixels and leaves the tree alone.
+   img and picture only. On video, opacity would leave the native controls
+   focusable but invisible, which is worse than showing it; moving video is
+   what stop-motion is for. */
 html[data-shakuf-images="hidden"] body img:not(${SELF}),
-html[data-shakuf-images="hidden"] body picture:not(${SELF}),
-html[data-shakuf-images="hidden"] body video:not(${SELF}) {
-  visibility: hidden !important;
+html[data-shakuf-images="hidden"] body picture:not(${SELF}) {
+  opacity: 0 !important;
 }
 html[data-shakuf-images="hidden"] body *:not(${SELF}) {
   background-image: none !important;

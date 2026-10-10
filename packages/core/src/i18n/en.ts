@@ -43,7 +43,7 @@ export const EN: Strings = {
 
   // ---- Text ------------------------------------------------------------
   textSize: 'Text size',
-  textSizeDesc: 'Enlarges the text without changing the page layout',
+  textSizeDesc: "Enlarges the text without changing the site's design",
   lineHeight: 'Line spacing',
   letterSpacing: 'Letter spacing',
   wordSpacing: 'Word spacing',
@@ -101,7 +101,7 @@ export const EN: Strings = {
   coordinatorPhone: 'Phone',
   coordinatorEmail: 'Email',
   infoMissing:
-    'The site owner has not provided accessibility statement or coordinator details. Israeli law requires publishing an accessibility statement and appointing an accessibility coordinator.',
+    'The site owner has not provided accessibility statement or coordinator details. Israeli law requires many websites to publish an accessibility statement and appoint an accessibility coordinator.',
 
   // ---- Disclaimer — mandatory, not configurable ------------------------
   disclaimerShort: 'This tool adjusts display only',

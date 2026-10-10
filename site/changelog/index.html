@@ -76,7 +76,9 @@
         The "stop animations" control was removing animations rather than
         stopping them, and on a common pattern that meant the visitor lost the
         content instead of seeing it hold still. If you rely on that control,
-        upgrade. Everything else here is additive.
+        upgrade. This release also fixes accessibility defects in the widget's
+        own panel that an October audit found, and an import crash on the npm
+        path. Everything else is additive.
       </p>
 
       <h3>Fixed</h3>
@@ -126,6 +128,89 @@
           text typed into the field, are shown as plain text instead of a link.
           The number is never dropped from the panel.
         </li>
+        <li>
+          <strong>The Close button's focus ring was invisible.</strong> The ring
+          colour and the default accent were the same blue, so on the panel
+          header it measured 1.00:1. Close is the first Tab stop in the panel.
+          The ring there now uses the header's own text colour, and the
+          launcher's ring is two-tone, so it stays visible on any host
+          background.
+        </li>
+        <li>
+          <strong>English panels showed Hebrew section headings.</strong> The
+          five group titles were computed once when the module loaded, before
+          the language was resolved, so every English install read "טקסט",
+          "צבע וניגודיות" and the rest in an English voice. Switching language
+          at runtime could not repair it. They are now resolved at render time.
+        </li>
+        <li>
+          <strong>"Hide images" removed alt text from screen readers.</strong>
+          It used <code>visibility: hidden</code>, which drops an element from
+          the accessibility tree: informative alt text vanished and image-only
+          links lost their names. It now uses <code>opacity: 0</code>, which
+          hides the pixels and keeps the layout and the tree. Video is no longer
+          hidden by this control, since an invisible video would leave its
+          controls focusable; stopping motion is what "stop animations" is for.
+        </li>
+        <li>
+          <strong>The panel could run off short screens.</strong> Its height
+          ignored the distance from the screen edge, so below roughly 490px of
+          viewport height, landscape phones and 400% zoom, either the title and
+          Close or the Reset button and the disclaimer were cut off. The height
+          is now capped to the space available, and on very short screens the
+          whole panel scrolls.
+        </li>
+        <li>
+          <strong>Importing the npm package crashed outside a browser.</strong>
+          <code>import '@shakuf-widget/widget'</code> threw a
+          <code>ReferenceError</code> during server-side rendering in Next, Nuxt
+          or Remix, and in Node test runners, before <code>mount()</code> was
+          ever called. Importing now does nothing on its own, as documented.
+        </li>
+        <li>
+          <strong>Closing the panel stole focus.</strong> When the panel was
+          opened from a control on your own page, such as a footer link calling
+          <code>window.shakuf.open()</code>, focus returned to that control and
+          was then moved again to the launcher. It now stays where it belongs.
+        </li>
+        <li>
+          <strong>"Stop animations" missed smooth scrolling set on
+          <code>html</code>.</strong> The rule matched elements inside
+          <code>body</code> only, and <code>html</code> is the most common place
+          <code>scroll-behavior: smooth</code> is set.
+        </li>
+        <li>
+          <strong>Two host-page focus rings were being hidden.</strong> High
+          contrast removed every <code>box-shadow</code>, which is how most design
+          systems draw focus, and "highlight links" gave every link the same
+          outline, so the focused one looked like its neighbours. High contrast
+          now adds a yellow focus outline at 16.6:1, and a focused link gets a
+          visibly heavier ring.
+        </li>
+        <li>
+          <strong>Smaller fixes.</strong> A landmark with a role such as
+          <code>constructor</code> no longer prints function source as its name
+          in the landmarks list, and text sizing no longer keeps elements the
+          page has removed in memory.
+        </li>
+      </ul>
+
+      <h3>Changed</h3>
+      <ul>
+        <li>
+          <strong>The panel's "details missing" message is worded more
+          carefully.</strong> It used to state that Israeli law requires every
+          site to publish an accessibility statement and appoint a coordinator.
+          The coordinator duty in particular depends on the site owner, so the
+          message now says the law requires many sites to do both. The same
+          change was made in the README, the setup guide and the disclaimer.
+        </li>
+        <li>
+          <strong>The panel's attribution links no longer send a
+          referrer.</strong> They now carry <code>noreferrer</code>, so clicking
+          one does not tell the destination which page it came from. The widget
+          collects nothing, and its links should not either.
+        </li>
       </ul>
 
       <h3>Added</h3>
@@ -169,6 +254,25 @@
           Invalid selectors, and any value containing braces, are rejected with a
           console warning and treated as absent.
         </li>
+        <li>
+          <strong>Windows High Contrast support in the panel.</strong> On and
+          off were shown only by background colour, which forced-colours mode
+          removes, so every toggle looked the same. The switches now use system
+          colours.
+        </li>
+        <li>
+          <strong>The widget no longer prints.</strong> The launcher used to
+          appear on every printed page.
+        </li>
+        <li>
+          <strong>A licence and disclaimer banner opens both bundles.</strong>
+          Self-hosted copies now carry the version, the Apache-2.0 notice and
+          the one-line disclaimer.
+        </li>
+        <li>
+          <strong>The npm page now shows the README</strong>, and the package
+          names its author.
+        </li>
       </ul>
 
       <h3>Note for installers</h3>
@@ -197,11 +301,18 @@
           repository was private; it has been public since August, so that reason
           no longer exists.
           <br>
-          The package grows from 54.6 kB to 157.9 kB as a result. Visitors pay
+          The package grows from 54.6 kB to 158.2 kB as a result. Visitors pay
           none of it: a browser requests a <code>.map</code> only when devtools
           are open, jsDelivr serves each file on request, and the bundle itself
-          is unchanged at 15.95 KB gzipped. What you get for it is a readable
-          stack trace instead of one line of minified code.
+          does not include them. What you get for it is a readable stack trace
+          instead of one line of minified code.
+        </li>
+        <li>
+          <strong>The bundle is smaller despite the fixes.</strong> Comments in
+          the panel stylesheet were shipping to every visitor, because they sit
+          inside a template string the minifier cannot touch. They are now
+          stripped at build time, the same way the host stylesheet's already
+          were. The bundle went from 15.95 KB to 15.02 KB gzipped.
         </li>
       </ul>
     </div>

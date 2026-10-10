@@ -101,7 +101,9 @@ button {
   transition: transform 0.15s ease;
 }
 .launcher:hover { transform: scale(1.06); }
-.launcher:focus-visible { outline-offset: 4px; }
+/* Two-tone, because this ring is painted on the HOST page, whose background we
+   cannot know: white ring plus a dark halo clears 3:1 on any backdrop. */
+.launcher:focus-visible { outline: 3px solid #fff; outline-offset: 2px; box-shadow: 0 0 0 6px #1a1a1a; }
 .launcher svg { width: 32px; height: 32px; display: block; }
 
 /* ---- Panel ------------------------------------------------------------- */
@@ -140,9 +142,19 @@ button {
   color: inherit;
 }
 .close:hover { background: rgba(0, 0, 0, 0.16); }
+/* The default ring is --focus, which IS the default accent, so on the header it
+   measured 1.00:1 — invisible, on the first Tab stop in the dialog. The header's
+   own text colour is chosen for contrast against the accent, so use that. */
+.close:focus-visible { outline-color: var(--accent-fg); outline-offset: -4px; }
 .close svg { width: 22px; height: 22px; }
 
 .body { overflow-y: auto; overscroll-behavior: contain; padding: 4px 0 8px; }
+/* On a very short viewport the fixed header and footer alone can exceed the
+   capped height, so the whole panel scrolls instead and nothing is clipped. */
+@media (max-height: 520px) {
+  .panel { overflow-y: auto; overscroll-behavior: contain; }
+  .body { overflow: visible; flex: none; }
+}
 
 .group { border-bottom: 1px solid var(--border-soft); padding: 10px 16px 14px; }
 .group:last-of-type { border-bottom: none; }
@@ -339,4 +351,16 @@ button {
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
 }
+
+/* Windows High Contrast strips author backgrounds, and on/off was carried by
+   background alone, so every toggle looked the same. System colours restore it. */
+@media (forced-colors: active) {
+  .switch { forced-color-adjust: none; background: Canvas; border-color: CanvasText; }
+  .switch::after { background: CanvasText; }
+  .toggle[aria-pressed="true"] .switch { background: Highlight; }
+  .toggle[aria-pressed="true"] .switch::after { background: HighlightText; }
+  .step-dot.on { forced-color-adjust: none; background: Highlight; }
+}
+
+@media print { :host { display: none !important; } }
 `;
