@@ -37,6 +37,20 @@
   font-weight: 300 900; font-style: normal; font-display: swap;
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+/* Karantina (Yanek Iontef) for headings only: condensed and heavy, a poster
+   voice that Rubik's 900 weight was standing in for. One weight, 700. */
+@font-face {
+  font-family: 'Karantina';
+  src: url('/fonts/karantina-700-hebrew-v13.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+  unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
+}
+@font-face {
+  font-family: 'Karantina';
+  src: url('/fonts/karantina-700-latin-v13.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 @font-face {
   font-family: 'JetBrains Mono';
   src: url('/fonts/jbmono-latin.woff2') format('woff2');
@@ -59,6 +73,7 @@
   --code-bg: #0e0f12;  --code-fg: #e9ebf0;  --code-dim: #a8afbf;
 
   --sans: "Rubik", "Segoe UI", "Noto Sans Hebrew", Arial, sans-serif;
+  --display: "Karantina", "Rubik", "Segoe UI", "Noto Sans Hebrew", Arial, sans-serif;
   --mono: "JetBrains Mono", "Cascadia Mono", Consolas, ui-monospace, monospace;
 
   --wide:    1200px;
@@ -112,15 +127,14 @@ a:hover { color: var(--blue-dk); }
 /* No negative tracking on Hebrew display text: Hebrew has no ascender rhythm
    to absorb it, so a tightened 900-weight line turns into a bar of touching
    letters. The English changelog keeps the Latin tightening. */
-h1, h2, h3 { line-height: 1.08; margin: 0 0 .45em; text-wrap: balance; letter-spacing: 0; }
-h1 { font-size: clamp(2.4rem, 1.4rem + 4.4vw, 4.6rem); font-weight: 900; }
-/* One loud moment per page, the H1; section headings a step down so the
-   page has a hierarchy instead of six equal shouts. */
-h2 { font-size: clamp(1.7rem, 1.2rem + 1.9vw, 2.7rem); font-weight: 800; }
-h3 { font-size: 1.25rem; font-weight: 700; }
-html[lang="en"] h1 { letter-spacing: -0.035em; }
-html[lang="en"] h2 { letter-spacing: -0.03em; }
-html[lang="en"] h3 { letter-spacing: -0.01em; }
+/* Headings in Karantina. It is condensed, so every heading is set larger than
+   Rubik needed and leaded tighter; a 1.25rem h3 in it would read as a label.
+   One loud moment per page, the H1; section headings a step down so the page
+   has a hierarchy instead of six equal shouts. */
+h1, h2, h3 { font-family: var(--display); font-weight: 700; margin: 0 0 .4em; text-wrap: balance; letter-spacing: 0; }
+h1 { font-size: clamp(3rem, 1.6rem + 5.2vw, 6rem); line-height: .98; }
+h2 { font-size: clamp(2.1rem, 1.4rem + 2.4vw, 3.3rem); line-height: 1.02; }
+h3 { font-size: 1.6rem; line-height: 1.1; }
 p  { margin: 0 0 1.1em; text-wrap: pretty; }
 strong { font-weight: 700; }
 
@@ -416,7 +430,7 @@ body.has-motion #motion-toggle { display: inline-flex; }
 .callout p:last-child { margin-bottom: 0; }
 .disclosure { border-top: 2px solid var(--ink); padding-top: clamp(28px, 4vw, 44px); display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.3fr); gap: clamp(24px, 4vw, 48px); }
 @media (max-width: 820px) { .disclosure { grid-template-columns: minmax(0, 1fr); } }
-.disclosure h2 { font-size: clamp(1.7rem, 1.2rem + 2vw, 2.6rem); margin: 0; }
+.disclosure h2 { font-size: clamp(2rem, 1.4rem + 2vw, 3rem); margin: 0; }
 .disclosure p:last-child { margin-bottom: 0; }
 
 /* ---- Counters (privacy) ----------------------------------------------- */
@@ -522,7 +536,7 @@ tr:has(td.yes) td { background: var(--yes-bg); }
   border: 2px solid var(--ink); border-radius: 50%; background: var(--blue); color: #fff;
   font-weight: 700; font-size: 15px;
 }
-.steps h3 { margin-bottom: .3em; font-size: 1.1rem; }
+.steps h3 { margin-bottom: .3em; font-size: 1.4rem; }
 .steps p:last-child { margin-bottom: 0; }
 .steps .code { margin-top: 14px; }
 
@@ -538,9 +552,9 @@ details[open] summary { border-bottom: 2px solid var(--ink); }
 
 /* ---- Long-form pages (/terms/, /disclaimer/, /accessibility/, /changelog/) */
 .page-head { padding-block: clamp(48px, 7vw, 88px) clamp(28px, 4vw, 48px); }
-.page-head h1 { font-size: clamp(2.2rem, 1.4rem + 3.4vw, 3.8rem); }
+.page-head h1 { font-size: clamp(2.8rem, 1.6rem + 4vw, 5rem); }
 .prose section { padding-block: clamp(36px, 5vw, 64px); }
-.prose h2 { font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.2rem); }
+.prose h2 { font-size: clamp(1.9rem, 1.4rem + 1.7vw, 2.8rem); }
 .prose ul { margin: 0 0 20px; padding-inline-start: 22px; }
 .prose li { margin: 7px 0; }
 .prose li::marker { color: var(--blue); }
