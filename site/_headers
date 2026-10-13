@@ -38,3 +38,13 @@
 
 /shakuf.js.map
   Cache-Control: public, max-age=3600
+
+# Icons change rarely but are not versioned in the file name, so one day.
+/favicon.svg
+  Cache-Control: public, max-age=86400
+
+/favicon-48.png
+  Cache-Control: public, max-age=86400
+
+/apple-touch-icon.png
+  Cache-Control: public, max-age=86400

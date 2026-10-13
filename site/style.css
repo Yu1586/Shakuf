@@ -75,8 +75,12 @@
    heading underneath it. */
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 96px; }
 
+/* A column that fills the viewport, so a short page (the 404) still puts its
+   footer at the bottom instead of mid-screen. */
 body {
   margin: 0;
+  min-height: 100vh; min-height: 100dvh;
+  display: flex; flex-direction: column;
   background: var(--paper);
   color: var(--ink);
   font-family: var(--sans);
@@ -84,6 +88,7 @@ body {
   line-height: 1.7;
   overflow-x: clip;
 }
+main { flex: 1 0 auto; }
 
 /* ---- Skip link -------------------------------------------------------- */
 .skip {
@@ -104,10 +109,16 @@ a:hover { color: var(--blue-dk); }
 .cta :focus-visible { outline-color: #fff; }
 .band :focus-visible { outline-color: #b9c9ff; }
 
-h1, h2, h3 { line-height: 1.08; margin: 0 0 .45em; text-wrap: balance; letter-spacing: -0.02em; }
-h1 { font-size: clamp(2.4rem, 1.4rem + 4.4vw, 4.6rem); font-weight: 900; letter-spacing: -0.035em; }
-h2 { font-size: clamp(1.9rem, 1.3rem + 2.6vw, 3.4rem); font-weight: 900; letter-spacing: -0.03em; }
-h3 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; }
+/* No negative tracking on Hebrew display text: Hebrew has no ascender rhythm
+   to absorb it, so a tightened 900-weight line turns into a bar of touching
+   letters. The English changelog keeps the Latin tightening. */
+h1, h2, h3 { line-height: 1.08; margin: 0 0 .45em; text-wrap: balance; letter-spacing: 0; }
+h1 { font-size: clamp(2.4rem, 1.4rem + 4.4vw, 4.6rem); font-weight: 900; }
+h2 { font-size: clamp(1.9rem, 1.3rem + 2.6vw, 3.4rem); font-weight: 900; }
+h3 { font-size: 1.25rem; font-weight: 700; }
+html[lang="en"] h1 { letter-spacing: -0.035em; }
+html[lang="en"] h2 { letter-spacing: -0.03em; }
+html[lang="en"] h3 { letter-spacing: -0.01em; }
 p  { margin: 0 0 1.1em; text-wrap: pretty; }
 strong { font-weight: 700; }
 
@@ -146,27 +157,59 @@ section    { padding-block: clamp(56px, 8vw, 112px); position: relative; }
 .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
 .brand:hover { color: var(--ink); }
 .brand-mark { width: 30px; height: 30px; flex: none; }
-.brand b { font-size: 26px; font-weight: 900; letter-spacing: -0.03em; }
+.brand b { font-size: 26px; font-weight: 900; letter-spacing: 0; }
+/* Source order is brand, tools, nav; on wide screens the nav is moved between
+   them so the install button stays at the far end of the bar. */
+.site-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; order: 1; }
+.header-tools { display: flex; align-items: center; gap: 10px; order: 2; }
 .site-nav ul { display: flex; flex-wrap: wrap; gap: 2px; list-style: none; margin: 0; padding: 0; }
 .site-nav a {
-  display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px;
+  display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 0 14px;
   border-radius: 999px; color: var(--ink); text-decoration: none; font-weight: 500; font-size: 16px;
 }
 .site-nav a:hover { background: var(--tint); color: var(--ink); }
 .site-nav a[aria-current="page"] { background: var(--ink); color: #fff; }
-.header-tools { display: flex; align-items: center; gap: 10px; }
-/* On phones the header wraps to ~158px. Sticky, that would eat a third of a
-   phone screen and nearly all of a 400%-zoom viewport (WCAG 1.4.10), so it
-   scrolls away with the page there, and on any short viewport. */
-@media (max-width: 760px), (max-height: 500px) {
+.header-cta[aria-current="page"] { background: var(--ink); color: #fff; }
+/* The menu state is a native checkbox read by CSS. It stays in the tab order,
+   visually hidden; its label is the visible toggle and shows the ring. */
+.nav-state { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.nav-toggle { display: none; }
+/* Only the homepage has loops to pause; its <body> says so. */
+#motion-toggle { display: none; }
+body.has-motion #motion-toggle { display: inline-flex; }
+@media (max-width: 760px) {
+  .site-header .bar { min-height: 60px; gap: 8px 12px; }
+  .brand b { font-size: 22px; }
+  .brand-mark { width: 26px; height: 26px; }
+  .header-cta { min-height: 44px; padding: 0 16px; }
+  .nav-toggle {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px;
+    border: 2px solid var(--ink); border-radius: 12px; background: var(--card); color: var(--ink);
+    font-weight: 700; font-size: 15px; cursor: pointer; user-select: none; box-shadow: 4px 4px 0 var(--ink);
+  }
+  .nav-toggle svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+  html:has(#nav-open:focus-visible) .nav-toggle { outline: 3px solid var(--blue); outline-offset: 3px; }
+  html:has(#nav-open:checked) .nav-toggle { background: var(--ink); color: #fff; }
+  .site-nav { display: none; order: 3; width: 100%; flex-direction: column; align-items: stretch; gap: 10px; padding-block: 6px 12px; }
+  html:has(#nav-open:checked) .site-nav { display: flex; }
+  .site-nav ul { flex-direction: column; gap: 6px; }
+  .site-nav a { min-height: 48px; padding: 0 16px; border: 2px solid var(--ink); border-radius: 12px; background: var(--card); justify-content: space-between; }
+  #motion-toggle { align-self: flex-start; }
+  html { scroll-padding-top: 80px; }
+}
+/* On a short viewport (a phone on its side) a sticky bar would take most of the
+   screen, so the header scrolls away with the page there. */
+@media (max-height: 500px) {
   .site-header { position: static; }
   html { scroll-padding-top: 16px; }
 }
-@media (max-width: 760px) {
-  .site-nav { order: 3; width: 100%; }
-  .site-nav ul { gap: 4px; }
-  .site-nav a { min-height: 40px; padding: 0 12px; font-size: 15px; border: 2px solid var(--ink); background: var(--card); }
-}
+/* Language and external-link marks, in the nav and the footer. */
+.tag { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .06em; border: 1.5px solid currentColor; border-radius: 6px; padding: 1px 5px; line-height: 1.2; }
+.ext svg { width: .75em; height: .75em; margin-inline-start: 5px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.05em; }
+/* In-page navigation on long pages (/setup/). */
+.toc ul { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 22px 0 0; padding: 0; }
+.toc a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; border: 2px solid var(--ink); border-radius: 999px; background: var(--card); color: var(--ink); text-decoration: none; font-weight: 500; font-size: 15px; }
+.toc a:hover { background: var(--tint); }
 
 /* ---- Buttons ---------------------------------------------------------- */
 .btn {
@@ -242,39 +285,12 @@ section    { padding-block: clamp(56px, 8vw, 112px); position: relative; }
 }
 @keyframes demo-text { 0%, 49.99% { color: #454a55; } 50%, 99.99% { color: #fff; } 100% { color: #454a55; } }
 @keyframes demo-link { 0%, 49.99% { color: #1e4fd8; } 50%, 99.99% { color: #ffe600; } 100% { color: #1e4fd8; } }
-.demo-toggles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-.demo-toggle {
-  display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  border: 2px solid var(--ink); border-radius: 14px; background: var(--card);
-  padding: 10px 12px; font-weight: 500; font-size: 15px;
-}
-.demo-sw { width: 46px; height: 26px; border: 2px solid var(--ink); border-radius: 999px; background: var(--card); position: relative; flex: none; }
-.demo-sw::after { content: ""; position: absolute; top: 3px; inset-inline-start: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--ink); }
-.demo-toggle.t1 { animation: demo-t1 12s steps(1, end) infinite; }
-.demo-toggle.t2 { animation: demo-t2 12s steps(1, end) infinite; }
-.demo-toggle.t3 { animation: demo-t3 12s steps(1, end) infinite; }
-.demo-toggle.t1 .demo-sw { animation: demo-sw1 12s steps(1, end) infinite; }
-.demo-toggle.t2 .demo-sw { animation: demo-sw2 12s steps(1, end) infinite; }
-.demo-toggle.t3 .demo-sw { animation: demo-sw3 12s steps(1, end) infinite; }
-.demo-toggle.t1 .demo-sw::after { animation: demo-k1 12s steps(1, end) infinite; }
-.demo-toggle.t2 .demo-sw::after { animation: demo-k2 12s steps(1, end) infinite; }
-.demo-toggle.t3 .demo-sw::after { animation: demo-k3 12s steps(1, end) infinite; }
-@keyframes demo-t1 { 0%, 24.99% { background: #fff; } 25%, 99.99% { background: #dfe7ff; } 100% { background: #fff; } }
-@keyframes demo-t2 { 0%, 49.99% { background: #fff; } 50%, 99.99% { background: #dfe7ff; } 100% { background: #fff; } }
-@keyframes demo-t3 { 0%, 74.99% { background: #fff; } 75%, 99.99% { background: #dfe7ff; } 100% { background: #fff; } }
-@keyframes demo-sw1 { 0%, 24.99% { background: #fff; } 25%, 99.99% { background: #1e4fd8; } 100% { background: #fff; } }
-@keyframes demo-sw2 { 0%, 49.99% { background: #fff; } 50%, 99.99% { background: #1e4fd8; } 100% { background: #fff; } }
-@keyframes demo-sw3 { 0%, 74.99% { background: #fff; } 75%, 99.99% { background: #1e4fd8; } 100% { background: #fff; } }
-@keyframes demo-k1 { 0%, 24.99% { transform: none; background: #0e0f12; } 25%, 99.99% { transform: translateX(-20px); background: #fff; } 100% { transform: none; background: #0e0f12; } }
-@keyframes demo-k2 { 0%, 49.99% { transform: none; background: #0e0f12; } 50%, 99.99% { transform: translateX(-20px); background: #fff; } 100% { transform: none; background: #0e0f12; } }
-@keyframes demo-k3 { 0%, 74.99% { transform: none; background: #0e0f12; } 75%, 99.99% { transform: translateX(-20px); background: #fff; } 100% { transform: none; background: #0e0f12; } }
 .demo-caption { font-size: 14px; color: var(--faint); margin: 0; }
-@media (max-width: 520px) { .demo-toggles { grid-template-columns: minmax(0, 1fr); } }
 
 /* ---- Marquee ---------------------------------------------------------- */
 .marquee { border-block: 2px solid var(--ink); background: var(--card); overflow: hidden; padding: 14px 0; white-space: nowrap; }
 .marquee-track { display: inline-flex; gap: 40px; padding-inline-end: 40px; animation: marquee 36s linear infinite;
-  font-weight: 900; font-size: clamp(22px, 1.6rem + .8vw, 32px); letter-spacing: -0.02em; }
+  font-weight: 900; font-size: clamp(22px, 1.6rem + .8vw, 32px); }
 .marquee-track span { display: inline-flex; align-items: center; gap: 40px; }
 .marquee-track span::before { content: ""; width: 14px; height: 14px; border-radius: 50%; background: var(--blue); flex: none; }
 /* The track holds the list twice, so half its width is one seamless period.
@@ -371,6 +387,9 @@ tr:has(td.yes) td { background: var(--yes-bg); }
   font-family: var(--mono); color: var(--code-fg);
 }
 .code pre:focus-visible { outline: 3px solid #b9c9ff; outline-offset: -4px; }
+/* The install tag is one long line. In the blocks that hand it over it wraps
+   instead of scrolling, so no part of it is ever out of view. */
+.code.wrap pre { white-space: pre-wrap; overflow-wrap: anywhere; }
 /* The AI prompt is Hebrew prose with LTR code lines embedded in it.
    `unicode-bidi: plaintext` gives every line its own base direction. */
 .code.rtl pre { direction: rtl; text-align: right; unicode-bidi: plaintext; font-family: var(--sans); font-size: 15px; line-height: 1.8; }
@@ -458,10 +477,7 @@ details[open] summary { border-bottom: 2px solid var(--ink); }
 html:has(#motion-pause:checked) .shape,
 html:has(#motion-pause:checked) .marquee-track,
 html:has(#motion-pause:checked) .demo-page,
-html:has(#motion-pause:checked) .demo-page *,
-html:has(#motion-pause:checked) .demo-toggle,
-html:has(#motion-pause:checked) .demo-toggle *,
-html:has(#motion-pause:checked) .demo-toggle *::after { animation-play-state: paused !important; }
+html:has(#motion-pause:checked) .demo-page * { animation-play-state: paused !important; }
 
 /* The pause control is a native checkbox inside a button-styled label, so it
    needs no script and reads as "עצירת תנועה, checkbox" to a screen reader. */
@@ -473,14 +489,26 @@ html:has(#motion-pause:checked) .demo-toggle *::after { animation-play-state: pa
 .motion-toggle:has(input:focus-visible) { outline: 3px solid var(--blue); outline-offset: 3px; }
 .motion-toggle:has(input:checked) { background: var(--tint); }
 
+/* The marquee is a list that happens to scroll. When it cannot scroll (OS
+   reduced motion, or the widget's own motion-off) it is shown as a list:
+   wrapped, centred, one copy instead of the two the loop needs. A frozen
+   single row clipped at both edges looked broken. */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .btn:hover, .card:hover { transform: none; }
-  #motion-toggle { display: none; }
+  #motion-toggle { display: none !important; }
+  .marquee { white-space: normal; padding-inline: var(--pad); }
+  .marquee-track { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 26px; padding: 0; font-size: clamp(18px, 1.05rem + .5vw, 24px); }
+  .marquee-track span { gap: 14px; }
+  .marquee-track span:nth-child(n+9) { display: none; }
 }
+html[data-shakuf-motion="off"] .marquee { white-space: normal; padding-inline: var(--pad); }
+html[data-shakuf-motion="off"] .marquee-track { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 26px; padding: 0; font-size: clamp(18px, 1.05rem + .5vw, 24px); transform: none !important; }
+html[data-shakuf-motion="off"] .marquee-track span { gap: 14px; }
+html[data-shakuf-motion="off"] .marquee-track span:nth-child(n+9) { display: none; }
 
 @media print {
-  .site-header, .shape, .marquee, .demo, #motion-toggle { display: none !important; }
+  .site-header, .shape, .marquee, .demo, #motion-toggle, .nav-toggle { display: none !important; }
   body { background: #fff; }
 }

@@ -16,18 +16,21 @@
 <!-- HEAD_ASSETS:START — generated from site/_partials/head-assets.html. Do not hand-edit; run `npm run build:site` after changing the source. -->
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#f4f5f7">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23f4f5f7'/%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%230e0f12' stroke-width='2.5'/%3E%3Cpath d='M16 16 L16 4 A12 12 0 0 1 26.4 22 Z' fill='%231e4fd8'/%3E%3Cpath d='M16 16 L26.4 22 A12 12 0 0 1 5.6 22 Z' fill='%230e0f12'/%3E%3Cpath d='M16 16 L5.6 22 A12 12 0 0 1 16 4 Z' fill='%23dfe7ff'/%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preload" href="/fonts/rubik-hebrew-v31.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css">
 <!-- HEAD_ASSETS:END -->
 </head>
-<body>
+<body class="has-motion">
 
 <a class="skip" href="#main">דילוג לתוכן</a>
 
+<!-- HEADER:START — generated from site/_partials/header.html. Do not hand-edit; run `npm run build:site` after changing the source. -->
 <header class="site-header">
   <div class="wrap bar">
-    <a class="brand" href="/">
+    <a class="brand" href="/" aria-current="page">
       <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
         <circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2.5"/>
         <path d="M16 16 L16 2 A14 14 0 0 1 28.1 23 Z" fill="#1e4fd8"/>
@@ -36,24 +39,29 @@
       </svg>
       <b>שקוף</b>
     </a>
+    <div class="header-tools">
+      <a class="btn btn-sm btn-solid header-cta" href="/setup/">התקנה</a>
+      <input type="checkbox" id="nav-open" class="nav-state">
+      <label for="nav-open" class="nav-toggle">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14"/></svg>
+        תפריט
+      </label>
+    </div>
     <nav class="site-nav" aria-label="ניווט ראשי">
       <ul>
+        <li><a href="/#how">איך זה עובד</a></li>
         <li><a href="/setup/">מדריך התקנה</a></li>
-        <li><a href="/disclaimer/">מה הכלי לא עושה</a></li>
-        <li><a href="/changelog/">יומן גרסאות</a></li>
-        <li><a href="https://github.com/Yu1586/Shakuf">קוד מקור</a></li>
+        <li><a href="/changelog/" hreflang="en">יומן גרסאות <span class="tag" aria-hidden="true">EN</span><span class="sr-only">(באנגלית)</span></a></li>
+        <li><a class="ext" href="https://github.com/Yu1586/Shakuf">קוד מקור<span class="sr-only"> (GitHub, קישור חיצוני)</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></a></li>
       </ul>
-    </nav>
-    <div class="header-tools">
-      <!-- A real checkbox, so the pause works without JavaScript: the CSS reads
-           its :checked state. WCAG 2.2.2 for the looping shapes, marquee and demo. -->
       <label class="btn btn-sm btn-line motion-toggle" id="motion-toggle">
         <input type="checkbox" id="motion-pause">
         עצירת תנועה
       </label>
-    </div>
+    </nav>
   </div>
 </header>
+<!-- HEADER:END -->
 
 <main id="main">
 
@@ -89,11 +97,6 @@
           <p>מנות יומיות משתנות. אפשר להזמין מראש בטלפון או דרך <span class="demo-link">הטופס באתר</span>.</p>
           <p>שעות פעילות: ימים א׳ עד ה׳, 11:30 עד 16:00.</p>
         </div>
-        <div class="demo-toggles" aria-hidden="true">
-          <span class="demo-toggle t1">טקסט גדול<span class="demo-sw"></span></span>
-          <span class="demo-toggle t2">ניגודיות<span class="demo-sw"></span></span>
-          <span class="demo-toggle t3">מרווחים<span class="demo-sw"></span></span>
-        </div>
         <p class="demo-caption">
           הדגמה מתחלפת: אותו עמוד כשהמבקר מגדיל טקסט, מפעיל ניגודיות גבוהה
           ומרחיב מרווחים. החלונית האמיתית נפתחת מהכפתור הכחול בפינת המסך.
@@ -110,7 +113,7 @@
   </div>
 
   <!-- ================= FEATURES ================= -->
-  <section aria-labelledby="what-h">
+  <section id="how" aria-labelledby="what-h">
     <div class="wrap">
       <div class="section-head">
         <h2 id="what-h">כל שינוי הוא בחירה של המבקר.</h2>
@@ -169,11 +172,12 @@
           אוסר על החברה לטעון שמוצר אוטומטי מביא אתר לעמידה בתקן, או שומר על
           עמידה כזו לאורך זמן, ללא ראיות התומכות בכך.
         </p>
-        <p class="dim" style="margin-bottom:0">
+        <p class="dim">
           שקוף נוגע בתצוגה בלבד. הוא אינו משנה ARIA, אינו משנה את מבנה האתר,
           ואינו מתערב בקורא המסך של המבקר. אלה בדיוק שלוש הפעולות שבגללן כלים
           כאלה פוגעים דווקא במשתמשים שהם אמורים לשרת.
         </p>
+        <p style="margin-bottom:0"><a href="/disclaimer/">ההבהרה המלאה: מה הכלי עושה ומה הוא לא עושה</a></p>
       </div>
     </div>
   </section>
@@ -261,7 +265,7 @@
   </section>
 
   <!-- ================= INSTALL ================= -->
-  <section aria-labelledby="cta-h" style="padding-top:0">
+  <section id="install" aria-labelledby="cta-h" style="padding-top:0">
     <div class="wrap">
       <div class="cta">
         <div>
@@ -272,7 +276,7 @@
           </p>
           <a class="btn btn-line" href="/setup/">למדריך ההתקנה</a>
         </div>
-        <div class="code" data-copy="תג ההתקנה">
+        <div class="code wrap" data-copy="תג ההתקנה">
           <div class="code-bar"><span lang="en">html · before &lt;/body&gt;</span></div>
           <pre dir="ltr" tabindex="0" role="region" aria-label="קוד התקנה בסיסי"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget" defer&gt;&lt;/script&gt;</code></pre>
         </div>
@@ -323,9 +327,9 @@
         <li><a href="/disclaimer/">הבהרה</a></li>
         <li><a href="/terms/">תנאי שימוש</a></li>
         <li><a href="/accessibility/">הצהרת נגישות</a></li>
-        <li><a href="/changelog/" hreflang="en">יומן גרסאות (באנגלית)</a></li>
-        <li><a href="https://github.com/Yu1586/Shakuf">קוד מקור</a></li>
-        <li><a href="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget/LICENSE">רישיון Apache 2.0</a></li>
+        <li><a href="/changelog/" hreflang="en">יומן גרסאות <span class="tag" aria-hidden="true">EN</span><span class="sr-only">(באנגלית)</span></a></li>
+        <li><a class="ext" href="https://github.com/Yu1586/Shakuf">קוד מקור<span class="sr-only"> (GitHub, קישור חיצוני)</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></a></li>
+        <li><a class="ext" href="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget/LICENSE">רישיון Apache 2.0<span class="sr-only"> (קישור חיצוני)</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></a></li>
       </ul>
     </nav>
     <p>

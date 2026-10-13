@@ -1,0 +1,47 @@
+<!--
+  The header of every Hebrew page. /changelog/ is in English and carries its
+  own header with the same structure.
+
+  Injected between HEADER:START/END by scripts/build-site-partials.mjs, which
+  also adds aria-current="page" to whichever link points at the page being
+  built, so the partial itself never carries one.
+
+  The menu toggle and the motion pause are both native checkboxes read by CSS,
+  so the header works with JavaScript off. On phones the nav list is hidden
+  until #nav-open is checked; on wider screens the toggle is hidden and the
+  list is always visible. The motion pause only shows on pages whose <body>
+  carries class="has-motion", because it only has loops to pause there.
+-->
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="/">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <path d="M16 16 L16 2 A14 14 0 0 1 28.1 23 Z" fill="#1e4fd8"/>
+        <path d="M16 16 L28.1 23 A14 14 0 0 1 3.9 23 Z" fill="currentColor"/>
+        <path d="M16 16 L3.9 23 A14 14 0 0 1 16 2 Z" fill="#dfe7ff"/>
+      </svg>
+      <b>שקוף</b>
+    </a>
+    <div class="header-tools">
+      <a class="btn btn-sm btn-solid header-cta" href="/setup/">התקנה</a>
+      <input type="checkbox" id="nav-open" class="nav-state">
+      <label for="nav-open" class="nav-toggle">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14"/></svg>
+        תפריט
+      </label>
+    </div>
+    <nav class="site-nav" aria-label="ניווט ראשי">
+      <ul>
+        <li><a href="/#how">איך זה עובד</a></li>
+        <li><a href="/setup/">מדריך התקנה</a></li>
+        <li><a href="/changelog/" hreflang="en">יומן גרסאות <span class="tag" aria-hidden="true">EN</span><span class="sr-only">(באנגלית)</span></a></li>
+        <li><a class="ext" href="https://github.com/Yu1586/Shakuf">קוד מקור<span class="sr-only"> (GitHub, קישור חיצוני)</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></a></li>
+      </ul>
+      <label class="btn btn-sm btn-line motion-toggle" id="motion-toggle">
+        <input type="checkbox" id="motion-pause">
+        עצירת תנועה
+      </label>
+    </nav>
+  </div>
+</header>

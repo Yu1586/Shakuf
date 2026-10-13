@@ -1,7 +1,11 @@
 <!--
-  Head lines shared by every page: theme, favicon, font preload, stylesheet.
+  Head lines shared by every page: theme, icons, font preload, stylesheet.
   Injected between HEAD_ASSETS:START/END by scripts/build-site-partials.mjs.
   Per-page lines (title, description, canonical, Open Graph) stay in each page.
+
+  Icons are real files, not a data: URI, because Google only shows a favicon in
+  results when it can fetch one by URL, and iOS only reads apple-touch-icon.
+  The SVG is listed first so browsers that understand it take the sharp one.
 
   The preload carries crossorigin because fonts are always fetched in CORS
   mode; without it the browser downloads the file twice. Only the Hebrew file
@@ -9,6 +13,8 @@
 -->
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#f4f5f7">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23f4f5f7'/%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%230e0f12' stroke-width='2.5'/%3E%3Cpath d='M16 16 L16 4 A12 12 0 0 1 26.4 22 Z' fill='%231e4fd8'/%3E%3Cpath d='M16 16 L26.4 22 A12 12 0 0 1 5.6 22 Z' fill='%230e0f12'/%3E%3Cpath d='M16 16 L5.6 22 A12 12 0 0 1 16 4 Z' fill='%23dfe7ff'/%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preload" href="/fonts/rubik-hebrew-v31.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css">
