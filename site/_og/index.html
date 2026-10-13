@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<!--
+  Source of the social-sharing image (og/home.png). Not a page for visitors:
+  noindex, unlinked, and rendered to PNG at exactly 1200x630 with
+    chrome --headless=new --screenshot=site/og/home.png --window-size=1200,630
+           --hide-scrollbars http://localhost:4322/_og/
+  while `npm run preview`-style static serving of site/ is up. Re-render after
+  changing the headline or the mark; the PNG is committed.
+-->
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>og</title>
+<link rel="stylesheet" href="/style.css">
+<style>
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+  body { display: block; min-height: 0; background: #f4f5f7; }
+  .og { position: relative; width: 1200px; height: 630px; overflow: hidden; }
+  .og-mark { position: absolute; width: 760px; height: 760px; inset-inline-end: -250px; top: -90px; }
+  .og-copy { position: absolute; inset-inline-start: 72px; top: 92px; width: 640px; }
+  .og-brand { display: flex; align-items: center; gap: 14px; font-size: 34px; font-weight: 900; margin-bottom: 36px; }
+  .og-brand svg { width: 40px; height: 40px; }
+  .og h1 { font-size: 84px; line-height: 1.05; margin: 0 0 28px; letter-spacing: 0; }
+  .og p { font-size: 27px; line-height: 1.45; color: #454a55; margin: 0 0 30px; max-width: 24ch; }
+  .og-url { position: absolute; inset-inline-start: 72px; bottom: 56px; font-family: "JetBrains Mono", monospace; font-size: 22px; color: #5c6170; direction: ltr; }
+  .og-bar { position: absolute; inset: auto 0 0 0; height: 14px; background: #1e4fd8; }
+</style>
+</head>
+<body>
+<div class="og">
+  <svg class="og-mark" viewBox="0 0 32 32" aria-hidden="true">
+    <circle cx="16" cy="16" r="14" fill="none" stroke="#0e0f12" stroke-width="1.4"/>
+    <path d="M16 16 L16 2 A14 14 0 0 1 28.1 23 Z" fill="#1e4fd8"/>
+    <path d="M16 16 L28.1 23 A14 14 0 0 1 3.9 23 Z" fill="#0e0f12"/>
+    <path d="M16 16 L3.9 23 A14 14 0 0 1 16 2 Z" fill="#dfe7ff"/>
+  </svg>
+  <div class="og-copy">
+    <div class="og-brand">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="14" fill="none" stroke="#0e0f12" stroke-width="2.5"/>
+        <path d="M16 16 L16 2 A14 14 0 0 1 28.1 23 Z" fill="#1e4fd8"/>
+        <path d="M16 16 L28.1 23 A14 14 0 0 1 3.9 23 Z" fill="#0e0f12"/>
+        <path d="M16 16 L3.9 23 A14 14 0 0 1 16 2 Z" fill="#dfe7ff"/>
+      </svg>
+      שקוף
+    </div>
+    <h1><span class="accent">המבקר</span> בוחר<br>איך האתר נראה.</h1>
+    <p>תוסף נגישות חינמי בקוד פתוח לאתרים בעברית. בלי שרת, בלי איסוף מידע.</p>
+  </div>
+  <div class="og-url">shakuf.yuvalrahamim.com</div>
+  <div class="og-bar"></div>
+</div>
+</body>
+</html>

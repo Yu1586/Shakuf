@@ -1,0 +1,21 @@
+# שקוף (Shakuf)
+
+> Free, open-source accessibility widget for Hebrew websites. It adds one button through which each visitor adjusts the display: text size, contrast, spacing, motion, and more. No server, no account, no data collection. It adjusts display only; it does not make a site conform to SI 5568 (Israeli Standard 5568, WCAG 2.1 AA) and is not a substitute for making the site accessible.
+
+Built and maintained by Yuval Rahamim (https://yuvalrahamim.com/). Apache-2.0. Published on npm as @shakuf-widget/widget.
+
+## Pages (Hebrew unless noted)
+
+- https://shakuf.yuvalrahamim.com/ : what it is, what it changes, what Israeli law requires that a widget cannot provide
+- https://shakuf.yuvalrahamim.com/en/ : English overview
+- https://shakuf.yuvalrahamim.com/setup/ : installation (one script tag), per-platform instructions, configuration attributes, self-hosting, CSP
+- https://shakuf.yuvalrahamim.com/disclaimer/ : what the tool does and does not do, and why it says so
+- https://shakuf.yuvalrahamim.com/terms/ : terms of use
+- https://shakuf.yuvalrahamim.com/accessibility/ : this site's own accessibility statement
+- https://shakuf.yuvalrahamim.com/changelog/ : release notes
+
+## Elsewhere
+
+- Source: https://github.com/Yu1586/Shakuf
+- Package: https://www.npmjs.com/package/@shakuf-widget/widget
+- Install tag: <script src="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget" defer></script>

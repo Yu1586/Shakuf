@@ -3,22 +3,74 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>שקוף · כלי עזר נגישות לאתרים ישראליים</title>
-<meta name="description" content="כלי עזר חינמי בעברית שמאפשר למבקרים באתר להתאים לעצמם את התצוגה. ללא שרת, התוסף לא אוסף מידע, בקוד פתוח. אינו מבטיח עמידה בת״י 5568 ואינו תחליף להנגשת האתר.">
+<title>שקוף · תוסף נגישות חינמי בקוד פתוח לאתרים בעברית</title>
+<meta name="description" content="שקוף הוא תוסף נגישות חינמי בקוד פתוח לאתרים בעברית. המבקר מתאים לעצמו את התצוגה; בלי שרת, בלי חשבון, בלי איסוף מידע. אינו מבטיח עמידה בת״י 5568 ואינו תחליף להנגשת האתר.">
 <link rel="canonical" href="https://shakuf.yuvalrahamim.com/">
+<link rel="alternate" hreflang="he" href="https://shakuf.yuvalrahamim.com/">
+<link rel="alternate" hreflang="en" href="https://shakuf.yuvalrahamim.com/en/">
+<link rel="alternate" hreflang="x-default" href="https://shakuf.yuvalrahamim.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="שקוף">
 <meta property="og:locale" content="he_IL">
 <meta property="og:url" content="https://shakuf.yuvalrahamim.com/">
-<meta property="og:title" content="שקוף · כלי עזר נגישות לאתרים ישראליים">
-<meta property="og:description" content="כלי עזר חינמי בעברית שמאפשר למבקרים באתר להתאים לעצמם את התצוגה. אינו מבטיח עמידה בת״י 5568 ואינו תחליף להנגשת האתר.">
-<meta name="twitter:card" content="summary">
+<meta property="og:title" content="שקוף · תוסף נגישות חינמי בקוד פתוח לאתרים בעברית">
+<meta property="og:description" content="המבקר מתאים לעצמו את התצוגה; בלי שרת, בלי חשבון, בלי איסוף מידע. אינו מבטיח עמידה בת״י 5568 ואינו תחליף להנגשת האתר.">
+<!-- Structured data. Kept inside the claims policy: it describes what the
+     tool is and is not, and the one question the page answers. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://shakuf.yuvalrahamim.com/#app",
+      "name": "שקוף",
+      "alternateName": "Shakuf",
+      "url": "https://shakuf.yuvalrahamim.com/",
+      "image": "https://shakuf.yuvalrahamim.com/og/home.png",
+      "applicationCategory": "Accessibility",
+      "operatingSystem": "Web",
+      "inLanguage": ["he", "en"],
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "ILS" },
+      "license": "https://www.apache.org/licenses/LICENSE-2.0",
+      "description": "תוסף נגישות חינמי בקוד פתוח לאתרים בעברית. המבקר מתאים לעצמו את התצוגה; בלי שרת ובלי איסוף מידע. אינו מבטיח עמידה בת״י 5568 ואינו תחליף להנגשת האתר.",
+      "author": { "@id": "https://yuvalrahamim.com/#person" },
+      "sameAs": ["https://github.com/Yu1586/Shakuf", "https://www.npmjs.com/package/@shakuf-widget/widget"]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://yuvalrahamim.com/#person",
+      "name": "יובל רחמים",
+      "alternateName": "Yuval Rahamim",
+      "url": "https://yuvalrahamim.com/",
+      "sameAs": ["https://www.linkedin.com/in/yuvalra/", "https://github.com/Yu1586"]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "האם תוסף נגישות מספיק כדי לעמוד בתקנה 35?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "לא. תקנה 35 לתקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), תשע״ג-2013, מחייבת את האתר עצמו לעמוד בת״י 5568. עמידת האתר בתקן, פרסום הצהרת נגישות, מינוי רכז נגישות כשהחובה חלה, ערוץ לפניות ובדיקה של מורשה נגישות נשארים באחריות בעל האתר. שקוף מתאים תצוגה בלבד."
+        }
+      }]
+    }
+  ]
+}
+</script>
 <!-- HEAD_ASSETS:START — generated from site/_partials/head-assets.html. Do not hand-edit; run `npm run build:site` after changing the source. -->
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#f4f5f7">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:image" content="https://shakuf.yuvalrahamim.com/og/home.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="שקוף: המבקר בוחר איך האתר נראה. תוסף נגישות חינמי בקוד פתוח לאתרים בעברית.">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="/fonts/rubik-hebrew-v31.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css">
 <!-- HEAD_ASSETS:END -->

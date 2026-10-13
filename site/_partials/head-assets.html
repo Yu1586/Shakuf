@@ -1,11 +1,15 @@
 <!--
-  Head lines shared by every page: theme, icons, font preload, stylesheet.
-  Injected between HEAD_ASSETS:START/END by scripts/build-site-partials.mjs.
-  Per-page lines (title, description, canonical, Open Graph) stay in each page.
+  Head lines shared by every page: theme, icons, sharing image, font preload,
+  stylesheet. Injected between HEAD_ASSETS:START/END by
+  scripts/build-site-partials.mjs. Per-page lines (title, description,
+  canonical, og:title, hreflang alternates, JSON-LD) stay in each page.
 
   Icons are real files, not a data: URI, because Google only shows a favicon in
   results when it can fetch one by URL, and iOS only reads apple-touch-icon.
   The SVG is listed first so browsers that understand it take the sharp one.
+
+  One sharing image serves every page; it is rendered from site/_og/ (see the
+  comment there) and committed as og/home.png.
 
   The preload carries crossorigin because fonts are always fetched in CORS
   mode; without it the browser downloads the file twice. Only the Hebrew file
@@ -16,5 +20,10 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:image" content="https://shakuf.yuvalrahamim.com/og/home.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="שקוף: המבקר בוחר איך האתר נראה. תוסף נגישות חינמי בקוד פתוח לאתרים בעברית.">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="/fonts/rubik-hebrew-v31.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css">

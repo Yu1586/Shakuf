@@ -62,6 +62,7 @@ const TARGETS = [
   { file: 'site/terms/index.html', url: '/terms/' },
   { file: 'site/changelog/index.html', url: '/changelog/' },
   { file: 'site/accessibility/index.html', url: '/accessibility/' },
+  { file: 'site/en/index.html', url: '/en/' },
   { file: 'site/404.html', url: null },
 ];
 
