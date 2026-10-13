@@ -114,7 +114,9 @@ a:hover { color: var(--blue-dk); }
    letters. The English changelog keeps the Latin tightening. */
 h1, h2, h3 { line-height: 1.08; margin: 0 0 .45em; text-wrap: balance; letter-spacing: 0; }
 h1 { font-size: clamp(2.4rem, 1.4rem + 4.4vw, 4.6rem); font-weight: 900; }
-h2 { font-size: clamp(1.9rem, 1.3rem + 2.6vw, 3.4rem); font-weight: 900; }
+/* One loud moment per page, the H1; section headings a step down so the
+   page has a hierarchy instead of six equal shouts. */
+h2 { font-size: clamp(1.7rem, 1.2rem + 1.9vw, 2.7rem); font-weight: 800; }
 h3 { font-size: 1.25rem; font-weight: 700; }
 html[lang="en"] h1 { letter-spacing: -0.035em; }
 html[lang="en"] h2 { letter-spacing: -0.03em; }
@@ -376,6 +378,27 @@ body.has-motion #motion-toggle { display: inline-flex; }
 .card ul { margin: 0; padding-inline-start: 20px; color: var(--dim); font-size: 16px; }
 .card li { margin: 4px 0; }
 
+/* ---- Outcomes (what changes) ------------------------------------------
+ * Three effects shown, not listed: each tile opens with a sample line in the
+ * state the control produces. The samples are decorative; the heading and
+ * sentence under them are the readable content. */
+.outcomes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+@media (max-width: 860px) { .outcomes { grid-template-columns: minmax(0, 1fr); } }
+.outcome { background: var(--tint); border-radius: var(--radius); padding: 22px 24px 24px; }
+.outcome-sample {
+  display: flex; align-items: center; gap: 12px; min-height: 96px;
+  background: var(--card); border: 2px solid var(--ink); border-radius: 14px; padding: 14px 18px; margin: 0 0 18px;
+  font-size: 16px; line-height: 1.6; color: var(--dim);
+}
+.o-text { font-size: 21px; line-height: 1.45; color: var(--ink); }
+.o-contrast { background: #000; color: #fff; border-color: #000; }
+.o-contrast span { color: #ffe600; text-decoration: underline; text-underline-offset: 3px; }
+.o-pause { flex: none; width: 30px; height: 30px; border-radius: 8px; background: var(--ink); position: relative; }
+.o-pause::before, .o-pause::after { content: ""; position: absolute; top: 8px; width: 4px; height: 14px; background: #fff; border-radius: 1px; }
+.o-pause::before { left: 10px; } .o-pause::after { right: 10px; }
+.outcome h3 { margin-bottom: .3em; }
+.outcome p:last-child { margin: 0; color: var(--dim); font-size: 16px; }
+
 /* ---- Dark band (limits) ----------------------------------------------- */
 .band { background: var(--ink); color: #fff; border-top: 0; }
 .band a { color: #b9c9ff; }
@@ -399,8 +422,11 @@ body.has-motion #motion-toggle { display: inline-flex; }
 /* ---- Counters (privacy) ----------------------------------------------- */
 .counters { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-bottom: clamp(36px, 5vw, 56px); }
 @media (max-width: 760px) { .counters { grid-template-columns: minmax(0, 1fr); } }
-.counter { border: 2px solid var(--ink); border-radius: var(--radius); background: var(--card); padding: 24px 26px; }
-.counter b { display: block; font-size: clamp(64px, 3rem + 3vw, 112px); font-weight: 900; line-height: .9; letter-spacing: -0.05em; color: var(--blue); font-variant-numeric: tabular-nums; }
+/* Static content gets a tint surface, not an outline and a shadow: those are
+   for things that can be pressed. */
+.counter { border-radius: var(--radius); background: var(--tint); padding: 24px 26px; }
+.counter b { display: block; font-size: clamp(64px, 3rem + 3vw, 112px); font-weight: 900; line-height: .9; letter-spacing: -0.02em; color: var(--blue); font-variant-numeric: tabular-nums; }
+.counter b small { font-size: .38em; margin-inline-start: 6px; letter-spacing: 0; vertical-align: .1em; }
 .counter strong { display: block; font-size: 20px; margin-top: 10px; }
 .counter span { color: var(--dim); font-size: 16px; }
 .split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 48px); align-items: start; }
