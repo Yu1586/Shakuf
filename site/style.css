@@ -239,58 +239,118 @@ body.has-motion #motion-toggle { display: inline-flex; }
 .hero-copy h1, .hero-copy p { margin: 0; }
 .hero-note { font-size: 15px; color: var(--faint); max-width: 52ch; }
 
-/* Entrance: from a visible, slightly lowered position. No opacity. */
-@keyframes rise { from { transform: translateY(22px); } to { transform: none; } }
-.rise { animation: rise .8s cubic-bezier(.2,.9,.3,1.15) both; }
-.rise-2 { animation-delay: .08s; } .rise-3 { animation-delay: .16s; } .rise-4 { animation-delay: .24s; }
+/* Entrance: from a visible, slightly lowered position. No opacity, no overshoot. */
+@keyframes rise { from { transform: translateY(18px); } to { transform: none; } }
+.rise { animation: rise .5s cubic-bezier(.2,.8,.2,1) both; }
+.rise-2 { animation-delay: .06s; } .rise-3 { animation-delay: .12s; } .rise-4 { animation-delay: .18s; }
 
-/* The thirds of the brand mark, turning slowly behind the hero. */
-.shape { position: absolute; pointer-events: none; border-radius: 50%; z-index: 0; }
-.shape-1 { width: 520px; height: 520px; background: var(--blue); inset-inline-end: -170px; top: -150px;
-  clip-path: polygon(50% 50%, 50% 0, 100% 0, 100% 100%, 50% 100%); animation: turn 48s linear infinite; }
-.shape-2 { width: 300px; height: 300px; background: var(--tint); inset-inline-start: -90px; bottom: -110px;
-  clip-path: polygon(50% 50%, 100% 50%, 100% 100%, 0 100%, 0 50%); animation: turn 34s linear infinite reverse; }
-.shape-3 { width: 170px; height: 170px; background: var(--ink); inset-inline-start: 46%; bottom: -96px;
-  clip-path: polygon(50% 50%, 0 0, 100% 0); animation: turn 60s linear infinite; }
+/* The brand mark, whole, behind the demo column, one turn every two minutes.
+   It sits under the opaque cards, so only its edges show; below 920px the
+   columns stack and it would run under text, so it is hidden there. */
+.mark { position: absolute; width: 640px; height: 640px; inset-inline-end: -230px; top: -150px; z-index: 0; pointer-events: none; animation: turn 120s linear infinite; }
 @keyframes turn { to { transform: rotate(360deg); } }
-/* The shapes rotate through their whole circle, so any text inside that circle
-   eventually sits on them. Measured: below 920px the cobalt one sweeps under the
-   headline (ink on cobalt is 2.6:1), and below 1200px the ink one reaches the
-   note under the buttons. The tint one is safe everywhere: every text colour
-   stays above 5:1 on it. */
-@media (max-width: 1199px) { .shape-3 { display: none; } }
-@media (max-width: 920px) { .shape-1 { display: none; } }
+@media (max-width: 920px) { .mark { display: none; } }
 
 /* ---- Hero demo -------------------------------------------------------
- * A sample page that cycles through three visitor choices: larger text, high
- * contrast, wider spacing. Decorative and aria-hidden; the caption says what it
- * shows, and the real widget is one click away.
- * Final keyframe = the unmodified sample, so a stopped loop rests on it. */
+ * A sample page with the widget panel open on it. One 16-second loop with four
+ * states: as is, larger text, high contrast, wider spacing. Each state holds
+ * for ~3.5s and eases into the next over ~0.5s; the panel's values and level
+ * dots change with it, and a caption names the state. Everything is drawn in
+ * CSS: the panel is a scaled copy of the real one (same strings, same layout).
+ * Final keyframe = the unmodified sample, so a stopped loop rests on it.
+ *
+ * Keyframe grid, shared by every animation here:
+ *   state 0: 0–22%   state 1: 25–47%   state 2: 50–72%   state 3: 75–95%
+ * with the gaps as eased ramps, and 100% back at state 0. */
 .demo { display: grid; gap: 16px; }
+.stage { display: grid; position: relative; padding-top: 16px; }  /* room for the state pill on the card's top edge */
 .demo-page {
-  border: 2px solid var(--ink); border-radius: 24px; background: var(--card); color: var(--ink);
-  padding: 26px; box-shadow: 10px 10px 0 var(--blue); min-height: 290px; font-size: 16px;
-  animation: demo-page 12s steps(1, end) infinite;
+  position: relative; border: 2px solid var(--ink); border-radius: 24px; background: var(--card); color: var(--ink);
+  padding: 26px 26px 70px; box-shadow: 10px 10px 0 var(--blue); min-height: 330px; font-size: 16px; line-height: 1.6;
+  animation: demo-page 16s infinite;
 }
 .demo-page .demo-tag { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; color: var(--faint); direction: ltr; display: block; text-align: end; }
 .demo-page .demo-title { font-size: 1.6em; font-weight: 800; line-height: 1.15; margin: 8px 0 10px; color: inherit; animation: none; }
-.demo-page p { font-size: 1em; color: var(--dim); margin: 0 0 10px; animation: demo-text 12s steps(1, end) infinite; }
-.demo-page .demo-link { color: var(--blue); text-decoration: underline; animation: demo-link 12s steps(1, end) infinite; }
+.demo-page p { font-size: 1em; color: var(--dim); margin: 0 0 10px; animation: demo-text 16s infinite; }
+.demo-page .demo-link { color: var(--blue); text-decoration: underline; animation: demo-link 16s infinite; }
+/* The launcher, as the real one looks on a host page: in the page's corner. */
+.demo-launcher { position: absolute; bottom: 16px; inset-inline-start: 16px; width: 48px; height: 48px; border-radius: 50%; background: var(--blue); color: #fff; display: grid; place-items: center; box-shadow: 0 2px 10px rgba(0,0,0,.35); }
+.demo-launcher svg { width: 28px; height: 28px; }
 @keyframes demo-page {
-  0%, 24.99% { font-size: 16px; }
-  25%, 49.99% { font-size: 18.5px; }
-  50%, 74.99% { font-size: 18.5px; background: #000; color: #fff; }
-  75%, 99.99% { font-size: 18.5px; background: #000; color: #fff; letter-spacing: .06em; word-spacing: .16em; line-height: 1.95; }
-  100% { font-size: 16px; }
+  0%, 22%  { font-size: 16px; background: #fff; color: #0e0f12; line-height: 1.6;  letter-spacing: 0;     word-spacing: 0; }
+  25%, 47% { font-size: 19px; background: #fff; color: #0e0f12; line-height: 1.6;  letter-spacing: 0;     word-spacing: 0; }
+  50%, 72% { font-size: 19px; background: #000; color: #fff;    line-height: 1.6;  letter-spacing: 0;     word-spacing: 0; }
+  75%, 95% { font-size: 19px; background: #000; color: #fff;    line-height: 1.95; letter-spacing: .06em; word-spacing: .16em; }
+  100%     { font-size: 16px; background: #fff; color: #0e0f12; line-height: 1.6;  letter-spacing: 0;     word-spacing: 0; }
 }
-@keyframes demo-text { 0%, 49.99% { color: #454a55; } 50%, 99.99% { color: #fff; } 100% { color: #454a55; } }
-@keyframes demo-link { 0%, 49.99% { color: #1e4fd8; } 50%, 99.99% { color: #ffe600; } 100% { color: #1e4fd8; } }
+@keyframes demo-text { 0%, 47% { color: #454a55; } 50%, 95% { color: #fff; } 100% { color: #454a55; } }
+@keyframes demo-link { 0%, 47% { color: #1e4fd8; } 50%, 95% { color: #ffe600; } 100% { color: #1e4fd8; } }
 .demo-caption { font-size: 14px; color: var(--faint); margin: 0; }
+
+/* The state caption: a pill on the card's top edge holding a reel of four
+   lines, one row visible, sliding between states. */
+.demo-state {
+  position: absolute; top: 0; inset-inline-start: 20px; z-index: 3;
+  display: inline-flex; align-items: center; gap: 8px; border: 2px solid var(--ink); border-radius: 999px;
+  background: var(--card); padding: 3px 12px; font-weight: 700; font-size: 14px; line-height: 22px;
+}
+.demo-state::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--blue); flex: none; }
+.demo-reel { height: 22px; overflow: hidden; }
+.demo-reel span { display: block; height: 22px; white-space: nowrap; }
+.demo-reel > span { animation: state-reel 16s infinite; }
+@keyframes state-reel {
+  0%, 22% { transform: none; } 25%, 47% { transform: translateY(-22px); }
+  50%, 72% { transform: translateY(-44px); } 75%, 95% { transform: translateY(-66px); } 100% { transform: none; }
+}
+
+/* The mini panel: the real panel's styles.ts at ~80%, overlapping the card's
+   lower corner the way the panel opens over a page. Arial on purpose: that is
+   the panel's own face, chosen there so host-page font overrides cannot reach
+   it, and the drawing should look like the thing. */
+.mp {
+  position: relative; z-index: 2; width: min(264px, 80%); margin-top: -170px; margin-inline-start: auto; margin-inline-end: -18px;
+  font-family: Arial, "Segoe UI", Tahoma, sans-serif; font-size: 12.5px; line-height: 1.4; color: #1a1a1a; background: #fff;
+  border: 1px solid #c9c9c9; border-radius: 10px; box-shadow: 0 8px 40px rgba(0,0,0,.28); overflow: hidden; text-align: start;
+}
+.mp-head { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: var(--blue); color: #fff; font-weight: 700; font-size: 14px; }
+.mp-x { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 6px; }
+.mp-x svg { width: 16px; height: 16px; }
+.mp-group { padding: 8px 12px 10px; border-bottom: 1px solid #c9c9c9; }
+.mp-title { font-size: 10.5px; font-weight: 700; color: #545454; letter-spacing: .04em; margin: 2px 0 6px; }
+.mp-stepper { margin-bottom: 8px; }
+.mp-stepper:last-child { margin-bottom: 0; }
+.mp-label { display: block; margin-bottom: 3px; }
+.mp-ctl { display: flex; align-items: center; gap: 6px; border: 2px solid #c9c9c9; border-radius: 8px; padding: 3px; }
+.mp-btn { width: 30px; height: 30px; flex: none; display: grid; place-items: center; border-radius: 6px; background: #f4f5f7; border: 2px solid #595959; font-size: 16px; font-weight: 700; }
+.mp-reel { flex: 1; height: 18px; overflow: hidden; text-align: center; font-weight: 700; font-size: 12px; line-height: 18px; }
+.mp-reel span { display: block; height: 18px; white-space: nowrap; }
+.mp-dots { display: flex; gap: 3px; justify-content: center; margin-top: 4px; }
+.mp-dots i { display: block; width: 16px; height: 3px; border-radius: 2px; background: #c9c9c9; }
+.mp-foot { padding: 10px 12px; background: #f4f5f7; }
+.mp-reset { display: block; text-align: center; border: 2px solid #595959; border-radius: 8px; background: #fff; padding: 6px; font-weight: 700; margin-bottom: 8px; }
+.mp-disc { margin: 0; font-size: 10.5px; line-height: 1.5; color: #545454; }
+.mp-disc strong { color: #1a1a1a; }
+/* Values and dots follow the states: text size from state 1, contrast from
+   state 2, spacing in state 3. */
+/* The rows move, not the clipping box: translating the box would carry its
+   overflow window along and show the same row forever. */
+.r-size > span { animation: reel-from-1 16s infinite; }  .d-size { animation: dot-from-1 16s infinite; }
+.r-con > span  { animation: reel-from-2 16s infinite; }  .d-con  { animation: dot-from-2 16s infinite; }
+.r-space > span { animation: reel-from-3 16s infinite; } .d-space { animation: dot-from-3 16s infinite; }
+@keyframes reel-from-1 { 0%, 22% { transform: none; } 25%, 95% { transform: translateY(-18px); } 100% { transform: none; } }
+@keyframes reel-from-2 { 0%, 47% { transform: none; } 50%, 95% { transform: translateY(-18px); } 100% { transform: none; } }
+@keyframes reel-from-3 { 0%, 72% { transform: none; } 75%, 95% { transform: translateY(-18px); } 100% { transform: none; } }
+@keyframes dot-from-1 { 0%, 22% { background: #c9c9c9; } 25%, 95% { background: #1e4fd8; } 100% { background: #c9c9c9; } }
+@keyframes dot-from-2 { 0%, 47% { background: #c9c9c9; } 50%, 95% { background: #1e4fd8; } 100% { background: #c9c9c9; } }
+@keyframes dot-from-3 { 0%, 72% { background: #c9c9c9; } 75%, 95% { background: #1e4fd8; } 100% { background: #c9c9c9; } }
+/* On a phone the card is narrow and its text runs lower, so the panel overlaps
+   less of it and the card keeps room under its last line. */
+@media (max-width: 520px) { .mp { margin-inline-end: 0; width: min(250px, 84%); margin-top: -110px; } .demo-page { padding-bottom: 96px; } .demo-state { font-size: 13px; } }
 
 /* ---- Marquee ---------------------------------------------------------- */
 .marquee { border-block: 2px solid var(--ink); background: var(--card); overflow: hidden; padding: 14px 0; white-space: nowrap; }
-.marquee-track { display: inline-flex; gap: 40px; padding-inline-end: 40px; animation: marquee 36s linear infinite;
-  font-weight: 900; font-size: clamp(22px, 1.6rem + .8vw, 32px); }
+.marquee-track { display: inline-flex; gap: 40px; padding-inline-end: 40px; animation: marquee 60s linear infinite;
+  font-weight: 700; font-size: clamp(20px, 1.4rem + .6vw, 28px); }
 .marquee-track span { display: inline-flex; align-items: center; gap: 40px; }
 .marquee-track span::before { content: ""; width: 14px; height: 14px; border-radius: 50%; background: var(--blue); flex: none; }
 /* The track holds the list twice, so half its width is one seamless period.
@@ -474,10 +534,8 @@ details[open] summary { border-bottom: 2px solid var(--ink); }
  * Reduced motion: no motion at all.
  * The widget's own control is handled by the widget's injected rule, which runs
  * every animation to its final frame; the keyframes above end at rest for that. */
-html:has(#motion-pause:checked) .shape,
-html:has(#motion-pause:checked) .marquee-track,
-html:has(#motion-pause:checked) .demo-page,
-html:has(#motion-pause:checked) .demo-page * { animation-play-state: paused !important; }
+html:has(#motion-pause:checked) .hero *,
+html:has(#motion-pause:checked) .marquee-track { animation-play-state: paused !important; }
 
 /* The pause control is a native checkbox inside a button-styled label, so it
    needs no script and reads as "עצירת תנועה, checkbox" to a screen reader. */
@@ -498,17 +556,21 @@ html:has(#motion-pause:checked) .demo-page * { animation-play-state: paused !imp
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .btn:hover, .card:hover { transform: none; }
   #motion-toggle { display: none !important; }
+  /* With the loop off the demo rests on the unmodified page; a caption that
+     says "as is" over a still picture would only confuse. */
+  .demo-state { display: none; }
   .marquee { white-space: normal; padding-inline: var(--pad); }
   .marquee-track { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 26px; padding: 0; font-size: clamp(18px, 1.05rem + .5vw, 24px); }
   .marquee-track span { gap: 14px; }
   .marquee-track span:nth-child(n+9) { display: none; }
 }
+html[data-shakuf-motion="off"] .demo-state { display: none; }
 html[data-shakuf-motion="off"] .marquee { white-space: normal; padding-inline: var(--pad); }
 html[data-shakuf-motion="off"] .marquee-track { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 26px; padding: 0; font-size: clamp(18px, 1.05rem + .5vw, 24px); transform: none !important; }
 html[data-shakuf-motion="off"] .marquee-track span { gap: 14px; }
 html[data-shakuf-motion="off"] .marquee-track span:nth-child(n+9) { display: none; }
 
 @media print {
-  .site-header, .shape, .marquee, .demo, #motion-toggle, .nav-toggle { display: none !important; }
+  .site-header, .mark, .marquee, .demo, #motion-toggle, .nav-toggle { display: none !important; }
   body { background: #fff; }
 }
