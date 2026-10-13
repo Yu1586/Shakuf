@@ -1,10 +1,10 @@
 <!--
-  The header of every Hebrew page. /changelog/ is in English and carries its
-  own header with the same structure.
+  The header of every page.
 
   Injected between HEADER:START/END by scripts/build-site-partials.mjs, which
-  also adds aria-current="page" to whichever link points at the page being
-  built, so the partial itself never carries one.
+  also adds aria-current="page" to whichever nav link points at the page being
+  built, so the partial itself never carries one. There is a home link in the
+  list, not only the brand, so every page has a highlighted item.
 
   The menu toggle and the motion pause are both native checkboxes read by CSS,
   so the header works with JavaScript off. On phones the nav list is hidden
@@ -33,9 +33,9 @@
     </div>
     <nav class="site-nav" aria-label="ניווט ראשי">
       <ul>
-        <li><a href="/#how">איך זה עובד</a></li>
+        <li><a href="/">ראשי</a></li>
         <li><a href="/setup/">מדריך התקנה</a></li>
-        <li><a href="/changelog/" hreflang="en">יומן גרסאות <span class="tag" aria-hidden="true">EN</span><span class="sr-only">(באנגלית)</span></a></li>
+        <li><a href="/changelog/">יומן גרסאות</a></li>
         <li><a class="ext" href="https://github.com/Yu1586/Shakuf">קוד מקור<span class="sr-only"> (GitHub, קישור חיצוני)</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></a></li>
       </ul>
       <label class="btn btn-sm btn-line motion-toggle" id="motion-toggle">

@@ -1,26 +1,24 @@
 <!doctype html>
-<html lang="en" dir="ltr">
+<html lang="he" dir="rtl">
 <!--
-  The one English page on a Hebrew site, and deliberately so: a changelog is
-  read by the people installing the package, who reach it from npm, and that
-  audience reads release notes in English.
-
-  A side effect worth knowing rather than fixing: because the widget resolves
-  its language from <html lang>, the panel on this page renders in English. That
-  is correct behaviour and doubles as the only live demonstration of it.
+  Release notes, in Hebrew like the rest of the site (until 0.4.0 this page
+  was English, on the theory that installers reach it from npm; the npm page
+  has its own English README, so the site no longer needs to be bilingual).
+  Code, attribute names and version numbers stay as they are; inline <code>
+  is isolated LTR by the stylesheet.
 -->
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Changelog · Shakuf</title>
-<meta name="description" content="Release notes for the Shakuf accessibility widget. What was added, fixed and broken in each version.">
+<title>יומן גרסאות · שקוף</title>
+<meta name="description" content="יומן הגרסאות של תוסף הנגישות שקוף: מה נוסף, מה תוקן ומה השתנה בכל גרסה.">
 <link rel="canonical" href="https://shakuf.yuvalrahamim.com/changelog/">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Shakuf">
-<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="שקוף">
+<meta property="og:locale" content="he_IL">
 <meta property="og:url" content="https://shakuf.yuvalrahamim.com/changelog/">
-<meta property="og:title" content="Changelog · Shakuf">
-<meta property="og:description" content="Release notes for the Shakuf accessibility widget. What was added, fixed and broken in each version.">
+<meta property="og:title" content="יומן גרסאות · שקוף">
+<meta property="og:description" content="יומן הגרסאות של תוסף הנגישות שקוף: מה נוסף, מה תוקן ומה השתנה בכל גרסה.">
 <meta name="twitter:card" content="summary">
 <!-- HEAD_ASSETS:START — generated from site/_partials/head-assets.html. Do not hand-edit; run `npm run build:site` after changing the source. -->
 <meta name="color-scheme" content="light">
@@ -34,8 +32,9 @@
 </head>
 <body>
 
-<a class="skip" href="#main">Skip to content</a>
+<a class="skip" href="#main">דילוג לתוכן</a>
 
+<!-- HEADER:START — generated from site/_partials/header.html. Do not hand-edit; run `npm run build:site` after changing the source. -->
 <header class="site-header">
   <div class="wrap bar">
     <a class="brand" href="/">
@@ -45,295 +44,268 @@
         <path d="M16 16 L28.1 23 A14 14 0 0 1 3.9 23 Z" fill="currentColor"/>
         <path d="M16 16 L3.9 23 A14 14 0 0 1 16 2 Z" fill="#dfe7ff"/>
       </svg>
-      <b>Shakuf</b>
+      <b>שקוף</b>
     </a>
     <div class="header-tools">
-      <a class="btn btn-sm btn-solid header-cta" href="/setup/" hreflang="he">Install</a>
+      <a class="btn btn-sm btn-solid header-cta" href="/setup/">התקנה</a>
       <input type="checkbox" id="nav-open" class="nav-state">
       <label for="nav-open" class="nav-toggle">
         <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14"/></svg>
-        Menu
+        תפריט
       </label>
     </div>
-    <nav class="site-nav" aria-label="Main">
+    <nav class="site-nav" aria-label="ניווט ראשי">
       <ul>
-        <li><a href="/#how" hreflang="he">How it works <span class="tag" aria-hidden="true">HE</span><span class="sr-only">(Hebrew)</span></a></li>
-        <li><a href="/setup/" hreflang="he">Setup guide <span class="tag" aria-hidden="true">HE</span><span class="sr-only">(Hebrew)</span></a></li>
-        <li><a href="/changelog/" aria-current="page">Changelog</a></li>
-        <li><a class="ext" href="https://github.com/Yu1586/Shakuf">Source code<span class="sr-only"> (GitHub, external link)</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></a></li>
+        <li><a href="/">ראשי</a></li>
+        <li><a href="/setup/">מדריך התקנה</a></li>
+        <li><a href="/changelog/" aria-current="page">יומן גרסאות</a></li>
+        <li><a class="ext" href="https://github.com/Yu1586/Shakuf">קוד מקור<span class="sr-only"> (GitHub, קישור חיצוני)</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></a></li>
       </ul>
+      <label class="btn btn-sm btn-line motion-toggle" id="motion-toggle">
+        <input type="checkbox" id="motion-pause">
+        עצירת תנועה
+      </label>
     </nav>
   </div>
 </header>
+<!-- HEADER:END -->
 
 <main id="main" class="prose">
 
   <section class="page-head">
     <div class="wrap-text">
-      <h1>Changelog</h1>
+      <h1>יומן גרסאות</h1>
       <p class="lead">
-        Every released version and what actually changed in it. Breaking changes
-        are called out explicitly.
+        כל גרסה שפורסמה ומה באמת השתנה בה. שינויים שוברים מסומנים במפורש.
       </p>
       <p class="dim" style="font-size:14px">
-        Published to npm as
+        מתפרסם ב-npm בשם
         <a href="https://www.npmjs.com/package/@shakuf-widget/widget">@shakuf-widget/widget</a>.
-        Installing with an explicit version pins it; without one you get the
-        latest.
+        התקנה עם מספר גרסה מפורש נועצת אותה; בלי מספר מקבלים את האחרונה.
       </p>
-      <div class="callout">
-        The rest of this site is in Hebrew. This page is in English because it is
-        written for the people installing the package.
-      </div>
     </div>
   </section>
 
   <!-- ================= 0.4.0 ================= -->
   <section class="rule">
     <div class="wrap-text">
-      <h2>0.4.0 <span class="dim" style="font-weight:400;font-size:.6em">· 13 October 2026</span></h2>
+      <h2>0.4.0 <span class="dim" style="font-weight:400;font-size:.6em">· 13 באוקטובר 2026</span></h2>
 
       <p>
-        The "stop animations" control was removing animations rather than
-        stopping them, and on a common pattern that meant the visitor lost the
-        content instead of seeing it hold still. If you rely on that control,
-        upgrade. This release also fixes accessibility defects in the widget's
-        own panel that an October audit found, and an import crash on the npm
-        path. Everything else is additive.
+        הבקר ״עצירת אנימציות״ הסיר אנימציות במקום לעצור אותן, ובתבנית נפוצה זה
+        אומר שהמבקר איבד את התוכן במקום לראות אותו עומד במקום. אם אתם מסתמכים על
+        הבקר הזה, שדרגו. הגרסה מתקנת גם ליקויי נגישות בחלונית של התוסף עצמו,
+        שנמצאו בביקורת באוקטובר, וקריסה של import במסלול ה-npm. כל השאר תוספות.
       </p>
 
-      <h3>Fixed</h3>
+      <h3>תוקן</h3>
       <ul>
         <li>
-          <strong>"Stop animations" could make content disappear.</strong> The
-          rule declared <code>animation: none</code>, which removes an animation
-          rather than pausing it. Anything whose visible state is produced by an
-          animation therefore reverted to its base state, and for the whole
-          reveal-on-scroll family, <code>.reveal { opacity: 0; animation: fadein
-          1s forwards }</code> and every AOS-style library, that base state is
-          invisible. Measured: such an element had zero animations and a computed
-          opacity of <code>0</code> that nothing would ever change.
+          <strong>״עצירת אנימציות״ הייתה עלולה להעלים תוכן.</strong> הכלל הצהיר
+          <code>animation: none</code>, שמסיר אנימציה במקום להשהות אותה. כל רכיב
+          שמצבו הנראה נוצר על ידי אנימציה חזר לכן למצב הבסיס שלו, ובכל משפחת
+          ה-reveal-on-scroll, <code>.reveal { opacity: 0; animation: fadein 1s
+          forwards }</code> וכל ספרייה בסגנון AOS, מצב הבסיס הזה הוא בלתי נראה.
+          נמדד: לרכיב כזה היו אפס אנימציות ו-opacity מחושב של <code>0</code>
+          ששום דבר לא היה משנה לעולם.
           <br>
-          The rule now runs animations to completion instantly, which is the
-          conventional reduced-motion approach, so <code>fill-mode: forwards</code>
-          lands on its final visible value. Verified against the case that
-          matters: an infinite marquee still visibly stops, at the same resting
-          position <code>animation: none</code> left it.
+          הכלל מריץ עכשיו את האנימציות עד סופן באופן מיידי, הגישה המקובלת
+          ל-reduced motion, ולכן <code>fill-mode: forwards</code> נוחת על הערך
+          הסופי הנראה. אומת מול המקרה שחשוב: marquee אינסופי עדיין נעצר בבירור,
+          באותה נקודת מנוחה שבה <code>animation: none</code> השאיר אותו.
           <br>
-          Animation and transition delays are zeroed too, so a staggered list
-          does not still play out over more than a second after the visitor has
-          asked for stillness. Checked on composite cases, including two
-          staggered animations fighting over one property and a delayed
-          auto-dismiss: the collapsed result is the same computed state the
-          authored sequence ends on, reached at once rather than seconds later.
+          גם ההשהיות (delays) של אנימציות ומעברים מאופסות, כך שרשימה מדורגת לא
+          ממשיכה להתנגן יותר משנייה אחרי שהמבקר ביקש שקט. נבדק במקרים מורכבים,
+          כולל שתי אנימציות מדורגות שנאבקות על מאפיין אחד וסגירה אוטומטית
+          מושהית: התוצאה המקופלת היא אותו מצב מחושב שעליו הרצף המקורי מסתיים,
+          רק מיד במקום אחרי שניות.
         </li>
         <li>
-          <strong>A dead declaration in the same rule.</strong>
-          <code>animation-play-state: paused</code> never had any effect:
-          <code>animation</code> is a shorthand that resets play-state to
-          <code>running</code>, and it was declared after the longhand in the
-          same block. Removed.
+          <strong>הצהרה מתה באותו כלל.</strong>
+          <code>animation-play-state: paused</code> מעולם לא השפיעה:
+          <code>animation</code> הוא קיצור שמאפס את play-state ל-<code>running</code>,
+          והוא הוצהר אחרי המאפיין הארוך באותו בלוק. הוסר.
         </li>
         <li>
-          <strong>The coordinator's phone number was not dialable from
-          abroad.</strong> The panel emitted <code>data-coordinator-phone</code>
-          verbatim into the href, so <code>055-3000-898</code> produced
-          <code>tel:055-3000-898</code>. The href is now normalised to E.164
-          (<code>tel:+972553000898</code>) while the link text stays exactly what
-          you typed. Handles a leading <code>00</code>, a number that already
-          carries <code>972</code>, a national trunk zero, both at once, and 8-
-          and 9-digit national numbers.
+          <strong>מספר הטלפון של רכז הנגישות לא היה ניתן לחיוג מחו״ל.</strong>
+          החלונית הכניסה את <code>data-coordinator-phone</code> כמות שהוא לתוך
+          ה-href, ולכן <code>055-3000-898</code> הפיק <code>tel:055-3000-898</code>.
+          ה-href מנורמל עכשיו ל-E.164 (<code>tel:+972553000898</code>) בעוד טקסט
+          הקישור נשאר בדיוק מה שהקלדתם. מטפל ב-<code>00</code> מוביל, במספר
+          שכבר מכיל <code>972</code>, באפס הלאומי, בשניהם יחד, ובמספרים לאומיים
+          של 8 ו-9 ספרות.
           <br>
-          Numbers with no international form, <code>*6050</code> and
-          <code>1-800-…</code> lines, and anything with an extension or free
-          text typed into the field, are shown as plain text instead of a link.
-          The number is never dropped from the panel.
+          מספרים בלי צורה בין-לאומית, <code>*6050</code> וקווי <code>1-800-…</code>,
+          וכל דבר עם שלוחה או טקסט חופשי שהוקלד בשדה, מוצגים כטקסט רגיל במקום
+          כקישור. המספר לעולם לא נשמט מהחלונית.
         </li>
         <li>
-          <strong>The Close button's focus ring was invisible.</strong> The ring
-          colour and the default accent were the same blue, so on the panel
-          header it measured 1.00:1. Close is the first Tab stop in the panel.
-          The ring there now uses the header's own text colour, and the
-          launcher's ring is two-tone, so it stays visible on any host
-          background.
+          <strong>טבעת המיקוד של כפתור הסגירה הייתה בלתי נראית.</strong> צבע
+          הטבעת וצבע ההדגשה שבברירת המחדל היו אותו כחול, ולכן על כותרת החלונית
+          הניגודיות נמדדה 1.00:1. סגירה היא עצירת ה-Tab הראשונה בחלונית. הטבעת
+          שם משתמשת עכשיו בצבע הטקסט של הכותרת עצמה, וטבעת הכפתור הצף היא
+          דו-גונית, כך שהיא נשארת נראית על כל רקע של אתר מארח.
         </li>
         <li>
-          <strong>English panels showed Hebrew section headings.</strong> The
-          five group titles were computed once when the module loaded, before
-          the language was resolved, so every English install read "טקסט",
-          "צבע וניגודיות" and the rest in an English voice. Switching language
-          at runtime could not repair it. They are now resolved at render time.
+          <strong>חלוניות באנגלית הציגו כותרות קבוצה בעברית.</strong> חמש
+          כותרות הקבוצות חושבו פעם אחת בטעינת המודול, לפני שהשפה נקבעה, ולכן
+          כל התקנה אנגלית הקריאה ״טקסט״, ״צבע וניגודיות״ והשאר בקול אנגלי.
+          החלפת שפה בזמן ריצה לא יכלה לתקן זאת. הן נקבעות עכשיו בזמן הרינדור.
         </li>
         <li>
-          <strong>"Hide images" removed alt text from screen readers.</strong>
-          It used <code>visibility: hidden</code>, which drops an element from
-          the accessibility tree: informative alt text vanished and image-only
-          links lost their names. It now uses <code>opacity: 0</code>, which
-          hides the pixels and keeps the layout and the tree. Video is no longer
-          hidden by this control, since an invisible video would leave its
-          controls focusable; stopping motion is what "stop animations" is for.
+          <strong>״הסתרת תמונות״ הסירה טקסט חלופי מקוראי מסך.</strong> היא
+          השתמשה ב-<code>visibility: hidden</code>, שמוציא רכיב מעץ הנגישות:
+          טקסט חלופי אינפורמטיבי נעלם וקישורים שכולם תמונה איבדו את שמם. עכשיו
+          היא משתמשת ב-<code>opacity: 0</code>, שמסתיר את הפיקסלים ושומר על
+          הפריסה ועל העץ. וידאו כבר לא מוסתר על ידי הבקר הזה, כי וידאו בלתי
+          נראה היה משאיר את הפקדים שלו ניתנים למיקוד; עצירת תנועה היא התפקיד של
+          ״עצירת אנימציות״.
         </li>
         <li>
-          <strong>The panel could run off short screens.</strong> Its height
-          ignored the distance from the screen edge, so below roughly 490px of
-          viewport height, landscape phones and 400% zoom, either the title and
-          Close or the Reset button and the disclaimer were cut off. The height
-          is now capped to the space available, and on very short screens the
-          whole panel scrolls.
+          <strong>החלונית הייתה עלולה לגלוש מחוץ למסכים נמוכים.</strong> הגובה
+          שלה התעלם מהמרחק מקצה המסך, ולכן מתחת לכ-490px של גובה חלון, טלפונים
+          לרוחב וזום 400%, נחתכו או הכותרת וכפתור הסגירה או כפתור האיפוס
+          וההבהרה. הגובה מוגבל עכשיו למקום הפנוי, ובמסכים נמוכים מאוד כל
+          החלונית נגללת.
         </li>
         <li>
-          <strong>Importing the npm package crashed outside a browser.</strong>
-          <code>import '@shakuf-widget/widget'</code> threw a
-          <code>ReferenceError</code> during server-side rendering in Next, Nuxt
-          or Remix, and in Node test runners, before <code>mount()</code> was
-          ever called. Importing now does nothing on its own, as documented.
+          <strong>ייבוא חבילת ה-npm קרס מחוץ לדפדפן.</strong>
+          <code>import '@shakuf-widget/widget'</code> זרק
+          <code>ReferenceError</code> בזמן רינדור בצד השרת ב-Next, Nuxt או Remix,
+          ובמריצי בדיקות של Node, עוד לפני ש-<code>mount()</code> נקרא בכלל.
+          הייבוא לבדו לא עושה עכשיו דבר, כפי שמתועד.
         </li>
         <li>
-          <strong>Closing the panel stole focus.</strong> When the panel was
-          opened from a control on your own page, such as a footer link calling
-          <code>window.shakuf.open()</code>, focus returned to that control and
-          was then moved again to the launcher. It now stays where it belongs.
+          <strong>סגירת החלונית גנבה את המיקוד.</strong> כשהחלונית נפתחה מבקר
+          בעמוד שלכם, למשל קישור בפוטר שקורא ל-<code>window.shakuf.open()</code>,
+          המיקוד חזר לבקר הזה ואז הוזז שוב אל הכפתור הצף. עכשיו הוא נשאר במקומו.
         </li>
         <li>
-          <strong>"Stop animations" missed smooth scrolling set on
-          <code>html</code>.</strong> The rule matched elements inside
-          <code>body</code> only, and <code>html</code> is the most common place
-          <code>scroll-behavior: smooth</code> is set.
+          <strong>״עצירת אנימציות״ פספסה גלילה חלקה שהוגדרה על
+          <code>html</code>.</strong> הכלל תאם רק רכיבים בתוך <code>body</code>,
+          ו-<code>html</code> הוא המקום הנפוץ ביותר שבו מגדירים
+          <code>scroll-behavior: smooth</code>.
         </li>
         <li>
-          <strong>Two host-page focus rings were being hidden.</strong> High
-          contrast removed every <code>box-shadow</code>, which is how most design
-          systems draw focus, and "highlight links" gave every link the same
-          outline, so the focused one looked like its neighbours. High contrast
-          now adds a yellow focus outline at 16.6:1, and a focused link gets a
-          visibly heavier ring.
+          <strong>שתי טבעות מיקוד של העמוד המארח הוסתרו.</strong> ניגודיות
+          גבוהה הסירה כל <code>box-shadow</code>, שזו הדרך שבה רוב מערכות העיצוב
+          מציירות מיקוד, ו״הדגשת קישורים״ נתנה לכל קישור את אותו קו מתאר, כך
+          שהקישור הממוקד נראה כמו שכניו. ניגודיות גבוהה מוסיפה עכשיו קו מיקוד
+          צהוב ב-16.6:1, וקישור ממוקד מקבל טבעת כבדה יותר באופן נראה.
         </li>
         <li>
-          <strong>Smaller fixes.</strong> A landmark with a role such as
-          <code>constructor</code> no longer prints function source as its name
-          in the landmarks list, and text sizing no longer keeps elements the
-          page has removed in memory.
+          <strong>תיקונים קטנים.</strong> אזור (landmark) עם role כמו
+          <code>constructor</code> כבר לא מדפיס קוד מקור של פונקציה כשמו ברשימת
+          האזורים, ושינוי גודל הטקסט כבר לא שומר בזיכרון רכיבים שהעמוד הסיר.
         </li>
       </ul>
 
-      <h3>Changed</h3>
+      <h3>שונה</h3>
       <ul>
         <li>
-          <strong>The panel's "details missing" message is worded more
-          carefully.</strong> It used to state that Israeli law requires every
-          site to publish an accessibility statement and appoint a coordinator.
-          The coordinator duty in particular depends on the site owner, so the
-          message now says the law requires many sites to do both. The same
-          change was made in the README, the setup guide and the disclaimer.
+          <strong>הודעת ״הפרטים חסרים״ בחלונית מנוסחת בזהירות רבה יותר.</strong>
+          היא קבעה שהדין הישראלי מחייב כל אתר לפרסם הצהרת נגישות ולמנות רכז.
+          חובת הרכז בפרט תלויה בבעל האתר, ולכן ההודעה אומרת עכשיו שהדין מחייב
+          אתרים רבים בשניהם. אותו שינוי נעשה ב-README, במדריך ההתקנה ובהבהרה.
         </li>
         <li>
-          <strong>The panel's attribution links no longer send a
-          referrer.</strong> They now carry <code>noreferrer</code>, so clicking
-          one does not tell the destination which page it came from. The widget
-          collects nothing, and its links should not either.
+          <strong>קישורי הקרדיט בחלונית כבר לא שולחים referrer.</strong> הם
+          נושאים עכשיו <code>noreferrer</code>, כך שלחיצה עליהם לא מספרת ליעד
+          מאיזה עמוד הגיעה. התוסף לא אוסף דבר, וגם הקישורים שלו לא צריכים.
         </li>
       </ul>
 
-      <h3>Added</h3>
+      <h3>נוסף</h3>
       <ul>
         <li>
-          <strong><code>html[data-shakuf-motion="off"]</code> is now documented as
-          a public, stable selector.</strong> A page cannot make
-          <code>prefers-reduced-motion: reduce</code> evaluate true from script,
-          so every <code>@media (prefers-reduced-motion: reduce)</code> block a
-          site has written stays inert when a visitor uses our control instead of
-          their OS setting. The better a site's reduced-motion work, the worse
-          that was.
+          <strong><code>html[data-shakuf-motion="off"]</code> מתועד עכשיו כסלקטור
+          ציבורי ויציב.</strong> עמוד לא יכול לגרום
+          ל-<code>prefers-reduced-motion: reduce</code> להתקיים מתוך סקריפט, ולכן
+          כל בלוק <code>@media (prefers-reduced-motion: reduce)</code> שאתר כתב
+          נשאר רדום כשמבקר משתמש בבקר שלנו במקום בהגדרת מערכת ההפעלה. ככל
+          שעבודת ה-reduced-motion של האתר טובה יותר, כך זה היה גרוע יותר.
           <br>
-          A real case: a client-logo marquee is a 7500px track with five copies
-          of the list inside an <code>overflow: hidden</code> window with an edge
-          mask, and its authored reduced-motion state unwraps the track, drops the
-          duplicates and removes the mask. Held still without the rest, it reads
-          as a stalled carousel, which is precisely what that media query exists
-          to prevent.
+          מקרה אמיתי: marquee של לוגואים של לקוחות הוא מסילה של 7500px עם חמישה
+          עותקים של הרשימה בתוך חלון <code>overflow: hidden</code> עם מסכת קצה,
+          ומצב ה-reduced-motion שנכתב לו פורש את המסילה, מוריד את הכפילויות ומסיר
+          את המסכה. כשהוא עומד במקום בלי כל השאר, הוא נראה כמו קרוסלה תקועה,
+          בדיוק מה שה-media query הזה קיים כדי למנוע.
           <br>
-          Repeating the still-state under our attribute is enough to fix it: our
-          rule only touches <code>animation-*</code>, <code>transition-*</code>
-          and <code>scroll-behavior</code>, so a site's own layout declarations
-          sit alongside ours untouched. There is a copy-paste recipe in the
-          <a href="/setup/#motion-css">setup guide</a>.
+          חזרה על מצב השקט תחת המאפיין שלנו מספיקה כדי לתקן: הכלל שלנו נוגע רק
+          ב-<code>animation-*</code>, ב-<code>transition-*</code>
+          וב-<code>scroll-behavior</code>, ולכן הצהרות הפריסה של האתר יושבות לצד
+          שלנו ללא פגע. יש מתכון להעתקה
+          ב<a href="/setup/#motion-css">מדריך ההתקנה</a>.
         </li>
         <li>
-          <strong><code>data-motion-exclude</code></strong>, a CSS selector for
-          elements "stop animations" must leave alone, <strong>including their
-          descendants</strong>. A marquee track and its children are one unit, and
-          an exclusion stopping at the element itself would miss the point.
+          <strong><code>data-motion-exclude</code></strong>, סלקטור CSS לרכיבים
+          ש״עצירת אנימציות״ חייבת להשאיר בשקט, <strong>כולל הצאצאים
+          שלהם</strong>. מסילת marquee והילדים שלה הם יחידה אחת, והחרגה שנעצרת
+          ברכיב עצמו הייתה מפספסת את העניין.
           <br>
-          This is for the narrower case the recipe above cannot cover: a
-          still-state that needs to own the animation itself, such as slowing one
-          rather than stopping it. Our declarations are <code>!important</code>,
-          and not matching in the first place is the only thing that reliably
-          overrides them. Most sites do not need this.
+          זה מיועד למקרה הצר יותר שהמתכון שלמעלה לא מכסה: מצב שקט שצריך לשלוט
+          באנימציה בעצמו, למשל להאט אותה במקום לעצור. ההצהרות שלנו הן
+          <code>!important</code>, ואי-התאמה מלכתחילה היא הדבר היחיד שדורס אותן
+          באופן אמין. רוב האתרים לא צריכים את זה.
           <br>
-          An exclusion is a trade, not an improvement: an excluded element stops
-          responding to the control entirely unless your own CSS handles it.
-          Invalid selectors, and any value containing braces, are rejected with a
-          console warning and treated as absent.
+          החרגה היא עסקה, לא שיפור: רכיב מוחרג מפסיק להגיב לבקר לגמרי אלא אם
+          ה-CSS שלכם מטפל בו. סלקטורים לא תקינים, וכל ערך שמכיל סוגריים
+          מסולסלים, נדחים עם אזהרה בקונסול ונחשבים כלא קיימים.
         </li>
         <li>
-          <strong>Windows High Contrast support in the panel.</strong> On and
-          off were shown only by background colour, which forced-colours mode
-          removes, so every toggle looked the same. The switches now use system
-          colours.
+          <strong>תמיכה ב-Windows High Contrast בחלונית.</strong> מצב פעיל וכבוי
+          הוצגו רק באמצעות צבע רקע, שמצב forced-colors מסיר, ולכן כל המתגים נראו
+          אותו דבר. המתגים משתמשים עכשיו בצבעי המערכת.
         </li>
         <li>
-          <strong>The widget no longer prints.</strong> The launcher used to
-          appear on every printed page.
+          <strong>התוסף כבר לא מודפס.</strong> הכפתור הצף הופיע בכל עמוד מודפס.
         </li>
         <li>
-          <strong>A licence and disclaimer banner opens both bundles.</strong>
-          Self-hosted copies now carry the version, the Apache-2.0 notice and
-          the one-line disclaimer.
+          <strong>באנר רישיון והבהרה פותח את שני ה-bundles.</strong> עותקים
+          באירוח עצמי נושאים עכשיו את הגרסה, את הודעת Apache-2.0 ואת ההבהרה
+          בשורה אחת.
         </li>
         <li>
-          <strong>The npm page now shows the README</strong>, and the package
-          names its author.
+          <strong>עמוד ה-npm מציג עכשיו את ה-README</strong>, והחבילה נוקבת בשם
+          המחבר שלה.
         </li>
       </ul>
 
-      <h3>Note for installers</h3>
+      <h3>הערה למתקינים</h3>
       <ul>
         <li>
-          <strong>jsDelivr is a third party on your site.</strong> The widget
-          still makes no network requests of its own, but the visitor's browser
-          fetches the script from <code>cdn.jsdelivr.net</code>, which exposes
-          their IP address and user-agent to it. That is true of any CDN-hosted
-          library and is worth stating plainly: if your privacy policy enumerates
-          third parties by name, jsDelivr belongs on that list. The setup guide
-          now has <a href="/setup/#selfhost">self-hosting instructions</a> for
-          sites that would rather not add one, which also answer sites that need
-          Subresource Integrity and therefore a pinned version.
+          <strong>jsDelivr הוא צד שלישי באתר שלכם.</strong> התוסף עדיין לא מבצע
+          בקשות רשת משלו, אבל הדפדפן של המבקר מושך את הסקריפט
+          מ-<code>cdn.jsdelivr.net</code>, וזה חושף להם את כתובת ה-IP ואת
+          ה-user-agent שלו. זה נכון לכל ספרייה שמתארחת ב-CDN וראוי לומר זאת
+          בפשטות: אם מדיניות הפרטיות שלכם מונה צדדים שלישיים בשמם, jsDelivr
+          שייך לרשימה. במדריך ההתקנה יש עכשיו
+          <a href="/setup/#selfhost">הוראות לאירוח עצמי</a> לאתרים שמעדיפים לא
+          להוסיף אחד, והן עונות גם לאתרים שצריכים Subresource Integrity ולכן
+          גרסה נעוצה.
         </li>
       </ul>
 
-      <h3>Internal</h3>
+      <h3>פנימי</h3>
       <ul>
         <li>
-          <strong>Sourcemaps are now published.</strong> Both bundles have always
-          ended with a <code>sourceMappingURL</code>, but the maps were excluded
-          from the package, so every installer who opened devtools on a page
-          running the widget got a 404 for <code>shakuf.js.map</code>. They were
-          excluded because tsup embeds the original source in the map and the
-          repository was private; it has been public since August, so that reason
-          no longer exists.
+          <strong>מפות המקור (sourcemaps) מתפרסמות עכשיו.</strong> שני ה-bundles
+          תמיד הסתיימו ב-<code>sourceMappingURL</code>, אבל המפות הוחרגו
+          מהחבילה, ולכן כל מתקין שפתח devtools בעמוד שמריץ את התוסף קיבל 404
+          עבור <code>shakuf.js.map</code>. הן הוחרגו כי tsup מטמיע את קוד המקור
+          במפה והמאגר היה פרטי; הוא ציבורי מאז אוגוסט, ולכן הסיבה כבר לא קיימת.
           <br>
-          The package grows from 54.6 kB to 158.2 kB as a result. Visitors pay
-          none of it: a browser requests a <code>.map</code> only when devtools
-          are open, jsDelivr serves each file on request, and the bundle itself
-          does not include them. What you get for it is a readable stack trace
-          instead of one line of minified code.
+          החבילה גדלה בעקבות זאת מ-54.6 kB ל-158.2 kB. המבקרים לא משלמים על זה
+          דבר: דפדפן מבקש <code>.map</code> רק כשה-devtools פתוחים, jsDelivr מגיש
+          כל קובץ לפי בקשה, וה-bundle עצמו לא כולל אותן. מה שמקבלים בתמורה הוא
+          stack trace קריא במקום שורה אחת של קוד ממוזער.
         </li>
         <li>
-          <strong>The bundle is smaller despite the fixes.</strong> Comments in
-          the panel stylesheet were shipping to every visitor, because they sit
-          inside a template string the minifier cannot touch. They are now
-          stripped at build time, the same way the host stylesheet's already
-          were. The bundle went from 15.95 KB to 15.02 KB gzipped.
+          <strong>ה-bundle קטן יותר למרות התיקונים.</strong> הערות בגיליון
+          הסגנון של החלונית נשלחו לכל מבקר, כי הן יושבות בתוך template string
+          שהממזער לא יכול לגעת בו. הן מוסרות עכשיו בזמן הבנייה, כמו שהערות
+          גיליון הסגנון של העמוד המארח כבר הוסרו. ה-bundle ירד מ-15.95 KB
+          ל-15.02 KB ב-gzip.
         </li>
       </ul>
     </div>
@@ -342,52 +314,50 @@
   <!-- ================= 0.3.1 ================= -->
   <section class="rule">
     <div class="wrap-text">
-      <h2>0.3.1 <span class="dim" style="font-weight:400;font-size:.6em">· 14 August 2026</span></h2>
+      <h2>0.3.1 <span class="dim" style="font-weight:400;font-size:.6em">· 14 באוגוסט 2026</span></h2>
 
       <p>
-        One fix, and it affects far more installs than the report that found it.
-        If your site ships a CSS reset, and most do, upgrade.
+        תיקון אחד, והוא משפיע על הרבה יותר התקנות מהדיווח שמצא אותו. אם האתר
+        שלכם כולל CSS reset, ורובם כוללים, שדרגו.
       </p>
 
-      <h3>Fixed</h3>
+      <h3>תוקן</h3>
       <ul>
         <li>
-          <strong>A CSS reset on the host page could switch off the widget's
-          stacking entirely, hiding the launcher behind site overlays.</strong>
-          The widget's <code>position</code> and <code>z-index</code> were
-          declared in a <code>:host</code> rule. Per the CSS Scoping
-          specification, a <code>:host</code> rule loses to <em>any</em> rule in
-          the host document that matches the host element. Not on specificity,
-          categorically. Measured: <code>* { position: static; z-index: auto }</code>,
-          the weakest selector that exists, erased both. The launcher then
-          painted in DOM order and vanished behind anything with a
-          <code>z-index</code>.
+          <strong>CSS reset בעמוד המארח היה עלול לכבות לגמרי את הערימה (stacking)
+          של התוסף ולהסתיר את הכפתור הצף מאחורי שכבות של האתר.</strong>
+          ה-<code>position</code> וה-<code>z-index</code> של התוסף הוצהרו בכלל
+          <code>:host</code>. לפי מפרט CSS Scoping, כלל <code>:host</code> מפסיד
+          ל<em>כל</em> כלל במסמך המארח שתואם את רכיב המארח. לא לפי ספציפיות,
+          באופן קטגורי. נמדד: <code>* { position: static; z-index: auto }</code>,
+          הסלקטור החלש ביותר שקיים, מחק את שניהם. הכפתור הצף צויר אז לפי סדר
+          ה-DOM ונעלם מאחורי כל דבר עם <code>z-index</code>.
           <br>
-          It was reported as "the bundle sets no z-index". It always did, in the
-          one place a stylesheet erases for free.
+          זה דווח כ״ה-bundle לא מגדיר z-index״. הוא תמיד הגדיר, במקום היחיד
+          שגיליון סגנון מוחק בחינם.
           <br>
-          The worst version of this is a blocking overlay: a visitor pinned
-          behind a forced-update or offline screen is exactly who may need
-          stop-animations or high contrast, and that is precisely when the button
-          disappeared. Reproduced with <code>elementFromPoint</code> against an
-          opaque overlay at <code>z-index: 10000</code>, and confirmed fixed.
+          הגרסה הגרועה ביותר של זה היא שכבה חוסמת: מבקר שתקוע מאחורי מסך עדכון
+          כפוי או מסך ״אין חיבור״ הוא בדיוק מי שעשוי להזדקק לעצירת אנימציות או
+          לניגודיות גבוהה, וזה בדיוק הרגע שבו הכפתור נעלם. שוחזר עם
+          <code>elementFromPoint</code> מול שכבה אטומה ב-<code>z-index: 10000</code>,
+          ואומת שתוקן.
           <br>
-          Both properties are now written inline on the host element, which normal
-          host rules cannot override. Deliberately not <code>!important</code>: a
-          site that means to reposition us can still win with its own
-          <code>!important</code>, so existing workarounds keep working.
+          שני המאפיינים נכתבים עכשיו inline על רכיב המארח, שכללי מארח רגילים לא
+          יכולים לדרוס. בכוונה לא <code>!important</code>: אתר שמתכוון למקם אותנו
+          מחדש עדיין יכול לנצח עם <code>!important</code> משלו, כך שמעקפים קיימים
+          ממשיכים לעבוד.
         </li>
       </ul>
 
-      <h3>Note for host pages</h3>
+      <h3>הערה לעמודים מארחים</h3>
       <ul>
         <li>
-          Never give <code>#shakuf-root</code> a <code>transform</code>,
-          <code>filter</code>, <code>perspective</code>, <code>contain</code> or
-          <code>will-change</code>. Any of those makes it a containing block for
-          the fixed-position launcher inside it, which silently moves the button
-          somewhere unintended: no error, no obvious cause. A plain
-          <code>position: relative</code> is safe and does not do this.
+          לעולם אל תיתנו ל-<code>#shakuf-root</code> <code>transform</code>,
+          <code>filter</code>, <code>perspective</code>, <code>contain</code> או
+          <code>will-change</code>. כל אחד מהם הופך אותו ל-containing block עבור
+          הכפתור הצף שבתוכו, שמוצב ב-fixed, וזה מזיז את הכפתור בשקט למקום לא
+          מכוון: בלי שגיאה, בלי סיבה ברורה. <code>position: relative</code> פשוט
+          הוא בטוח ולא עושה את זה.
         </li>
       </ul>
     </div>
@@ -396,65 +366,61 @@
   <!-- ================= 0.3.0 ================= -->
   <section class="rule">
     <div class="wrap-text">
-      <h2>0.3.0 <span class="dim" style="font-weight:400;font-size:.6em">· 14 August 2026</span></h2>
+      <h2>0.3.0 <span class="dim" style="font-weight:400;font-size:.6em">· 14 באוגוסט 2026</span></h2>
 
       <p>
-        Two additions for sites adopting the widget, both requested by an
-        integration. Nothing breaks: every existing option keeps its meaning.
+        שתי תוספות לאתרים שמאמצים את התוסף, שתיהן התבקשו על ידי אינטגרציה. שום
+        דבר לא נשבר: כל אפשרות קיימת שומרת על משמעותה.
       </p>
 
-      <h3>Added</h3>
+      <h3>נוסף</h3>
       <ul>
         <li>
-          <strong>Logical placement.</strong> <code>data-position</code> now also
-          accepts <code>bottom-start</code>, <code>bottom-end</code>,
-          <code>top-start</code> and <code>top-end</code>. These follow reading
-          direction, so the launcher moves to the other side when the page
-          switches between Hebrew and English, the same way a site built on CSS
-          logical properties moves everything else. A site with its own floating
-          button in the opposite logical corner could not avoid a collision with
-          the physical values: whichever corner it picked, the two met in one of
-          its two languages. The physical values are unchanged.
+          <strong>מיקום לוגי.</strong> <code>data-position</code> מקבל עכשיו גם
+          <code>bottom-start</code>, <code>bottom-end</code>,
+          <code>top-start</code> ו-<code>top-end</code>. אלה עוקבים אחרי כיוון
+          הקריאה, כך שהכפתור הצף עובר לצד השני כשהעמוד מחליף בין עברית לאנגלית,
+          בדיוק כמו שאתר שבנוי על מאפייני CSS לוגיים מזיז את כל השאר. אתר עם
+          כפתור צף משלו בפינה הלוגית הנגדית לא יכול היה להימנע מהתנגשות עם הערכים
+          הפיזיים: איזו פינה שלא בחר, השניים נפגשו באחת משתי השפות שלו. הערכים
+          הפיזיים לא השתנו.
         </li>
         <li>
-          <strong>A preferences import path.</strong>
-          <code>window.shakuf.getPrefs()</code> returns the visitor's current
-          settings; <code>setPrefs()</code> replaces them and applies the result.
-          Bundler hosts can also pass <code>mount({ initialPrefs })</code>, which
-          seeds settings only for visitors who have none stored here yet.
+          <strong>מסלול לייבוא העדפות.</strong>
+          <code>window.shakuf.getPrefs()</code> מחזיר את ההגדרות הנוכחיות של
+          המבקר; <code>setPrefs()</code> מחליף אותן ומחיל את התוצאה. מארחים עם
+          bundler יכולים גם להעביר <code>mount({ initialPrefs })</code>, שזורע
+          הגדרות רק למבקרים שעדיין אין להם הגדרות שמורות כאן.
           <br>
-          This exists so a site replacing another accessibility tool does not
-          silently reset everyone who had set large text or high contrast, which
-          is exactly the population the feature is for. It also lets a site
-          restore settings from a profile of its own, so a preference is not
-          stranded on one device.
+          זה קיים כדי שאתר שמחליף כלי נגישות אחר לא יאפס בשקט את כל מי שהגדיר
+          טקסט גדול או ניגודיות גבוהה, שזו בדיוק האוכלוסייה שהפיצ׳ר קיים
+          בשבילה. זה גם מאפשר לאתר לשחזר הגדרות מפרופיל משלו, כך שהעדפה לא
+          נשארת תקועה במכשיר אחד.
           <br>
-          We chose to expose this rather than document the
-          <code>localStorage</code> key as a supported contract. Freezing an
-          internal storage format to serve a one-time migration means every later
-          change breaks a consumer we cannot see.
+          בחרנו לחשוף את זה במקום לתעד את מפתח ה-<code>localStorage</code> כחוזה
+          נתמך. הקפאת פורמט אחסון פנימי כדי לשרת הגירה חד-פעמית פירושה שכל שינוי
+          מאוחר שובר צרכן שאיננו רואים.
         </li>
       </ul>
 
-      <h3>Note for anyone storing preferences</h3>
+      <h3>הערה למי ששומר העדפות</h3>
       <ul>
         <li>
-          The widget still transmits nothing and still has no server. If you save
-          <code>getPrefs()</code> output to a user profile, that is your decision
-          under your own privacy policy, and worth making deliberately, since
-          values like "high contrast" or "dyslexia-friendly font" can be read as
-          an inference about disability. That is why we do not touch them.
+          התוסף עדיין לא משדר דבר ועדיין אין לו שרת. אם אתם שומרים את הפלט של
+          <code>getPrefs()</code> בפרופיל משתמש, זו החלטה שלכם תחת מדיניות
+          הפרטיות שלכם, וכדאי לקבל אותה בכוונה, כי ערכים כמו ״ניגודיות גבוהה״
+          או ״גופן ידידותי לדיסלקציה״ עשויים להיקרא כהסקה על מוגבלות. זו הסיבה
+          שאנחנו לא נוגעים בהם.
         </li>
       </ul>
 
-      <h3>Internal</h3>
+      <h3>פנימי</h3>
       <ul>
         <li>
-          CSS comments are stripped from the bundle at build time. They lived
-          inside a template literal, so the minifier could not reach them and
-          they were shipping to every visitor: 44% of the injected stylesheet.
-          No behaviour change; the bundle dropped from 16.99 KB to 15.43 KB
-          gzipped, which is what made room for the two features above.
+          הערות CSS מוסרות מה-bundle בזמן הבנייה. הן חיו בתוך template literal,
+          ולכן הממזער לא הגיע אליהן והן נשלחו לכל מבקר: 44% מגיליון הסגנון
+          המוזרק. אין שינוי בהתנהגות; ה-bundle ירד מ-16.99 KB ל-15.43 KB ב-gzip,
+          וזה מה שפינה מקום לשני הפיצ׳רים שלמעלה.
         </li>
       </ul>
     </div>
@@ -463,51 +429,48 @@
   <!-- ================= 0.2.1 ================= -->
   <section class="rule">
     <div class="wrap-text">
-      <h2>0.2.1 <span class="dim" style="font-weight:400;font-size:.6em">· not released</span></h2>
+      <h2>0.2.1 <span class="dim" style="font-weight:400;font-size:.6em">· לא שוחררה</span></h2>
 
       <div class="callout">
-        <strong>This version was never published to npm.</strong> Installing
-        <code>@shakuf-widget/widget@0.2.1</code> will fail. All three fixes below
-        ship in <strong>0.3.0</strong>. Upgrade to that or later. The entry is
-        kept because the fixes are real and worth reading about.
+        <strong>הגרסה הזו מעולם לא פורסמה ב-npm.</strong> התקנה של
+        <code>@shakuf-widget/widget@0.2.1</code> תיכשל. שלושת התיקונים שלמטה
+        נשלחים ב-<strong>0.3.0</strong>. שדרגו אליה או לגרסה מאוחרת יותר. הרשומה
+        נשמרת כי התיקונים אמיתיים וכדאי לקרוא עליהם.
       </div>
 
       <p>
-        Three display bugs, each of which broke a feature for exactly the people
-        it exists for. If you are on 0.1.0–0.2.0, upgrade.
+        שלושה באגים בתצוגה, שכל אחד מהם שבר פיצ׳ר בדיוק עבור האנשים שהוא קיים
+        בשבילם. אם אתם על 0.1.0–0.2.0, שדרגו.
       </p>
 
-      <h3>Fixed</h3>
+      <h3>תוקן</h3>
       <ul>
         <li>
-          <strong>Inverted colours, greyscale and both saturation levels did
-          nothing on their own.</strong> The four settings are composed into one
-          <code>filter</code> declaration through custom properties, and the
-          fallback for an unset half was <code>none</code>. That is a legal value
-          for the property but not a legal item in a filter list, so any single
-          setting produced <code>filter: invert(1) none</code>: invalid, and
-          dropped altogether. Turning on two at once worked, which is why it went
-          unnoticed. The panel reported the setting as active throughout, so a
-          visitor who could not see the page had no way to tell it had done
-          nothing. The fallbacks are now identity functions.
+          <strong>צבעים הפוכים, גווני אפור ושתי רמות הרוויה לא עשו דבר
+          לבדן.</strong> ארבע ההגדרות מורכבות להצהרת <code>filter</code> אחת
+          דרך custom properties, וערך ברירת המחדל לחצי שלא הוגדר היה
+          <code>none</code>. זה ערך חוקי למאפיין אבל לא פריט חוקי ברשימת filter,
+          ולכן כל הגדרה בודדת הפיקה <code>filter: invert(1) none</code>: לא
+          תקין, ונזרק כולו. הפעלת שתיים בבת אחת עבדה, וזו הסיבה שזה לא נשם לב.
+          החלונית דיווחה כל הזמן שההגדרה פעילה, ולכן מבקר שלא יכול היה לראות את
+          העמוד לא יכול היה לדעת שהיא לא עשתה דבר. ערכי ברירת המחדל הם עכשיו
+          פונקציות זהות.
         </li>
         <li>
-          <strong>Links were invisible in high-contrast mode.</strong> The rule
-          that forces text white outranked the rule that colours links yellow:
-          <code>:not(svg):not(svg *)</code> each add their argument's weight, so
-          the sweeping rule computed higher than the link rule that followed it.
-          Links rendered <code>#fff</code>, indistinguishable from body text, in
-          the one mode built for low-vision users. The type exclusions moved
-          inside <code>:where()</code>; the ID exclusion stayed out of it, so the
-          palette still overrides host stylesheets that use their own
-          <code>!important</code>.
+          <strong>קישורים היו בלתי נראים במצב ניגודיות גבוהה.</strong> הכלל
+          שכופה טקסט לבן גבר על הכלל שצובע קישורים בצהוב:
+          <code>:not(svg):not(svg *)</code> מוסיפים כל אחד את משקל הארגומנט שלהם,
+          ולכן הכלל הגורף חושב גבוה יותר מכלל הקישורים שבא אחריו. קישורים רונדרו
+          <code>#fff</code>, בלתי ניתנים להבחנה מטקסט הגוף, במצב היחיד שנבנה
+          למשתמשים עם ראייה חלשה. החרגות הסוג עברו לתוך <code>:where()</code>;
+          החרגת ה-ID נשארה בחוץ, כך שהפלטה עדיין דורסת גיליונות סגנון של מארחים
+          שמשתמשים ב-<code>!important</code> משלהם.
         </li>
         <li>
-          <strong>The launcher button was always tagged Hebrew.</strong> Its
-          label is translated but its <code>lang</code> attribute was hardcoded,
-          so on an English page a screen reader read an English label in a Hebrew
-          voice. It now resolves the language like the panel and the announcement
-          region already did, and follows a runtime language change.
+          <strong>הכפתור הצף תמיד סומן כעברית.</strong> התווית שלו מתורגמת אבל
+          מאפיין ה-<code>lang</code> שלו היה קבוע בקוד, ולכן בעמוד באנגלית קורא
+          מסך הקריא תווית אנגלית בקול עברי. הוא קובע עכשיו את השפה כמו שהחלונית
+          ואזור ההכרזות כבר עשו, ועוקב אחרי שינוי שפה בזמן ריצה.
         </li>
       </ul>
     </div>
@@ -516,85 +479,79 @@
   <!-- ================= 0.2.0 ================= -->
   <section class="rule">
     <div class="wrap-text">
-      <h2>0.2.0 <span class="dim" style="font-weight:400;font-size:.6em">· 13 August 2026</span></h2>
+      <h2>0.2.0 <span class="dim" style="font-weight:400;font-size:.6em">· 13 באוגוסט 2026</span></h2>
 
-      <h3>Added</h3>
+      <h3>נוסף</h3>
       <ul>
         <li>
-          <strong>English.</strong> The widget reads the page language from
-          <code>&lt;html lang&gt;</code> and renders accordingly, including
-          direction. <code>data-lang</code> overrides it. Hebrew remains the
-          default, so existing installs are unchanged.
+          <strong>אנגלית.</strong> התוסף קורא את שפת העמוד
+          מ-<code>&lt;html lang&gt;</code> ומרנדר בהתאם, כולל כיוון.
+          <code>data-lang</code> דורס זאת. עברית נשארת ברירת המחדל, ולכן התקנות
+          קיימות לא משתנות.
         </li>
         <li>
-          <strong>Language changes are followed without a reload.</strong> Apps
-          that switch language at runtime switch the widget too, including the
-          screen-reader announcement region: a live region left tagged with the
-          wrong language is read aloud in the wrong voice.
+          <strong>שינויי שפה נקלטים בלי טעינה מחדש.</strong> אפליקציות שמחליפות
+          שפה בזמן ריצה מחליפות גם את התוסף, כולל אזור ההכרזות לקורא המסך: live
+          region שנשאר מסומן בשפה הלא נכונה מוקרא בקול הלא נכון.
         </li>
         <li>
-          <strong><code>data-mount</code></strong>: a CSS selector for the
-          element to mount into, instead of <code>&lt;body&gt;</code>. Required
-          for apps that mark <code>body</code> children <code>inert</code> behind
-          a full-screen blocker, which would otherwise disable the widget at
-          exactly the moment a visitor is stuck looking at one.
+          <strong><code>data-mount</code></strong>: סלקטור CSS לרכיב שלתוכו
+          מעגנים, במקום <code>&lt;body&gt;</code>. נדרש לאפליקציות שמסמנות את
+          ילדי <code>body</code> כ-<code>inert</code> מאחורי חוסם במסך מלא, מה
+          שהיה מנטרל את התוסף בדיוק ברגע שבו מבקר תקוע מול אחד כזה.
         </li>
         <li>
-          <strong><code>window.shakuf</code></strong>: host-page control,
+          <strong><code>window.shakuf</code></strong>: שליטה מהעמוד המארח,
           <code>open</code>, <code>close</code>, <code>toggle</code>,
           <code>hide</code>, <code>show</code>, <code>hidden</code>,
           <code>reset</code>, <code>setLanguage</code>, <code>lang</code>,
           <code>destroy</code>.
         </li>
         <li>
-          <strong><code>data-hidden</code></strong>: start with the launcher
-          hidden, for hosts that already know the visitor turned it off. Avoids
-          painting the button and then removing it on every load.
+          <strong><code>data-hidden</code></strong>: התחלה עם כפתור צף מוסתר,
+          למארחים שכבר יודעים שהמבקר כיבה אותו. חוסך ציור של הכפתור ואז הסרתו
+          בכל טעינה.
         </li>
         <li>
-          <strong><code>shakuf:ready</code></strong> event on
-          <code>document</code>. It fires during mount, before
-          <code>window.shakuf</code> exists, so the widget arrives in
-          <code>event.detail</code>.
-        </li>
-      </ul>
-
-      <h3>Fixed</h3>
-      <ul>
-        <li>
-          <strong>One failing feature disabled the rest.</strong> The apply calls
-          were unguarded, so a single throw ended the loop. On load that meant
-          the visitor's other saved preferences silently never applied; on a
-          click it meant the save and the panel refresh never ran, leaving the
-          control looking dead. Each feature is now isolated.
-        </li>
-        <li>
-          <strong>A failed change was announced as a success.</strong> The panel
-          announced the new state immediately after requesting it, whether or not
-          it had taken effect, telling the one person who cannot see the screen
-          that something happened when it had not. Announcements now describe
-          what actually occurred, and a failure says so.
-        </li>
-        <li>
-          <strong>Direction was hardcoded.</strong> The widget's own stylesheet
-          fixed writing direction to RTL, and the toggle knob slid the wrong way
-          in English.
+          <strong>אירוע <code>shakuf:ready</code></strong> על
+          <code>document</code>. הוא נורה במהלך העיגון, לפני
+          ש-<code>window.shakuf</code> קיים, ולכן התוסף מגיע
+          ב-<code>event.detail</code>.
         </li>
       </ul>
 
-      <h3>Breaking</h3>
+      <h3>תוקן</h3>
       <ul>
         <li>
-          On the <code>A11yWidget</code> class, <code>show()</code> used to open
-          the panel. <code>open()</code> now opens the panel and
-          <code>show()</code> shows the launcher, matching the global API. Only
-          affects consumers using the class directly via npm.
+          <strong>פיצ׳ר אחד שנכשל נטרל את השאר.</strong> קריאות ההחלה לא היו
+          מוגנות, ולכן זריקה אחת סיימה את הלולאה. בטעינה זה אומר ששאר ההעדפות
+          השמורות של המבקר פשוט לא הוחלו; בלחיצה זה אומר שהשמירה ורענון
+          החלונית לא רצו, והבקר נראה מת. כל פיצ׳ר מבודד עכשיו.
         </li>
         <li>
-          The size budget rose from 15&nbsp;KB to 17&nbsp;KB gzipped. The bundle
-          ships both languages, so a Hebrew-only install carries the English
-          strings: the cost of keeping one script tag with no language in the
-          URL.
+          <strong>שינוי שנכשל הוכרז כהצלחה.</strong> החלונית הכריזה על המצב
+          החדש מיד אחרי שביקשה אותו, בין אם נכנס לתוקף ובין אם לא, ואמרה לאדם
+          היחיד שלא רואה את המסך שמשהו קרה כשלא קרה. ההכרזות מתארות עכשיו מה
+          באמת התרחש, וכישלון אומר זאת.
+        </li>
+        <li>
+          <strong>הכיוון היה קבוע בקוד.</strong> גיליון הסגנון של התוסף עצמו קיבע
+          את כיוון הכתיבה ל-RTL, והמתג החליק לכיוון הלא נכון באנגלית.
+        </li>
+      </ul>
+
+      <h3>שינויים שוברים</h3>
+      <ul>
+        <li>
+          במחלקה <code>A11yWidget</code>, <code>show()</code> פתח בעבר את
+          החלונית. <code>open()</code> פותח עכשיו את החלונית ו-<code>show()</code>
+          מציג את הכפתור הצף, בהתאם ל-API הגלובלי. משפיע רק על צרכנים שמשתמשים
+          במחלקה ישירות דרך npm.
+        </li>
+        <li>
+          תקציב הגודל עלה מ-15&nbsp;KB ל-17&nbsp;KB ב-gzip. ה-bundle נושא את שתי
+          השפות, ולכן התקנה בעברית בלבד נושאת את המחרוזות האנגליות: המחיר של תג
+          script אחד בלי שפה בכתובת.
         </li>
       </ul>
     </div>
@@ -603,22 +560,20 @@
   <!-- ================= 0.1.1 ================= -->
   <section class="rule">
     <div class="wrap-text">
-      <h2>0.1.1 <span class="dim" style="font-weight:400;font-size:.6em">· 12 August 2026</span></h2>
-      <p class="dim">Documentation only. The bundle is identical to 0.1.0.</p>
+      <h2>0.1.1 <span class="dim" style="font-weight:400;font-size:.6em">· 12 באוגוסט 2026</span></h2>
+      <p class="dim">תיעוד בלבד. ה-bundle זהה ל-0.1.0.</p>
       <ul>
         <li>
-          <code>NOTICE</code> shipped with an unfilled copyright line, so a
-          redistributor could not have complied with section 4(d) of the licence
-          even if they wanted to.
+          <code>NOTICE</code> נשלח עם שורת זכויות יוצרים שלא מולאה, ולכן מפיץ
+          מחדש לא יכול היה לעמוד בסעיף 4(d) של הרישיון גם אם רצה.
         </li>
         <li>
-          The disclaimer cited licence section 9 for the limitation of liability.
-          Section 9 is <em>Accepting Warranty or Additional Liability</em>; the
-          limitation is section 8.
+          ההבהרה ציטטה את סעיף 9 של הרישיון עבור הגבלת האחריות. סעיף 9 הוא
+          <em>Accepting Warranty or Additional Liability</em>; ההגבלה היא סעיף 8.
         </li>
         <li>
-          A broken link to <code>SECURITY.md</code>, which is not part of the
-          package and so returned 404 for anyone reading the published copy.
+          קישור שבור ל-<code>SECURITY.md</code>, שאינו חלק מהחבילה ולכן החזיר
+          404 לכל מי שקרא את העותק שפורסם.
         </li>
       </ul>
     </div>
@@ -627,26 +582,26 @@
   <!-- ================= 0.1.0 ================= -->
   <section class="rule">
     <div class="wrap-text">
-      <h2>0.1.0 <span class="dim" style="font-weight:400;font-size:.6em">· 12 August 2026</span></h2>
-      <p class="dim">First release. Hebrew only.</p>
+      <h2>0.1.0 <span class="dim" style="font-weight:400;font-size:.6em">· 12 באוגוסט 2026</span></h2>
+      <p class="dim">גרסה ראשונה. עברית בלבד.</p>
       <ul>
         <li>
-          Display-preference panel: text size, line/letter/word spacing, readable
-          font, unjustify, contrast, saturation, link highlighting, hide images,
-          stop animations, focus highlighting, large cursor and a reading ruler.
+          חלונית העדפות תצוגה: גודל טקסט, מרווח שורות, אותיות ומילים, גופן
+          קריא, ביטול יישור, ניגודיות, רוויה, הדגשת קישורים, הסתרת תמונות, עצירת
+          אנימציות, הדגשת מיקוד, סמן גדול וסרגל קריאה.
         </li>
         <li>
-          Navigation lists for headings, landmarks and links, rendered in the
-          widget's own panel, never by modifying the host page.
+          רשימות ניווט לכותרות, לאזורים ולקישורים, מרונדרות בחלונית של התוסף
+          עצמו, לעולם לא על ידי שינוי העמוד המארח.
         </li>
         <li>
-          Every change is visitor-initiated, reversible in one click, and stored
-          only in the browser's <code>localStorage</code>. No server, no account,
-          no data collection.
+          כל שינוי מופעל על ידי המבקר, הפיך בלחיצה אחת, ונשמר רק
+          ב-<code>localStorage</code> של הדפדפן. אין שרת, אין חשבון, אין איסוף
+          מידע.
         </li>
         <li>
-          Shadow DOM with full containment, so the widget cannot leak into the
-          host page or be broken by it.
+          Shadow DOM עם הכלה מלאה, כך שהתוסף לא יכול לדלוף לעמוד המארח או להישבר
+          על ידו.
         </li>
       </ul>
     </div>
@@ -654,28 +609,28 @@
 
 </main>
 
+<!-- FOOTER:START — generated from site/_partials/footer.html. Do not hand-edit; run `npm run build:site` after changing the source. -->
 <footer class="site-footer">
   <div class="wrap">
-    <nav aria-label="Site links">
+    <nav aria-label="קישורי האתר">
       <ul class="foot-links">
-        <li><a href="/" hreflang="he">Home (Hebrew)</a></li>
-        <li><a href="/setup/" hreflang="he">Setup guide</a></li>
-        <li><a href="/disclaimer/" hreflang="he">Disclaimer</a></li>
-        <li><a href="/terms/" hreflang="he">Terms</a></li>
-        <li><a href="/accessibility/" hreflang="he">Accessibility statement</a></li>
-        <li><a href="https://github.com/Yu1586/Shakuf">Source code</a></li>
-        <li><a href="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget/LICENSE">Apache 2.0 licence</a></li>
+        <li><a href="/setup/">מדריך התקנה</a></li>
+        <li><a href="/disclaimer/">הבהרה</a></li>
+        <li><a href="/terms/">תנאי שימוש</a></li>
+        <li><a href="/accessibility/">הצהרת נגישות</a></li>
+        <li><a href="/changelog/">יומן גרסאות</a></li>
+        <li><a class="ext" href="https://github.com/Yu1586/Shakuf">קוד מקור<span class="sr-only"> (GitHub, קישור חיצוני)</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></a></li>
+        <li><a class="ext" href="https://cdn.jsdelivr.net/npm/@shakuf-widget/widget/LICENSE">רישיון Apache 2.0<span class="sr-only"> (קישור חיצוני)</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></a></li>
       </ul>
     </nav>
     <p>
-      Shakuf adjusts display only and does not ensure conformance with SI 5568.
-      Making a website accessible requires changes to the site's own code and
-      content, a published accessibility statement, a designated accessibility
-      coordinator, and review by a certified accessibility surveyor.
-      Responsibility for legal compliance rests solely with the website owner.
+      שקוף מתאים את התצוגה בלבד ואינו מבטיח עמידה בת״י 5568. הנגשה מלאה מחייבת
+      תיקונים באתר עצמו, פרסום הצהרת נגישות, מינוי רכז נגישות ובדיקה של מורשה
+      נגישות. האחריות לעמידה בדין חלה על בעל האתר בלבד.
     </p>
   </div>
 </footer>
+<!-- FOOTER:END -->
 
 <script src="/shakuf.js" data-statement-url="/accessibility/" data-accent="#1e4fd8" defer></script>
 </body>

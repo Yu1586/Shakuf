@@ -78,10 +78,13 @@ function stripLeadingComment(html) {
   return trimmed.slice(end + 3).trim();
 }
 
-/** Marks the links in a header block that point at the page itself. */
+/** Marks the links in a header block that point at the page itself. The brand
+ *  is skipped: on the homepage the nav's own home link is the marked one. */
 function markCurrent(block, url) {
   if (!url) return block;
-  return block.replace(new RegExp(`(<a\\b[^>]*\\bhref="${url}")`, 'g'), '$1 aria-current="page"');
+  return block.replace(new RegExp(`<a\\b[^>]*\\bhref="${url}"`, 'g'), (a) =>
+    a.includes('class="brand"') ? a : `${a} aria-current="page"`,
+  );
 }
 
 function git(args) {
