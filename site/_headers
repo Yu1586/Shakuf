@@ -24,11 +24,16 @@
 /shakuf.js
   Cache-Control: public, max-age=3600
 
+# Pages reference these with a ?v=<content hash> written by the build, so a
+# change always gets a new URL and the file itself can sit in caches for a
+# day. Before this they were cached for an hour, and a deploy that changed
+# both the HTML and the CSS left returning visitors with new markup on the old
+# stylesheet for up to an hour.
 /style.css
-  Cache-Control: public, max-age=3600
+  Cache-Control: public, max-age=86400
 
 /app.js
-  Cache-Control: public, max-age=3600
+  Cache-Control: public, max-age=86400
 
 # Fonts are cached for a year as immutable, so a font file must get a NEW NAME
 # whenever it changes (the Rubik files carry their upstream version for that

@@ -45,6 +45,7 @@ import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE_DIR = join(ROOT, 'site');
@@ -86,6 +87,30 @@ function markCurrent(block, url) {
   return block.replace(new RegExp(`<a\\b[^>]*\\bhref="${url}"`, 'g'), (a) =>
     a.includes('class="brand"') ? a : `${a} aria-current="page"`,
   );
+}
+
+/**
+ * Assets every page links to, versioned by content hash. The pages reference
+ * them as `/style.css?v=<hash>`, so a changed file is a new URL and the file
+ * itself can be cached for a day (site/_headers). Without this a deploy that
+ * changed both the HTML and the CSS left returning visitors with the new
+ * markup on the hour-old stylesheet, which is how the demo pointer once
+ * rendered as a giant unstyled arrow.
+ */
+const HASHED_ASSETS = ['/style.css', '/app.js'];
+
+function assetHash(urlPath) {
+  const bytes = readFileSync(join(SITE_DIR, urlPath));
+  return createHash('sha1').update(bytes).digest('hex').slice(0, 8);
+}
+
+function versionAssets(html, hashes) {
+  let out = html;
+  for (const [urlPath, hash] of hashes) {
+    const escaped = urlPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    out = out.replace(new RegExp(`(href|src)="${escaped}(\\?v=[0-9a-f]+)?"`, 'g'), `$1="${urlPath}?v=${hash}"`);
+  }
+  return out;
 }
 
 function git(args) {
@@ -146,6 +171,7 @@ function main() {
 
   let filesChanged = 0;
   let markersFilled = 0;
+  const hashes = HASHED_ASSETS.map((p) => [p, assetHash(p)]);
 
   for (const { file, url } of TARGETS) {
     const targetPath = join(ROOT, file);
@@ -160,6 +186,7 @@ function main() {
       markersFilled++;
       console.log(`  ${file}: filled ${name} from ${source}`);
     }
+    updated = versionAssets(updated, hashes);
 
     if (updated !== original) {
       writeFileSync(targetPath, updated, 'utf8');
