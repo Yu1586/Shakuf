@@ -152,14 +152,6 @@ section    { padding-block: clamp(56px, 8vw, 112px); position: relative; }
 .rule      { border-top: 2px solid var(--ink); }
 .section-head { max-width: 62ch; margin-bottom: clamp(32px, 4vw, 52px); }
 
-/* ---- Chips ------------------------------------------------------------ */
-.chip {
-  display: inline-flex; align-items: center; gap: 8px;
-  border: 2px solid var(--ink); border-radius: 999px; background: var(--card);
-  padding: 6px 14px; font-weight: 500; font-size: 15px; line-height: 1.3;
-}
-.chip-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--blue); flex: none; }
-
 /* ---- Header ----------------------------------------------------------- */
 .site-header {
   position: sticky; top: env(safe-area-inset-top, 0px); z-index: 40;
@@ -188,8 +180,7 @@ section    { padding-block: clamp(56px, 8vw, 112px); position: relative; }
 .header-cta[aria-current="page"] { background: var(--ink); color: #fff; }
 /* The menu state is a native checkbox read by CSS. It stays in the tab order,
    visually hidden; its label is the visible toggle and shows the ring. */
-.nav-state { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-.nav-toggle { display: none; }
+.nav-state, .nav-toggle { display: none; }  /* both exist only on phones, see below */
 /* Only the homepage has loops to pause; its <body> says so. */
 #motion-toggle { display: none; }
 body.has-motion #motion-toggle { display: inline-flex; }
@@ -198,6 +189,10 @@ body.has-motion #motion-toggle { display: inline-flex; }
   .brand b { font-size: 22px; }
   .brand-mark { width: 26px; height: 26px; }
   .header-cta { min-height: 44px; padding: 0 16px; }
+  /* The checkbox stays in the tab order, visually hidden; its label is the
+     visible toggle and shows the ring. On wide screens both are display:none,
+     so no unnamed control is ever reachable there. */
+  .nav-state { display: block; position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
   .nav-toggle {
     display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px;
     border: 2px solid var(--ink); border-radius: 12px; background: var(--card); color: var(--ink);
@@ -301,8 +296,6 @@ body.has-motion #motion-toggle { display: inline-flex; }
 }
 @keyframes demo-text { 0%, 47% { color: #454a55; } 50%, 95% { color: #fff; } 100% { color: #454a55; } }
 @keyframes demo-link { 0%, 47% { color: #1e4fd8; } 50%, 95% { color: #ffe600; } 100% { color: #1e4fd8; } }
-.demo-caption { font-size: 14px; color: var(--faint); margin: 0; }
-
 /* The state caption: a pill on the card's top edge holding a reel of four
    lines, one row visible, sliding between states. */
 .demo-state {
@@ -363,15 +356,32 @@ body.has-motion #motion-toggle { display: inline-flex; }
    less of it and the card keeps room under its last line. */
 @media (max-width: 520px) { .mp { margin-inline-end: 0; width: min(250px, 84%); margin-top: -110px; } .demo-page { padding-bottom: 96px; } .demo-state { font-size: 13px; } }
 
-/* ---- Marquee ---------------------------------------------------------- */
-.marquee { border-block: 2px solid var(--ink); background: var(--card); overflow: hidden; padding: 14px 0; white-space: nowrap; }
-.marquee-track { display: inline-flex; gap: 40px; padding-inline-end: 40px; animation: marquee 60s linear infinite;
-  font-weight: 700; font-size: clamp(20px, 1.4rem + .6vw, 28px); }
-.marquee-track span { display: inline-flex; align-items: center; gap: 40px; }
-.marquee-track span::before { content: ""; width: 14px; height: 14px; border-radius: 50%; background: var(--blue); flex: none; }
-/* The track holds the list twice, so half its width is one seamless period.
-   RTL content flows right to left, hence the positive shift. */
-@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(50%); } }
+/* The pointer. It rests on the panel's footer, travels to each "+" just
+   before its state begins, and the button under it takes the real panel's
+   hover colours while it is there, with a short press at the click. The "+"
+   centres were measured from the panel's top-left: x 32, y 116 / 190 / 299
+   (the same within 2px on a phone, since the panel's left padding and row
+   heights are fixed). The arrow's tip is at the element's origin. */
+.cur { position: absolute; left: -4px; top: -3px; width: 22px; height: 22px; pointer-events: none; z-index: 5;
+  animation: cur-path 16s infinite; filter: drop-shadow(0 1px 1.5px rgba(0,0,0,.45)); }
+.cur svg { width: 100%; height: 100%; fill: #fff; stroke: #0e0f12; stroke-width: 1.4; stroke-linejoin: round; animation: cur-click 16s infinite; transform-origin: 4px 3px; }
+@keyframes cur-path {
+  0%, 16%   { transform: translate(228px, 398px); }
+  21%, 41%  { transform: translate(32px, 116px); }
+  46%, 66%  { transform: translate(32px, 299px); }
+  71%, 95%  { transform: translate(32px, 190px); }
+  100%      { transform: translate(228px, 398px); }
+}
+@keyframes cur-click {
+  0%, 21.6% { transform: none; } 22.2% { transform: scale(.78); } 22.8%, 46.6% { transform: none; }
+  47.2% { transform: scale(.78); } 47.8%, 71.6% { transform: none; } 72.2% { transform: scale(.78); } 72.8%, 100% { transform: none; }
+}
+.b-size  { animation: hover-1 16s infinite; }
+.b-con   { animation: hover-2 16s infinite; }
+.b-space { animation: hover-3 16s infinite; }
+@keyframes hover-1 { 0%, 20.5% { background: #f4f5f7; color: #1a1a1a; border-color: #595959; } 21%, 24% { background: #1e4fd8; color: #fff; border-color: #1e4fd8; } 24.5%, 100% { background: #f4f5f7; color: #1a1a1a; border-color: #595959; } }
+@keyframes hover-2 { 0%, 45.5% { background: #f4f5f7; color: #1a1a1a; border-color: #595959; } 46%, 49% { background: #1e4fd8; color: #fff; border-color: #1e4fd8; } 49.5%, 100% { background: #f4f5f7; color: #1a1a1a; border-color: #595959; } }
+@keyframes hover-3 { 0%, 70.5% { background: #f4f5f7; color: #1a1a1a; border-color: #595959; } 71%, 74% { background: #1e4fd8; color: #fff; border-color: #1e4fd8; } 74.5%, 100% { background: #f4f5f7; color: #1a1a1a; border-color: #595959; } }
 
 /* ---- Feature cards ---------------------------------------------------- */
 .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
@@ -574,8 +584,7 @@ details[open] summary { border-bottom: 2px solid var(--ink); }
  * Reduced motion: no motion at all.
  * The widget's own control is handled by the widget's injected rule, which runs
  * every animation to its final frame; the keyframes above end at rest for that. */
-html:has(#motion-pause:checked) .hero *,
-html:has(#motion-pause:checked) .marquee-track { animation-play-state: paused !important; }
+html:has(#motion-pause:checked) .hero * { animation-play-state: paused !important; }
 
 /* The pause control is a native checkbox inside a button-styled label, so it
    needs no script and reads as "עצירת תנועה, checkbox" to a screen reader. */
@@ -587,30 +596,18 @@ html:has(#motion-pause:checked) .marquee-track { animation-play-state: paused !i
 .motion-toggle:has(input:focus-visible) { outline: 3px solid var(--blue); outline-offset: 3px; }
 .motion-toggle:has(input:checked) { background: var(--tint); }
 
-/* The marquee is a list that happens to scroll. When it cannot scroll (OS
-   reduced motion, or the widget's own motion-off) it is shown as a list:
-   wrapped, centred, one copy instead of the two the loop needs. A frozen
-   single row clipped at both edges looked broken. */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .btn:hover, .card:hover { transform: none; }
   #motion-toggle { display: none !important; }
   /* With the loop off the demo rests on the unmodified page; a caption that
-     says "as is" over a still picture would only confuse. */
-  .demo-state { display: none; }
-  .marquee { white-space: normal; padding-inline: var(--pad); }
-  .marquee-track { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 26px; padding: 0; font-size: clamp(18px, 1.05rem + .5vw, 24px); }
-  .marquee-track span { gap: 14px; }
-  .marquee-track span:nth-child(n+9) { display: none; }
+     says "as is" and a pointer parked on the footer would only confuse. */
+  .demo-state, .cur { display: none; }
 }
-html[data-shakuf-motion="off"] .demo-state { display: none; }
-html[data-shakuf-motion="off"] .marquee { white-space: normal; padding-inline: var(--pad); }
-html[data-shakuf-motion="off"] .marquee-track { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 26px; padding: 0; font-size: clamp(18px, 1.05rem + .5vw, 24px); transform: none !important; }
-html[data-shakuf-motion="off"] .marquee-track span { gap: 14px; }
-html[data-shakuf-motion="off"] .marquee-track span:nth-child(n+9) { display: none; }
+html[data-shakuf-motion="off"] .demo-state, html[data-shakuf-motion="off"] .cur { display: none; }
 
 @media print {
-  .site-header, .mark, .marquee, .demo, #motion-toggle, .nav-toggle { display: none !important; }
+  .site-header, .mark, .demo, #motion-toggle, .nav-toggle { display: none !important; }
   body { background: #fff; }
 }
