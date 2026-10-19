@@ -63,6 +63,16 @@
     setTimeout(function () { live.textContent = msg; }, 60);
   }
 
+  // ---- Reference groups (/setup/) --------------------------------------
+  //
+  // The long per-option sections sit in <details> that ship closed, so a phone
+  // gets a short page. A wide screen has room to read them in place, so open
+  // them there, once, at load. Not on resize: shutting a group while someone
+  // is reading it would be worse than leaving it open.
+  if (window.matchMedia && window.matchMedia('(min-width: 760px)').matches) {
+    document.querySelectorAll('details[data-open-wide]').forEach(function (d) { d.open = true; });
+  }
+
   // ---- Fragments inside collapsed <details> ----------------------------
   //
   // A link to an id that sits inside a closed <details> does nothing visible on

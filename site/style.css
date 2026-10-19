@@ -482,7 +482,32 @@ td.no::before  { content: "✕"; background: var(--no-bg); }
 td.yes { color: var(--yes-fg); }
 td.yes::before { content: "✓"; background: var(--yes-bg); }
 tr:has(td.yes) td { background: var(--yes-bg); }
-@media (max-width: 640px) { td.no, td.yes { white-space: normal; } }
+/* Phone: cells that stay on one line on a desktop may wrap here. The API table
+   sits inside a details body with 20px of padding a side, so it has 295px. */
+@media (max-width: 640px) { td.no, td.yes, td.v { white-space: normal; } }
+
+/* Phone: the settings table on /setup/ has three columns that add up to 458px,
+   and in a 339px wrapper the description column sat off-screen with nothing to
+   say it was there. Under 640px each row becomes a block: the attribute, then
+   the default behind a label (from data-label on the cell), then the
+   description. The markup carries explicit table roles, because display:block
+   strips a table's semantics in Chrome and Safari. */
+@media (max-width: 640px) {
+  .tablewrap.stack { position: relative; overflow-x: visible; }
+  .stack thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); }
+  .stack table, .stack tbody, .stack tr, .stack td { display: block; }
+  .stack tr { padding: 14px 18px; border-block-end: 2px solid var(--paper); }
+  .stack tr:last-child { border-block-end: 0; }
+  .stack td { padding: 0; border: 0; }
+  .stack td.v { overflow-wrap: anywhere; }
+  .stack td.v:first-child { font-size: 14px; }
+  /* The default reads "ברירת מחדל: value". The cell turns RTL so the Hebrew
+     label leads; the value sits in a <bdi>, so "#0b5fff" keeps its "#" in front. */
+  .stack td.v:nth-child(2) { direction: rtl; text-align: start; font-family: var(--sans); font-size: 14px; color: var(--dim); margin-top: 4px; }
+  .stack td.v:nth-child(2)::before { content: attr(data-label) ": "; }
+  .stack td.v:nth-child(2) bdi { font-family: var(--mono); font-size: 13px; color: var(--ink); }
+  .stack td:nth-child(3) { margin-top: 8px; font-size: 15px; }
+}
 
 /* ---- Code ------------------------------------------------------------- */
 .code { position: relative; border: 2px solid var(--ink); border-radius: 18px; background: var(--code-bg); color: var(--code-fg); margin-bottom: 20px; overflow: hidden; }
@@ -497,12 +522,27 @@ tr:has(td.yes) td { background: var(--yes-bg); }
   font-family: var(--mono); color: var(--code-fg);
 }
 .code pre:focus-visible { outline: 3px solid #b9c9ff; outline-offset: -4px; }
+/* A block that still scrolls sideways (multi-line code on a phone) says so with a
+   light haze on its right edge. Two background layers: the haze is pinned to the
+   box, and an opaque strip in the code's own colour rides with the content
+   (background-attachment: local), so it slides over the haze exactly when the
+   reader reaches the end. A block that fits shows nothing. Black on near-black
+   would be invisible, hence a lightening rather than a shadow. */
+.code pre {
+  background-image:
+    linear-gradient(to left, var(--code-bg) 60%, rgba(14, 15, 18, 0)),
+    linear-gradient(to left, rgba(233, 235, 240, .22), rgba(233, 235, 240, 0));
+  background-position: right center, right center;
+  background-size: 48px 100%, 28px 100%;
+  background-repeat: no-repeat;
+  background-attachment: local, scroll;
+}
 /* The install tag is one long line. In the blocks that hand it over it wraps
    instead of scrolling, so no part of it is ever out of view. */
 .code.wrap pre { white-space: pre-wrap; overflow-wrap: anywhere; }
 /* The AI prompt is Hebrew prose with LTR code lines embedded in it.
    `unicode-bidi: plaintext` gives every line its own base direction. */
-.code.rtl pre { direction: rtl; text-align: right; unicode-bidi: plaintext; font-family: var(--sans); font-size: 15px; line-height: 1.8; }
+.code.rtl pre { direction: rtl; text-align: right; unicode-bidi: plaintext; font-family: var(--sans); font-size: 15px; line-height: 1.8; white-space: pre-wrap; overflow-wrap: anywhere; }
 .code.rtl .ltr {
   display: block; direction: ltr; text-align: left; unicode-bidi: isolate;
   font-family: var(--mono); font-size: 13px; line-height: 1.6;
@@ -557,7 +597,11 @@ summary:hover { background: var(--tint); }
 summary::marker { color: var(--blue); }
 details[open] summary { border-bottom: 2px solid var(--ink); }
 .details-body { padding: 18px 20px; color: var(--dim); font-size: 16px; }
-.details-body p:last-child, .details-body .code:last-child { margin-bottom: 0; }
+.details-body p:last-child, .details-body .code:last-child, .details-body .callout:last-child { margin-bottom: 0; }
+/* The reference groups on /setup/ carry their h3 inside the summary, so the
+   heading stays in the outline and in-page links to it keep working. */
+summary h3 { display: inline; margin: 0; font-size: 1.45rem; line-height: 1.1; }
+summary h3 code { font-size: .72em; }
 .band details { color: var(--ink); }
 
 /* ---- Long-form pages (/terms/, /disclaimer/, /accessibility/, /changelog/) */
