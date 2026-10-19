@@ -146,6 +146,24 @@ function warn(message: string): void {
 }
 
 /**
+ * Says so when there was no script tag to read.
+ *
+ * `document.currentScript` is null for `type="module"` scripts and under some
+ * CMS and tag-manager loaders that inject the tag through `innerHTML` or
+ * `eval`. On those installs every `data-*` option was dropped without a word:
+ * the widget booted with no statement link, no coordinator and the default
+ * corner, and the installer had nothing to tell them why. Called from the
+ * script-tag entry only — bundler installs pass options to `mount()` and never
+ * had a tag to read, so for them silence is correct.
+ */
+export function warnIfScriptUnknown(): void {
+  if (OWN_SCRIPT) return;
+  warn(
+    'document.currentScript is unavailable, so data-* options on the script tag are ignored. Load the widget with a classic <script defer> tag, or pass options to mount().',
+  );
+}
+
+/**
  * Parses a numeric attribute, falling back when absent or out of range.
  *
  * The explicit null check is the point. `Number(null)` is `0`, and `0` passes

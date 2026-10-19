@@ -31,6 +31,16 @@ export const HE = {
   groupNav: 'ניווט',
   groupInfo: 'נגישות באתר',
 
+  // ---- Section chips ---------------------------------------------------
+  // Short forms of the group headings for the sticky row at the top of the
+  // panel body. Short on purpose: five of them share one line on a phone.
+  chipsLabel: 'מעבר לקטע',
+  chipText: 'טקסט',
+  chipColor: 'צבע',
+  chipMotion: 'תנועה',
+  chipNav: 'ניווט',
+  chipInfo: 'באתר',
+
   // ---- Text ------------------------------------------------------------
   textSize: 'גודל טקסט',
   textSizeDesc: 'הגדלת הטקסט באתר בלי לשנות את העיצוב שלו',
@@ -128,6 +138,8 @@ export const HE = {
   announceOn: (label: string) => `${label} — פועל`,
   announceOff: (label: string) => `${label} — כבוי`,
   announceLevel: (label: string, level: string) => `${label} — ${level}`,
+  /** Position within a stepper, read after the level name: "גדול, 2 מתוך 4". */
+  stepOf: (n: number, max: number) => `${n} מתוך ${max}`,
   levelOff: 'רגיל',
   // Every level above 0 ENLARGES — 1.15×, 1.3×, 1.5×, 1.75×. Level 1 was
   // labelled "קטן", so pressing "+" from the default announced "גודל טקסט —

@@ -52,7 +52,19 @@ export interface StepperFeature extends FeatureBase {
   apply(level: number, ctx: HostContext): void;
 }
 
-export type Feature = ToggleFeature | StepperFeature;
+/**
+ * One of N. State is an index into `options`, where 0 is always "off / site
+ * default". Stored exactly like a stepper level, so a feature can move between
+ * the two kinds without invalidating anyone's saved preferences.
+ */
+export interface ChoiceFeature extends FeatureBase {
+  readonly kind: 'choice';
+  /** Option labels, in level order. Rendered as one aria-pressed button each. */
+  readonly options: readonly string[];
+  apply(level: number, ctx: HostContext): void;
+}
+
+export type Feature = ToggleFeature | StepperFeature | ChoiceFeature;
 
 /** Persisted state: feature id -> level. Absent key means 0. */
 export type PrefState = Record<string, number>;

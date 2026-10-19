@@ -148,7 +148,7 @@ button {
 .close:focus-visible { outline-color: var(--accent-fg); outline-offset: -4px; }
 .close svg { width: 22px; height: 22px; }
 
-.body { overflow-y: auto; overscroll-behavior: contain; padding: 4px 0 8px; }
+.body { overflow-y: auto; overscroll-behavior: contain; padding: 0 0 8px; }
 /* On a very short viewport the fixed header and footer alone can exceed the
    capped height, so the whole panel scrolls instead and nothing is clipped. */
 @media (max-height: 520px) {
@@ -217,6 +217,44 @@ button {
 .toggle[aria-pressed="true"] .switch::after { transform: translateX(18px); }
 :host(:not([dir="ltr"])) .toggle[aria-pressed="true"] .switch::after { transform: translateX(-18px); }
 
+/* ---- Choice rows (one of N) -------------------------------------------- */
+/* Share the toggle look; the pressed one is the chosen one. Two columns: four
+   full-width rows would have cost the colour group more height than the rest
+   of the panel put together. */
+.choices { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.choice { margin-bottom: 0; }
+.choice[aria-pressed="true"] { font-weight: 700; }
+/* The tick is what survives forced-colors, where the accent border and the
+   surface background are both stripped. Kept out of the accessible name by
+   the button's aria-label. */
+.choice[aria-pressed="true"]::after { content: "✓"; color: var(--accent); font-weight: 700; }
+
+/* ---- Section chips ----------------------------------------------------- */
+.chips {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border-soft);
+}
+.chip {
+  flex: 1 1 auto;
+  min-height: 44px;
+  padding: 4px 10px;
+  border: 2px solid var(--border-soft);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+.chip:hover { background: var(--surface); border-color: var(--border); }
+/* Chips hand focus to the heading they scroll to, so it needs a ring. */
+.group-title:focus-visible { outline-offset: 4px; }
+
 /* ---- Steppers ---------------------------------------------------------- */
 .stepper { margin-bottom: 12px; }
 .stepper-label { font-size: 15px; display: block; margin-bottom: 2px; }
@@ -268,6 +306,10 @@ button {
   font-size: 15px;
 }
 .nav-btn:hover { background: var(--surface); }
+/* The chevron had no size of its own, so it fell back to the SVG default and
+   every nav row grew to 184px around it — the one visual bug shipped in 0.4.0.
+   Only the launcher and Close icons were sized; this is the third. */
+.nav-btn svg { width: 18px; height: 18px; flex: none; }
 .nav-count { font-size: 12.5px; color: var(--fg-muted); }
 .nav-list { list-style: none; margin: 0 0 10px; padding: 0; max-height: 240px; overflow-y: auto; }
 .nav-list li { margin: 0; }
@@ -360,6 +402,7 @@ button {
   .toggle[aria-pressed="true"] .switch { background: Highlight; }
   .toggle[aria-pressed="true"] .switch::after { background: HighlightText; }
   .step-dot.on { forced-color-adjust: none; background: Highlight; }
+  .choice[aria-pressed="true"]::after { color: Highlight; }
 }
 
 @media print { :host { display: none !important; } }

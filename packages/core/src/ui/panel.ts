@@ -3,7 +3,13 @@ import { getFeatures } from '../features/index.js';
 import { currentLang, dirFor, t } from '../i18n/index.js';
 import { getHeadings, getLandmarks, getLinks, jumpTo } from '../nav/outline.js';
 import type { OutlineItem } from '../nav/outline.js';
-import type { Feature, GroupId, StepperFeature, ToggleFeature, WidgetConfig } from '../types.js';
+import type {
+  ChoiceFeature,
+  GroupId,
+  StepperFeature,
+  ToggleFeature,
+  WidgetConfig,
+} from '../types.js';
 import { chevronIcon, closeIcon, el } from './dom.js';
 import { telHref } from './phone.js';
 
@@ -39,6 +45,18 @@ const groupTitle = (group: GroupId): string => {
     motion: s.groupMotion,
     nav: s.groupNav,
     info: s.groupInfo,
+  }[group];
+};
+
+/** Short forms for the chip row. Resolved at render time, like `groupTitle`. */
+const chipLabel = (group: GroupId): string => {
+  const s = t();
+  return {
+    text: s.chipText,
+    color: s.chipColor,
+    motion: s.chipMotion,
+    nav: s.chipNav,
+    info: s.chipInfo,
   }[group];
 };
 
@@ -93,28 +111,75 @@ export class Panel {
 
     // Body
     const body = el('div', { class: 'body' });
-    for (const group of ['text', 'color', 'motion'] as const) {
-      body.appendChild(this.buildFeatureGroup(group));
-    }
-    body.appendChild(this.buildNavGroup());
-    body.appendChild(this.buildInfoGroup());
+    const sections: Array<[GroupId, HTMLElement]> = [
+      ['text', this.buildFeatureGroup('text')],
+      ['color', this.buildFeatureGroup('color')],
+      ['motion', this.buildFeatureGroup('motion')],
+      ['nav', this.buildNavGroup()],
+      ['info', this.buildInfoGroup()],
+    ];
+    body.appendChild(this.buildChips(panel, body, sections));
+    for (const [, section] of sections) body.appendChild(section);
     panel.appendChild(body);
 
     panel.appendChild(this.buildFooter());
     return panel;
   }
 
-  private buildFeatureGroup(group: GroupId): HTMLElement {
+  /**
+   * A sticky row of one chip per section, scrolling the body to its heading.
+   *
+   * The panel is long enough that "נגישות באתר" sits two screens below the
+   * fold on a phone, and the three navigation lists one. Focus moves to the
+   * heading as well, so a screen-reader user lands where they asked to go and
+   * not back where the chip was. The headings carry `tabindex="-1"` for that
+   * and nothing else — they stay out of the Tab order.
+   */
+  private buildChips(
+    panel: HTMLElement,
+    body: HTMLElement,
+    sections: Array<[GroupId, HTMLElement]>,
+  ): HTMLElement {
+    const chips = el('div', { class: 'chips', role: 'group', 'aria-label': t().chipsLabel });
+
+    for (const [group, section] of sections) {
+      const chip = el('button', { type: 'button', class: 'chip', text: chipLabel(group) });
+      chip.addEventListener('click', () => {
+        // The body scrolls, except on very short viewports where the stylesheet
+        // hands scrolling to the whole panel; whichever one can move, moves.
+        // Written as a scrollTop delta rather than scrollIntoView so the host
+        // document is never scrolled under the panel.
+        const scroller = body.scrollHeight > body.clientHeight ? body : panel;
+        section.querySelector<HTMLElement>('.group-title')?.focus({ preventScroll: true });
+        scroller.scrollTop +=
+          section.getBoundingClientRect().top -
+          scroller.getBoundingClientRect().top -
+          chips.offsetHeight;
+      });
+      chips.appendChild(chip);
+    }
+    return chips;
+  }
+
+  private buildGroupHeading(group: GroupId): [string, HTMLElement] {
     const headingId = nextId('grp');
-    const section = el('section', { class: 'group', 'aria-labelledby': headingId }, [
-      el('h3', { class: 'group-title', id: headingId, text: groupTitle(group) }),
-    ]);
+    return [
+      headingId,
+      el('h3', { class: 'group-title', id: headingId, tabindex: '-1', text: groupTitle(group) }),
+    ];
+  }
+
+  private buildFeatureGroup(group: GroupId): HTMLElement {
+    const [headingId, heading] = this.buildGroupHeading(group);
+    const section = el('section', { class: 'group', 'aria-labelledby': headingId }, [heading]);
 
     for (const feature of getFeatures().filter((f) => f.group === group)) {
       section.appendChild(
         feature.kind === 'toggle'
           ? this.buildToggle(feature)
-          : this.buildStepper(feature),
+          : feature.kind === 'choice'
+            ? this.buildChoice(feature)
+            : this.buildStepper(feature),
       );
     }
     return section;
@@ -179,18 +244,24 @@ export class Panel {
       );
     }
 
-    const value = el('span', { class: 'step-value' });
+    // Both buttons describe themselves with the current value, so a visitor
+    // landing on "+" hears "Increase — Text size, Large" rather than having to
+    // find the value between them.
+    const valueId = nextId('val');
+    const value = el('span', { class: 'step-value', id: valueId });
 
     // In RTL the first child renders rightmost, so decrease comes first.
     const down = el('button', {
       type: 'button',
       class: 'step-btn',
       'aria-label': `${t().decrease} — ${feature.label}`,
+      'aria-describedby': valueId,
     }, ['−']);
     const up = el('button', {
       type: 'button',
       class: 'step-btn',
       'aria-label': `${t().increase} — ${feature.label}`,
+      'aria-describedby': valueId,
     }, ['+']);
 
     // `aria-disabled` rather than `disabled`: a disabled button drops out of the
@@ -201,8 +272,13 @@ export class Panel {
       const next = Math.max(0, Math.min(feature.max, current + delta));
       if (next === current) return;
       if (!this.handlers.setLevel(feature.id, next)) return;
+      // The level name alone ("Large") said nothing about how much further the
+      // control goes; the position does.
       this.handlers.announce(
-        t().announceLevel(feature.label, feature.stepLabel(next)),
+        t().announceLevel(
+          feature.label,
+          `${feature.stepLabel(next)}, ${t().stepOf(next, feature.max)}`,
+        ),
       );
     };
     down.addEventListener('click', () => step(-1));
@@ -234,12 +310,56 @@ export class Panel {
     return wrap;
   }
 
+  /**
+   * One aria-pressed button per option, exactly one pressed at a time.
+   *
+   * Pressing the pressed option (other than the first, which is "off" and
+   * has nothing to turn off) returns to level 0, so a pressed button still
+   * behaves as a pressed button and not as a radio that cannot be cleared.
+   */
+  private buildChoice(feature: ChoiceFeature): HTMLElement {
+    const labelId = nextId('lbl');
+    const wrap = el('div', { class: 'stepper', role: 'group', 'aria-labelledby': labelId }, [
+      el('span', { class: 'stepper-label', id: labelId, text: feature.label }),
+    ]);
+
+    const grid = el('div', { class: 'choices' });
+    const buttons = feature.options.map((option, i) => {
+      // `aria-label` keeps the CSS tick out of the accessible name.
+      const btn = el('button', {
+        type: 'button',
+        class: 'toggle choice',
+        'aria-pressed': 'false',
+        'aria-label': option,
+      }, [el('span', { class: 'toggle-label', text: option })]);
+      btn.addEventListener('click', () => {
+        const current = this.handlers.getLevel(feature.id);
+        const next = i && current === i ? 0 : i;
+        if (next === current) return;
+        if (!this.handlers.setLevel(feature.id, next)) return;
+        this.handlers.announce(t().announceLevel(feature.label, feature.options[next]!));
+      });
+      grid.appendChild(btn);
+      return btn;
+    });
+    wrap.appendChild(grid);
+
+    this.syncers.push(() => {
+      const level = this.handlers.getLevel(feature.id);
+      buttons.forEach((btn, i) => {
+        btn.setAttribute('aria-pressed', i === level ? 'true' : 'false');
+      });
+    });
+
+    return wrap;
+  }
+
   // ---- Navigation aids --------------------------------------------------
 
   private buildNavGroup(): HTMLElement {
-    const headingId = nextId('grp');
+    const [headingId, heading] = this.buildGroupHeading('nav');
     const section = el('section', { class: 'group', 'aria-labelledby': headingId }, [
-      el('h3', { class: 'group-title', id: headingId, text: groupTitle('nav') }),
+      heading,
       el('p', { class: 'nav-hint', text: t().navHint }),
     ]);
 
@@ -321,10 +441,8 @@ export class Panel {
 
   private buildInfoGroup(): HTMLElement {
     const { statementUrl, coordinatorName, coordinatorPhone, coordinatorEmail } = this.config;
-    const headingId = nextId('grp');
-    const section = el('section', { class: 'group', 'aria-labelledby': headingId }, [
-      el('h3', { class: 'group-title', id: headingId, text: groupTitle('info') }),
-    ]);
+    const [headingId, heading] = this.buildGroupHeading('info');
+    const section = el('section', { class: 'group', 'aria-labelledby': headingId }, [heading]);
 
     if (statementUrl) {
       section.appendChild(

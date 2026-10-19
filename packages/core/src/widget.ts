@@ -6,7 +6,7 @@ import {
 } from './a11y/announcer.js';
 import { FocusTrap } from './a11y/focus-trap.js';
 import { readConfig, resolveMount, safeSelector } from './config.js';
-import { getFeature, getFeatures } from './features/index.js';
+import { getFeature, getFeatures, maxLevel } from './features/index.js';
 import { clearHostAttrs, ensureHostStyles, setHostAttr } from './host/host-styles.js';
 import { ReadingGuide } from './host/reading-guide.js';
 import { TextScaler } from './host/text-scaler.js';
@@ -298,8 +298,7 @@ export class A11yWidget {
     const feature = getFeature(id);
     if (!feature) return false;
 
-    const max = feature.kind === 'stepper' ? feature.max : 1;
-    const clamped = Math.max(0, Math.min(max, Math.round(level)));
+    const clamped = Math.max(0, Math.min(maxLevel(feature), Math.round(level)));
     const previous = this.getLevel(id);
 
     this.state[id] = clamped;
@@ -344,8 +343,7 @@ export class A11yWidget {
     this.state = {};
 
     for (const feature of getFeatures()) {
-      const max = feature.kind === 'stepper' ? feature.max : 1;
-      const level = Math.max(0, Math.min(max, incoming[feature.id] ?? 0));
+      const level = Math.max(0, Math.min(maxLevel(feature), incoming[feature.id] ?? 0));
       if (level > 0 && this.tryApply(feature, level)) this.state[feature.id] = level;
     }
   }
@@ -464,8 +462,7 @@ export class A11yWidget {
     this.state = {};
 
     for (const feature of getFeatures()) {
-      const max = feature.kind === 'stepper' ? feature.max : 1;
-      const level = Math.max(0, Math.min(max, next[feature.id] ?? 0));
+      const level = Math.max(0, Math.min(maxLevel(feature), next[feature.id] ?? 0));
       // Isolated per feature, as everywhere else: one feature that cannot apply
       // must not stop the rest of the profile from being restored.
       if (this.tryApply(feature, level) && level > 0) this.state[feature.id] = level;

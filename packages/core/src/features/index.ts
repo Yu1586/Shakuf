@@ -124,15 +124,16 @@ function build(s: Strings): readonly Feature[] {
     },
 
     // ---- Colour ----------------------------------------------------------
+    // A choice, not a stepper: the four modes are not degrees of one thing, and
+    // stepping from "high" to "greyscale" with "+" applied "inverted" to the
+    // page on the way. The stored level is unchanged (0..3 under the same id),
+    // so a preference saved by 0.4.0 still means what it meant.
     {
       id: 'contrast',
-      kind: 'stepper',
+      kind: 'choice',
       group: 'color',
       label: s.contrast,
-      max: 3,
-      stepLabel: (level) =>
-        [s.levelOff, s.contrastHigh, s.contrastInvert, s.contrastMono][level] ??
-        s.levelOff,
+      options: [s.levelOff, s.contrastHigh, s.contrastInvert, s.contrastMono],
       apply: (level, ctx) =>
         ctx.setHostAttr(
           'contrast',
@@ -227,4 +228,11 @@ export function getFeatures(): readonly Feature[] {
 
 export function getFeature(id: string): Feature | undefined {
   return registry().byId.get(id);
+}
+
+/** The highest level a feature accepts. Level 0 is always "off". */
+export function maxLevel(feature: Feature): number {
+  if (feature.kind === 'stepper') return feature.max;
+  if (feature.kind === 'choice') return feature.options.length - 1;
+  return 1;
 }

@@ -7,6 +7,7 @@
  * no failure mode in which our infrastructure removes an accessibility feature
  * from someone's live site.
  */
+import { warnIfScriptUnknown } from './config.js';
 import type { Lang } from './i18n/index.js';
 import { mount, unmount, type A11yWidget } from './widget.js';
 
@@ -96,6 +97,7 @@ function api(widget: A11yWidget): ShakufApi {
 
 function start(): void {
   try {
+    warnIfScriptUnknown();
     // `mount()` dispatches `shakuf:ready` before returning, so `window.shakuf`
     // does not exist yet inside that listener — which is why the event carries
     // the widget in `detail`. Use the detail from the event, or the global from

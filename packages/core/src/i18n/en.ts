@@ -41,6 +41,14 @@ export const EN: Strings = {
   groupNav: 'Navigation',
   groupInfo: 'Site accessibility',
 
+  // ---- Section chips ---------------------------------------------------
+  chipsLabel: 'Jump to section',
+  chipText: 'Text',
+  chipColor: 'Colour',
+  chipMotion: 'Motion',
+  chipNav: 'Navigation',
+  chipInfo: 'Site',
+
   // ---- Text ------------------------------------------------------------
   textSize: 'Text size',
   textSizeDesc: "Enlarges the text without changing the site's design",
@@ -118,6 +126,7 @@ export const EN: Strings = {
   announceOn: (label: string) => `${label} — on`,
   announceOff: (label: string) => `${label} — off`,
   announceLevel: (label: string, level: string) => `${label} — ${level}`,
+  stepOf: (n: number, max: number) => `${n} of ${max}`,
   levelOff: 'Normal',
   levelNames: ['Normal', 'Enlarged', 'Large', 'Very large', 'Largest'],
   spacingNames: ['Normal', 'Increased', 'Wide'],
