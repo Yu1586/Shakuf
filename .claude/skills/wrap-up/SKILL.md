@@ -200,9 +200,10 @@ feature release delays it for no reason. Say so and let the user decide.
 
 ### 5.2 — Write the changelog entry
 
-`site/changelog/index.html`. This is the public record and the **only English
-page on a Hebrew site**, deliberately — it is read by installers arriving from
-npm. Treat it as part of the release, not a follow-up.
+`site/changelog/index.html`. This is the public record, read by installers
+arriving from npm. It has been in Hebrew since 2026-10-13, like the rest of the
+site except `/en/`; write new entries in Hebrew to match. Treat it as part of
+the release, not a follow-up.
 
 Insert a new `<section class="rule">` **above** the previous version's
 `<!-- ====== X.Y.Z ====== -->` marker, matching the existing structure exactly:
@@ -278,7 +279,7 @@ the site describes the version that is about to exist. Then:
 npm publish --dry-run --workspace @shakuf-widget/widget
 ```
 
-Confirm the payload before the real publish — expect **10 files, ~158 kB**: the
+Confirm the payload before the real publish — expect **10 files, ~168 kB** (0.4.1 measured 167.9 kB): the
 two bundles **and their two `.map` files**, `dist/index.d.ts`, `package.json`,
 and `LICENSE` / `NOTICE` / `DISCLAIMER.md` / `README.md` copied in by
 `prepack`. The README joined on 2026-10-10 so the npm page shows it; notes

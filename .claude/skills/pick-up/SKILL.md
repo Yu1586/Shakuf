@@ -22,8 +22,9 @@ does not make a site compliant with ת״י 5568, and it says so prominently. Tha
 is both the ethical stance and the legal shield — the FTC fined accessiBe $1M
 for claiming otherwise.
 
-It is also lead-gen for the author's accessibility services, which is disclosed
-on the site. That disclosure is a requirement, not decoration.
+It is not lead-gen for anything. The paid-services model (PLAN D5) was retired
+on 2026-08-12, and the site says plainly that there is no paid service. Do not
+reintroduce a services pitch or a disclosure for one.
 
 ## Step 1 — Read the durable state
 
